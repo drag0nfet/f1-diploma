@@ -1,7 +1,6 @@
 package database
 
 import (
-	"diploma/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -17,8 +16,9 @@ func InitDB() error {
 	if err != nil {
 		return err
 	}
+	log.Println("Connected to database")
 
-	err = DB.AutoMigrate(&models.User{})
+	err = RunMigrations(DB)
 	if err != nil {
 		return err
 	}
