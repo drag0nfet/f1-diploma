@@ -5,6 +5,7 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -27,7 +28,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "Ошибка при регистрации: %v", result.Error)
 			return
 		}
-
+		log.Println("Успешная регистрация пользователя ", username)
 		fmt.Fprintf(w, "Регистрация успешна!")
 	} else {
 		http.ServeFile(w, r, "web/index.html")
