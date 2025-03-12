@@ -1,3 +1,4 @@
+/* Базовые стили */
 .container {
     display: grid;
     grid-template-areas:
@@ -20,14 +21,31 @@
     font-size: 1.2rem;
 }
 
-/* Левая колонка - скрыта на мобильных устройствах */
 .left-sidebar {
     grid-area: left;
     background: #ddd;
     padding: 15px;
+    display: flex;
+    flex-direction: column; /* Гарантирует один столбец */
+    align-items: center; /* Центрирование по горизонтали */
+    /*justify-content: center;*/ /* Центрирование по вертикали */
+    height: 100%;
+    width: 150px; /* Фиксированная ширина */
 }
 
-/* Основная колонка */
+.sidebar-link {
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    width: 100%; /* Занимает всю ширину контейнера */
+    text-align: center; /* Центрирует текст внутри ссылки */
+    white-space: normal; /* Разрешает перенос текста, если он длинный */
+}
+
+.sidebar-link:hover {
+    background-color: #ccc; /* Эффект при наведении */
+}
+
 .main {
     grid-area: main;
     background: white;
@@ -35,7 +53,6 @@
     position: relative;
 }
 
-/* Правая колонка для формы */
 .right-sidebar {
     grid-area: right;
     background: #f4f4f4;
@@ -45,7 +62,6 @@
     justify-content: flex-start;
 }
 
-/* Стиль кнопок */
 button {
     background-color: #0969A2;
     color: white;
@@ -60,12 +76,34 @@ button:hover {
     background-color: #3D9AD1;
 }
 
-/* Скрыть форму приветствия по умолчанию */
 #greeting {
     display: none;
 }
 
+.menu-btn {
+    display: none; /* Скрыта по умолчанию */
+}
 
+/* Оверлей */
+.overlay {
+    display: none; /* Скрыт по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 999; /* Под сайдбаром, но над остальным контентом */
+}
+
+/* На ПК (ширина > 1250px) */
+@media (min-width: 1251px) {
+    .menu-btn {
+        display: none; /* Кнопка меню скрыта */
+    }
+}
+
+/* На мобильных устройствах (ширина ≤ 1250px) */
 @media (max-width: 1250px) {
     .container {
         grid-template-areas:
@@ -78,11 +116,14 @@ button:hover {
     }
 
     .left-sidebar {
-        display: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /*justify-content: center;*/
+        width: 150px;
         position: fixed;
         top: 0;
-        left: -250px;
-        width: 250px;
+        left: -500px;
         height: 100%;
         background: #ddd;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
@@ -91,20 +132,24 @@ button:hover {
         z-index: 1000;
     }
 
+    .left-sidebar.active {
+        left: 0; /* Показываем сайдбар */
+    }
+
     .menu-btn {
-        display: block;
+        display: block; /* Кнопка меню видна */
+    }
+
+    .overlay.active {
+        display: block; /* Показываем оверлей при открытом сайдбаре */
     }
 
     #auth-form {
         margin-top: 20px;
     }
-
-    #greeting {
-        display: block;
-    }
 }
 
-/* Формы регистрации и авторизации */
+/* Стили форм */
 form {
     display: flex;
     flex-direction: column;

@@ -10,8 +10,9 @@
 <div class="container">
     <header class="header">Шапка сайта</header>
     <aside class="left-sidebar" id="left-sidebar">
-        <button class="close-btn" id="close-btn">X</button>
-        Форум<br>Товары<br>Бар
+        <a href="#" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="#" class="sidebar-link" data-code="bar">Бар</a>
     </aside>
     <main class="main">
         <button class="menu-btn" id="menu-btn">☰</button>
@@ -37,6 +38,7 @@
     </aside>
     <footer class="footer">Подвал сайта</footer>
 </div>
-<script src="/web/js/script.js"></script>
+<div class="overlay" id="overlay"></div> <!-- Добавляем оверлей -->
+<script type="module" src="/web/js/index/main.js"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ func Run() {
 		if r.URL.Path == "/web/styles.css" {
 			w.Header().Set("Content-Type", "text/css")
 		}
-		if r.URL.Path == "/web/js/script.js" {
+		if r.URL.Path == "/web/js/main.js" {
 			w.Header().Set("Content-Type", "application/javascript")
 		}
 		http.StripPrefix("/web/", fileServer).ServeHTTP(w, r)
