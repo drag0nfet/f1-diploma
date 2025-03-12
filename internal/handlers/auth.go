@@ -4,56 +4,45 @@ import (
 	"diploma/internal/database"
 	"diploma/internal/models"
 	"diploma/internal/services"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 )
 
-func Register(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		passHash, err := services.GetHash(password)
-
-		if err != nil {
-			fmt.Fprintf(w, "Ошибка при создании пароля: %v", err)
-			return
-		}
-
-		user := models.User{Login: username, Password: passHash}
-
-		result := database.DB.Create(&user)
-		if result.Error != nil {
-			fmt.Fprintf(w, "Ошибка при регистрации: %v", result.Error)
-			return
-		}
-		log.Println("Успешная регистрация пользователя ", username)
-		fmt.Fprintf(w, "Регистрация успешна!")
-	} else {
-		http.ServeFile(w, r, "web/index.html")
-	}
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		var user models.User
-		userCheck := database.DB.Where("login = ?", username).First(&user)
-		if userCheck.Error != nil {
-			fmt.Fprintf(w, "Пользователь с таким логином не найден!")
-			return
-		}
-
-		if !services.CheckHash(password, user.Password) {
-			fmt.Fprintf(w, "Неверный пароль!")
-			return
-		}
-
-		fmt.Fprintf(w, "Авторизация успешна!")
-	} else {
-		http.ServeFile(w, r, "web/index.html")
+	log.Println("Попытка логина")
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Метод не поддерживается"})
+		return
 	}
+
+	var auth LoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&auth); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Неверный формат данных"})
+		return
+	}
+
+	var user models.User
+	if err := database.DB.Where("login = ?", auth.Username).First(&user).Error; err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Пользователь с таким логином не найден!"})
+		return
+	}
+
+	if !services.CheckHash(auth.Password, user.Password) {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Неверный пароль!"})
+		return
+	}
+
+	// Можно установить cookie или токен
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
