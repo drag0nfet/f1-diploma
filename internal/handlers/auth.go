@@ -14,35 +14,50 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
+/* References from register.go
+type Response struct {
+	Success bool   `json:"success"`
+	Message string `json:"message,omitempty"`
+}
+*/
+
 func Login(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+
 	log.Println("Попытка логина")
 	if r.Method != http.MethodPost {
+		response := Response{Success: false, Message: "Метод не поддерживается"}
+		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Метод не поддерживается"})
 		return
 	}
 
 	var auth LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&auth); err != nil {
+		response := Response{Success: false, Message: "Неверный формат данных"}
+		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Неверный формат данных"})
 		return
 	}
 
 	var user models.User
 	if err := database.DB.Where("login = ?", auth.Username).First(&user).Error; err != nil {
+		response := Response{Success: false, Message: "Пользователь с таким логином не найден!"}
+		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Пользователь с таким логином не найден!"})
 		return
 	}
 
 	if !services.CheckHash(auth.Password, user.Password) {
+		response := Response{Success: false, Message: "Неверный пароль!"}
+		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Неверный пароль!"})
 		return
 	}
 
 	// Можно установить cookie или токен
+	response := Response{Success: true}
+	json.NewEncoder(w).Encode(response)
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }

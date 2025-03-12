@@ -38,11 +38,16 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify({ username, password })
         })
             .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return response.json();
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `HTTP error! Status: ${response.status}`);
+                    }
+                    return data;
+                });
             })
             .then(data => {
                 if (data.success) {
+                    alert("Успешная регистрация! Теперь вы можете авторизоваться под своими данными")
                     usernameInput.value = '';
                     passwordInput.value = '';
                 } else {
@@ -77,8 +82,12 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => {
                 console.log("Login response status:", response.status);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return response.json();
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `HTTP error! Status: ${response.status}`);
+                    }
+                    return data;
+                });
             })
             .then(data => {
                 console.log("Login response data:", data);
