@@ -15,7 +15,7 @@ type Response struct {
 func NewCookie(w http.ResponseWriter, username string) http.Cookie {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
-		"exp":      time.Now().Add(5 * time.Minute).Unix(),
+		"exp":      time.Now().Add(time.Minute).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte("Wv1%`j9pr]0d[s'_HwX,U|m;6^3>u="))

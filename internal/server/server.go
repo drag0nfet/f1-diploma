@@ -2,6 +2,8 @@ package server
 
 import (
 	"diploma/internal/handlers"
+	"diploma/internal/handlers/account"
+	"diploma/internal/handlers/index"
 	"diploma/internal/services"
 	"log"
 	"net/http"
@@ -12,7 +14,7 @@ func Run() {
 
 	fileServer := http.FileServer(http.Dir("web"))
 
-	// JS & CSS настройка
+	// Обработчик для статических файлов (JS, CSS)
 	mux.HandleFunc("/web/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/web/styles.css" {
 			w.Header().Set("Content-Type", "text/css")
@@ -25,18 +27,20 @@ func Run() {
 
 	// API маршруты
 	mux.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		handlers.Register(w, r)
+		index.Register(w, r)
 	})
 	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		handlers.Login(w, r)
+		index.Login(w, r)
 	})
-
-	// Системный маршрут для проверки авторизации
+	mux.HandleFunc("/logout", account.Logout)
 	mux.HandleFunc("/check-auth", handlers.CheckAuth)
 
 	// Страничные маршруты
 	mux.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-		handlers.Index(w, r)
+		http.ServeFile(w, r, "web/index.html")
+	}))
+	mux.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/account.html")
 	}))
 
 	handler := services.EnableCORS(mux)

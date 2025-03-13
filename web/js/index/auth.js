@@ -14,7 +14,14 @@ export function initAuth() {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    // Если не авторизован (например, при попытке доступа к /account), перенаправляем на /
+                    window.location.href = "/";
+                    return Promise.reject(new Error("Не авторизован"));
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success && data.username) {
                     const username = data.username;

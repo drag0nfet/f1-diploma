@@ -1,4 +1,4 @@
-package handlers
+package index
 
 import (
 	"diploma/internal/database"
