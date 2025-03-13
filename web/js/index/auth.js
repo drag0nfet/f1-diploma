@@ -9,7 +9,10 @@ export function initAuth() {
     function checkAuthStatus() {
         fetch('/check-auth', {
             method: 'GET',
-            credentials: 'include' // Отправляем куки с запросом
+            credentials: 'include', // Отправляем куки с запросом
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         })
             .then(response => response.json())
             .then(data => {
