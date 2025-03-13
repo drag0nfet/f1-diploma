@@ -14,17 +14,12 @@ type RegisterRequest struct {
 	Password string `json:"password"`
 }
 
-type Response struct {
-	Success bool   `json:"success"`
-	Message string `json:"message,omitempty"`
-}
-
 func Register(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
 	if r.Method != http.MethodPost {
-		response := Response{Success: false, Message: "Метод не поддерживается"}
+		response := services.Response{Success: false, Message: "Метод не поддерживается"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -32,7 +27,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	var req RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		response := Response{Success: false, Message: "Неверный формат данных"}
+		response := services.Response{Success: false, Message: "Неверный формат данных"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -40,7 +35,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	var existingUser models.User
 	if err := database.DB.Where("login = ?", req.Username).First(&existingUser).Error; err == nil {
-		response := Response{Success: false, Message: "Пользователь с таким логином уже существует!"}
+		response := services.Response{Success: false, Message: "Пользователь с таким логином уже существует!"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusConflict)
 		return
@@ -48,7 +43,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	passHash, err := services.GetHash(req.Password)
 	if err != nil {
-		response := Response{Success: false, Message: "Ошибка при создании пароля"}
+		response := services.Response{Success: false, Message: "Ошибка при создании пароля"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -56,14 +51,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	user := models.User{Login: req.Username, Password: passHash}
 	if err := database.DB.Create(&user).Error; err != nil {
-		response := Response{Success: false, Message: "Ошибка при регистрации"}
+		response := services.Response{Success: false, Message: "Ошибка при регистрации"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	log.Println("Успешная регистрация пользователя", req.Username)
-	response := Response{Success: true}
+	response := services.Response{Success: true}
 	json.NewEncoder(w).Encode(response)
 	w.WriteHeader(http.StatusOK)
 }

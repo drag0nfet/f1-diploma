@@ -1,5 +1,5 @@
 export function initRegister() {
-    const registerBtn = document.getElementById("login-btn");
+    const registerBtn = document.getElementById("register-btn");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
 
@@ -28,7 +28,7 @@ export function initRegister() {
             })
             .then(data => {
                 if (data.success) {
-                    alert("Регистрация прошла успешно!");
+                    alert("Регистрация прошла успешно! Теперь Вы можете авторизоваться, используя введённые ранее данные");
                     usernameInput.value = '';
                     passwordInput.value = '';
                 } else {

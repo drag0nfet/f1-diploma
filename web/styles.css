@@ -6,8 +6,8 @@
         "left main right"
         "footer footer footer";
     grid-template-columns: 200px 1fr 250px;
-    grid-template-rows: 60px 1fr 50px;
-    height: 100vh;
+    grid-template-rows: 60px 1fr auto;
+    min-height: 100vh;
 }
 
 .header {
@@ -29,7 +29,7 @@
     flex-direction: column; /* Гарантирует один столбец */
     align-items: center; /* Центрирование по горизонтали */
     /*justify-content: center;*/ /* Центрирование по вертикали */
-    height: 100%;
+    height: auto; /* Адаптируется под содержимое */
     width: 150px; /* Фиксированная ширина */
 }
 
@@ -164,4 +164,26 @@ form input {
 
 form button {
     padding: 12px;
+}
+
+.footer {
+    grid-area: footer;
+    background: #333;
+    color: white;
+    display: flex;
+    flex-direction: column; /* Элементы в столбец (3 строки) */
+    justify-content: center; /* Вертикальное центрирование */
+    align-items: center; /* Горизонтальное центрирование */
+    min-height: 70px; /* Минимальная высота */
+    padding: 10px; /* Добавляем отступы для текста */
+}
+
+.footer a {
+    margin: 2px 0; /* Небольшие отступы между строками */
+    text-decoration: none;
+    color: white;
+}
+
+.footer a:hover {
+    text-decoration: underline; /* Эффект при наведении */
 }

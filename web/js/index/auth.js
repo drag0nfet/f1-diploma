@@ -4,8 +4,44 @@ export function initAuth() {
     const passwordInput = document.getElementById("password");
     const greeting = document.getElementById("greeting");
     const authForm = document.getElementById("auth-form");
-    const userNameDisplay = document.getElementById("user-name");
 
+    // Функция проверки статуса авторизации
+    function checkAuthStatus() {
+        fetch('/check-auth', {
+            method: 'GET',
+            credentials: 'include' // Отправляем куки с запросом
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.username) {
+                    const username = data.username;
+                    const ip = window.location.hostname;
+                    const port = ":5051";
+                    const accountLink = `http://${ip}${port}/account`;
+
+                    // Формируем текст с ссылкой
+                    greeting.innerHTML = `Привет, <a href="${accountLink}">${username}</a>!`;
+                    greeting.style.display = "block";
+
+                    // Скрываем форму авторизации
+                    authForm.style.display = "none";
+                } else {
+                    greeting.style.display = "none";
+                    authForm.style.display = "block";
+                    console.log("Пользователь не авторизован:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Ошибка проверки авторизации:", error);
+                greeting.style.display = "none";
+                authForm.style.display = "block";
+            });
+    }
+
+    // Проверка статуса при загрузке страницы
+    checkAuthStatus();
+
+    // Обработчик логина
     loginBtn.addEventListener("click", function (event) {
         event.preventDefault();
         const username = usernameInput.value.trim();
@@ -31,9 +67,7 @@ export function initAuth() {
             })
             .then(data => {
                 if (data.success) {
-                    authForm.style.display = "none";
-                    greeting.style.display = "block";
-                    userNameDisplay.textContent = username;
+                    checkAuthStatus(); // Обновляем статус после логина
                 } else {
                     alert(data.message || "Ошибка авторизации.");
                 }
