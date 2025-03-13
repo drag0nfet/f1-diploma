@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форум</title>
+    <link rel="stylesheet" href="/web/styles.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">Форум</header>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="#" class="sidebar-link" data-code="bar">Бар</a>
+    </aside>
+    <main class="main" id="discuss-content">
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <h1>Добро пожаловать на форум!</h1>
+        <div id="guest-content" style="display: block;">
+            <p>Вы не авторизованы. <a href="/">Авторизуйтесь</a>, чтобы участвовать в обсуждениях.</p>
+        </div>
+        <div id="user-content" style="display: none;">
+            <p>Здесь вы можете начать обсуждение или ответить на темы.</p>
+            <p>Ваши темы и комментарии доступны только вам, <span id="username-display"></span>!</p>
+        </div>
+    </main>
+</div>
+<script type="module" src="/web/js/discuss/main.js"></script>
+</body>
+</html>

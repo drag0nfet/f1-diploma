@@ -42,6 +42,9 @@ func Run() {
 	mux.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/account.html")
 	}))
+	mux.HandleFunc("/web/discuss.html", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/discuss.html")
+	}))
 
 	handler := services.EnableCORS(mux)
 
