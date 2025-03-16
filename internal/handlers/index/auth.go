@@ -5,7 +5,6 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -18,7 +17,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	log.Println("Попытка логина")
 	if r.Method != http.MethodPost {
 		response := services.Response{Success: false, Message: "Метод не поддерживается"}
 		json.NewEncoder(w).Encode(response)
@@ -49,8 +47,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := services.NewCookie(w, auth.Username)
-	if cookie.Name == "" { // Проверяем, не вернулся ли нулевой cookie (ошибка при генерации токена)
+	cookie := services.NewCookie(w, auth.Username, user.Rights)
+	if cookie.Name == "" {
 		return // Ошибка уже обработана внутри NewCookie
 	}
 	http.SetCookie(w, &cookie)

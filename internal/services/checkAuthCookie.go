@@ -7,14 +7,14 @@ import (
 )
 
 // CheckAuthCookie проверяет наличие и валидность куки "auth" с JWT-токеном
-func CheckAuthCookie(r *http.Request) (string, Response) {
+func CheckAuthCookie(r *http.Request) (string, Response, int) {
 	// Извлекаем куки
 	cookie, err := r.Cookie("auth")
 	if err != nil {
 		return "", Response{
 			Success: false,
 			Message: "Не авторизован: куки отсутствует",
-		}
+		}, 0
 	}
 
 	// Парсим JWT-токен
@@ -31,7 +31,7 @@ func CheckAuthCookie(r *http.Request) (string, Response) {
 		return "", Response{
 			Success: false,
 			Message: "Недействительный токен: " + err.Error(),
-		}
+		}, 0
 	}
 
 	// Проверяем, валиден ли токен
@@ -39,7 +39,7 @@ func CheckAuthCookie(r *http.Request) (string, Response) {
 		return "", Response{
 			Success: false,
 			Message: "Токен недействителен",
-		}
+		}, 0
 	}
 
 	// Извлекаем claims (данные из токена)
@@ -48,7 +48,7 @@ func CheckAuthCookie(r *http.Request) (string, Response) {
 		return "", Response{
 			Success: false,
 			Message: "Не удалось извлечь данные из токена",
-		}
+		}, 0
 	}
 
 	// Извлекаем username
@@ -57,7 +57,7 @@ func CheckAuthCookie(r *http.Request) (string, Response) {
 		return "", Response{
 			Success: false,
 			Message: "Логин пользователя не найден в токене",
-		}
+		}, 0
 	}
 
 	// Проверяем срок действия
@@ -66,11 +66,19 @@ func CheckAuthCookie(r *http.Request) (string, Response) {
 		return "", Response{
 			Success: false,
 			Message: "Срок действия токена истёк",
-		}
+		}, 0
 	}
 
-	// Возвращаем логин пользователя и успешный ответ
+	rights, ok := claims["rights"].(float64)
+	if !ok {
+		return "", Response{
+			Success: false,
+			Message: "Права пользователя нарушены",
+		}, 0
+	}
+
+	// Возвращаем логин пользователя, его права и успешный ответ
 	return username, Response{
 		Success: true,
-	}
+	}, int(rights)
 }

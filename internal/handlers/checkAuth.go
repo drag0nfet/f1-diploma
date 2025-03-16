@@ -26,15 +26,17 @@ func CheckAuth(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	username, response := services.CheckAuthCookie(r)
+	username, response, rights := services.CheckAuthCookie(r)
 	w.Header().Set("Content-Type", "application/json")
 	jsonResponse := struct {
 		Success  bool   `json:"success"`
 		Username string `json:"username,omitempty"`
+		Rights   int    `json:"rights,omitempty"`
 		Message  string `json:"message,omitempty"`
 	}{
 		Success:  response.Success,
 		Username: username,
+		Rights:   rights,
 		Message:  response.Message,
 	}
 	w.WriteHeader(http.StatusOK)

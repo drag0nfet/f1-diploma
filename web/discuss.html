@@ -20,9 +20,14 @@
         <div id="guest-content" style="display: block;">
             <p>Вы не авторизованы. <a href="/">Авторизуйтесь</a>, чтобы участвовать в обсуждениях.</p>
         </div>
+        <div id="moderator-content" style="display: none;">
+            <label>
+                <input type="text" id="discuss_title" placeholder="Введите название темы: " required>
+                <button type="submit" id="create_discuss-btn">Создать тему</button>
+            </label>
+        </div>
         <div id="user-content" style="display: none;">
             <p>Здесь вы можете начать обсуждение или ответить на темы.</p>
-            <p>Ваши темы и комментарии доступны только вам, <span id="username-display"></span>!</p>
         </div>
     </main>
 </div>
