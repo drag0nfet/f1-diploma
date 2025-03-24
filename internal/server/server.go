@@ -3,6 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/account"
+	"diploma/internal/handlers/discuss"
 	"diploma/internal/handlers/index"
 	"diploma/internal/services"
 	"log"
@@ -26,32 +27,41 @@ func Run() {
 	})
 
 	// API маршруты
-	mux.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		index.Register(w, r)
-	})
-	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		index.Login(w, r)
-	})
-	mux.HandleFunc("/logout", account.Logout)
-	mux.HandleFunc("/check-auth", handlers.CheckAuth)
+	{
+		// Идентификация пользователя
+		mux.HandleFunc("/register", index.Register)
+		mux.HandleFunc("/login", index.Login)
+		mux.HandleFunc("/logout", account.Logout)
+		mux.HandleFunc("/check-auth", handlers.CheckAuth)
+
+		// Работа на странице форума
+		mux.HandleFunc("/create-discuss", discuss.CreateChat)
+		mux.HandleFunc("/get-topics", discuss.GetTopics)
+	}
 
 	// Страничные маршруты
-	mux.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/index.html")
-	}))
-	mux.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/account.html")
-	}))
-	mux.HandleFunc("/web/discuss.html", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/discuss.html")
-	}))
+	{
+		// Детекция авторизации
+		mux.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/index.html")
+		}))
+		mux.HandleFunc("/web/discuss", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/discuss.html")
+		}))
+
+		// Блокировка неавторизованных
+		mux.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/account.html")
+		}))
+		mux.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "")
+		}))
+	}
 
 	handler := services.EnableCORS(mux)
 
 	err := http.ListenAndServe(SetIP()+":5051", handler)
 	if err != nil {
 		log.Fatal("ListenAndServe error: ", err)
-	} else {
-		log.Println("ListenAndServe success")
 	}
 }

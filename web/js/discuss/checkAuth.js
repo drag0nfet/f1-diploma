@@ -1,8 +1,9 @@
+import {addTopicToDOM} from "./createTheme.js";
+
 export function initAuthStatus() {
     const guestContent = document.getElementById("guest-content");
     const userContent = document.getElementById("user-content");
-    const moderatorContent = document.getElementById("moderator-content"); // Добавляем
-    //const usernameDisplay = document.getElementById("username-display");
+    const moderatorContent = document.getElementById("moderator-content");
 
     fetch('/check-auth', {
         method: 'GET',
@@ -14,8 +15,7 @@ export function initAuthStatus() {
         .then(response => response.json())
         .then(data => {
             if (data.success && data.username) {
-                const rights = data.rights || 0; // По умолчанию 0, если rights отсутствует
-                // usernameDisplay.textContent = data.username;
+                const rights = data.rights || 0;
 
                 // Скрываем гостевой контент для всех авторизованных
                 guestContent.style.display = "none";
@@ -29,6 +29,7 @@ export function initAuthStatus() {
                 } else {
                     moderatorContent.style.display = "none";
                 }
+                loadTopics();
             } else {
                 // Не авторизован
                 guestContent.style.display = "block";
@@ -43,4 +44,25 @@ export function initAuthStatus() {
             userContent.style.display = "none";
             moderatorContent.style.display = "none";
         });
+}
+
+function loadTopics() {
+    fetch('/get-topics', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const topicsContainer = document.getElementById("topics-container");
+            topicsContainer.innerHTML = ""; // Очищаем контейнер
+            if (data.success && Array.isArray(data.topics)) {
+                data.topics.forEach(topic => {
+                    addTopicToDOM(topic.chat_id, topic.title);
+                });
+            }
+        })
+        .catch(error => console.error("Ошибка загрузки тем:", error));
 }

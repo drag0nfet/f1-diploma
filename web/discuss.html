@@ -22,12 +22,13 @@
         </div>
         <div id="moderator-content" style="display: none;">
             <label>
-                <input type="text" id="discuss_title" placeholder="Введите название темы: " required>
+                <input type="text" id="discuss_title" placeholder="Введите название темы: " required maxlength="100">
                 <button type="submit" id="create_discuss-btn">Создать тему</button>
             </label>
         </div>
         <div id="user-content" style="display: none;">
-            <p>Здесь вы можете начать обсуждение или ответить на темы.</p>
+            <p>Здесь вы можете обсудить последние темы</p>
+            <div id="topics-container"></div>
         </div>
     </main>
 </div>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обсуждение темы</title>
+    <link rel="stylesheet" href="/web/styles.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">Форум</header>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/web/discuss" class="sidebar-link" data-code="discuss">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="#" class="sidebar-link" data-code="bar">Бар</a>
+    </aside>
+    <main class="main" id="topic-content">
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <h1 id="topic-title">Загрузка...</h1>
+        <div id="messages-container">
+            <!-- Сообщения будут подгружаться сюда -->
+        </div>
+        <div id="message-form" style="display: none;">
+            <form id="send-message-form">
+                <label>
+                    <textarea id="message-text" name="message_text" placeholder="Введите сообщение..." required></textarea>
+                    <button type="submit" id="send-message-btn">Отправить</button>
+                </label>
+            </form>
+        </div>
+    </main>
+    <aside class="right-sidebar">
+        <div id="greeting" style="display: none;">
+            <h2>Добро пожаловать в обсуждение, <span id="user-name"></span>!</h2>
+        </div>
+    </aside>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="/web/js/topic/main.js"></script>
+</body>
+</html>

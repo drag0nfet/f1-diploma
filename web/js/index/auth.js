@@ -29,7 +29,7 @@ export function initAuth() {
                     const port = ":5051";
                     const accountLink = `http://${ip}${port}/account`;
 
-                    // Формируем текст с ссылкой
+                    // Формируем текст со ссылкой
                     greeting.innerHTML = `Привет, <a href="${accountLink}">${username}</a>!`;
                     greeting.style.display = "block";
 

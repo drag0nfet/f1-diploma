@@ -183,7 +183,3 @@ form button {
     text-decoration: none;
     color: white;
 }
-
-.footer a:hover {
-    text-decoration: underline; /* Эффект при наведении */
-}
