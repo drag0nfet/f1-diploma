@@ -6,59 +6,61 @@ import (
 	"diploma/internal/handlers/discuss"
 	"diploma/internal/handlers/index"
 	"diploma/internal/services"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
 func Run() {
-	mux := http.NewServeMux()
-
-	fileServer := http.FileServer(http.Dir("web"))
-
-	// Обработчик для статических файлов (JS, CSS)
-	mux.HandleFunc("/web/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/web/styles.css" {
-			w.Header().Set("Content-Type", "text/css")
-		}
-		if r.URL.Path == "/web/js/main.js" {
-			w.Header().Set("Content-Type", "application/javascript")
-		}
-		http.StripPrefix("/web/", fileServer).ServeHTTP(w, r)
-	})
+	router := mux.NewRouter()
+	//mux := http.NewServeMux()
 
 	// API маршруты
 	{
 		// Идентификация пользователя
-		mux.HandleFunc("/register", index.Register)
-		mux.HandleFunc("/login", index.Login)
-		mux.HandleFunc("/logout", account.Logout)
-		mux.HandleFunc("/check-auth", handlers.CheckAuth)
+		router.HandleFunc("/register", index.Register)
+		router.HandleFunc("/login", index.Login)
+		router.HandleFunc("/logout", account.Logout)
+		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
 		// Работа на странице форума
-		mux.HandleFunc("/create-discuss", discuss.CreateChat)
-		mux.HandleFunc("/get-topics", discuss.GetTopics)
+		router.HandleFunc("/create-discuss", discuss.CreateChat)
+		router.HandleFunc("/get-topics", discuss.GetTopics)
 	}
 
 	// Страничные маршруты
 	{
 		// Детекция авторизации
-		mux.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/index.html")
 		}))
-		mux.HandleFunc("/web/discuss", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/web/discuss", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/discuss.html")
 		}))
 
 		// Блокировка неавторизованных
-		mux.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/account.html")
 		}))
-		mux.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "")
+		router.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/topic.html")
 		}))
 	}
 
-	handler := services.EnableCORS(mux)
+	// Обработчик для статических файлов (JS, CSS)
+	// Общий маршрут, поэтому в самом низу по порядку регистрации перехода
+	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/web/styles.css" {
+			w.Header().Set("Content-Type", "text/css")
+		}
+		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/discuss/createTheme.js" {
+			w.Header().Set("Content-Type", "application/javascript")
+		}
+		fileServer := http.FileServer(http.Dir("web"))
+		fileServer.ServeHTTP(w, r)
+	})))
+
+	handler := services.EnableCORS(router)
 
 	err := http.ListenAndServe(SetIP()+":5051", handler)
 	if err != nil {
