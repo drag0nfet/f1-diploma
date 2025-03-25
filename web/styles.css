@@ -1,3 +1,40 @@
+/* Стили форума */
+.topic-item {
+    background-color: #e0e0e0; /* Светло-серый фон */
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex; /* Для выравнивания ссылки и кнопки */
+    justify-content: space-between; /* Ссылка слева, кнопка справа */
+    align-items: center; /* Вертикальное центрирование */
+}
+
+.topic-link {
+    color: #333333;
+    text-decoration: none;
+    flex-grow: 1; /* Ссылка занимает всё доступное пространство */
+}
+
+.topic-link:hover {
+    color: #555555;
+}
+
+.delete-topic-btn {
+    background-color: #9e2323; /* Красный фон */
+    color: black; /* Чёрный крестик */
+    border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.delete-topic-btn:hover {
+    background-color: #7a1616; /* Темнее при наведении */
+}
+
 /* Базовые стили */
 .container {
     display: grid;

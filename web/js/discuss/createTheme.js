@@ -1,4 +1,6 @@
-export function initCreateTheme() {
+import {addTopicToDOM} from "./addTopicToDOM.js";
+
+export function initCreateTheme(isModerator) {
     const title = document.getElementById("discuss_title").value.trim();
     if (!title) {
         alert("Введите название темы!");
@@ -19,18 +21,10 @@ export function initCreateTheme() {
             if (data.success) {
                 alert("Тема создана!");
                 document.getElementById("discuss_title").value = ""; // Очистка поля
-                addTopicToDOM(data.topicId, title); // Добавляем новую тему
+                addTopicToDOM(data.topicId, title, isModerator, true); // Добавляем новую тему
             } else {
                 alert("Ошибка: " + data.message);
             }
         })
         .catch(error => console.error("Ошибка создания темы:", error));
-}
-
-export function addTopicToDOM(topicId, title) {
-    const topicsContainer = document.getElementById("topics-container");
-    const topicElement = document.createElement("div");
-    topicElement.className = "topic-item";
-    topicElement.innerHTML = `<a href="/discuss/${topicId}" class="topic-link">${title}</a>`;
-    topicsContainer.appendChild(topicElement);
 }

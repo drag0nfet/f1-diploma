@@ -26,6 +26,7 @@ func Run() {
 		// Работа на странице форума
 		router.HandleFunc("/create-discuss", discuss.CreateChat)
 		router.HandleFunc("/get-topics", discuss.GetTopics)
+		router.HandleFunc("/delete-discuss", discuss.DeleteDiscuss)
 	}
 
 	// Страничные маршруты

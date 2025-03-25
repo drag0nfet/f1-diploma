@@ -1,9 +1,11 @@
-import {addTopicToDOM} from "./createTheme.js";
+import {addTopicToDOM} from "./addTopicToDOM.js";
 
 export function initAuthStatus() {
     const guestContent = document.getElementById("guest-content");
     const userContent = document.getElementById("user-content");
     const moderatorContent = document.getElementById("moderator-content");
+
+    let isModerator = false;
 
     fetch('/check-auth', {
         method: 'GET',
@@ -24,12 +26,13 @@ export function initAuthStatus() {
                 userContent.style.display = "block";
 
                 // Показываем moderatorContent только для модераторов (rights % 2 === 1)
-                if (rights % 2 === 1) {
+                isModerator = (rights % 2 === 1)
+                if (isModerator) {
                     moderatorContent.style.display = "block";
                 } else {
                     moderatorContent.style.display = "none";
                 }
-                loadTopics();
+                loadTopics(isModerator);
             } else {
                 // Не авторизован
                 guestContent.style.display = "block";
@@ -44,9 +47,10 @@ export function initAuthStatus() {
             userContent.style.display = "none";
             moderatorContent.style.display = "none";
         });
+    return isModerator;
 }
 
-function loadTopics() {
+export function loadTopics(isModerator) {
     fetch('/get-topics', {
         method: 'GET',
         credentials: 'include',
@@ -60,7 +64,7 @@ function loadTopics() {
             topicsContainer.innerHTML = ""; // Очищаем контейнер
             if (data.success && Array.isArray(data.topics)) {
                 data.topics.forEach(topic => {
-                    addTopicToDOM(topic.chat_id, topic.title);
+                    addTopicToDOM(topic.chat_id, topic.title, isModerator);
                 });
             }
         })

@@ -23,7 +23,7 @@ func GetTopics(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var topics []models.Chat
-	if err := database.DB.Find(&topics).Error; err != nil {
+	if err := database.DB.Order("created_at DESC").Find(&topics).Error; err != nil {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка загрузки тем"})
 		return
 	}
