@@ -1,3 +1,6 @@
+import {initSendMessage} from "./sendMessage.js";
+import {addMessageToDOM} from "./addMessageToDOM.js";
+
 export function loadTopicData(topicId) {
     fetch(`/get-topic/${topicId}`, {
         method: 'GET',
@@ -12,6 +15,7 @@ export function loadTopicData(topicId) {
                 document.getElementById("topic-title").textContent = data.topic.title;
                 document.getElementById("message-form").style.display = "block";
                 loadMessages(topicId);
+                initSendMessage(topicId);
             } else {
                 document.getElementById("topic-title").textContent = "Ошибка: " + data.message;
             }
@@ -33,10 +37,7 @@ function loadMessages(topicId) {
             messagesContainer.innerHTML = "";
             if (data.success && Array.isArray(data.messages)) {
                 data.messages.forEach(message => {
-                    const messageElement = document.createElement("div");
-                    messageElement.className = "message-item";
-                    messageElement.textContent = message.text;
-                    messagesContainer.appendChild(messageElement);
+                    addMessageToDOM(message)
                 });
             }
         })

@@ -5,6 +5,7 @@ import (
 	"diploma/internal/handlers/account"
 	"diploma/internal/handlers/discuss"
 	"diploma/internal/handlers/index"
+	"diploma/internal/handlers/topic"
 	"diploma/internal/services"
 	"github.com/gorilla/mux"
 	"log"
@@ -27,6 +28,11 @@ func Run() {
 		router.HandleFunc("/create-discuss", discuss.CreateChat)
 		router.HandleFunc("/get-topics", discuss.GetTopics)
 		router.HandleFunc("/delete-discuss", discuss.DeleteDiscuss)
+
+		// Работа на странице топика
+		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
+		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
+		router.HandleFunc("/send-message", topic.SendMessage)
 	}
 
 	// Страничные маршруты
@@ -44,6 +50,7 @@ func Run() {
 			http.ServeFile(w, r, "web/account.html")
 		}))
 		router.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			log.Println("goToTopic")
 			http.ServeFile(w, r, "web/topic.html")
 		}))
 	}

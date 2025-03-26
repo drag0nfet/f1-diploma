@@ -7,14 +7,15 @@ import (
 )
 
 // CheckAuthCookie проверяет наличие и валидность куки "auth" с JWT-токеном
-func CheckAuthCookie(r *http.Request) (string, Response, int) {
+// return username, user_id, rights, Response{success bool}
+func CheckAuthCookie(r *http.Request) (string, int, int, Response) {
 	// Извлекаем куки
 	cookie, err := r.Cookie("auth")
 	if err != nil {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Не авторизован: куки отсутствует",
-		}, 0
+		}
 	}
 
 	// Парсим JWT-токен
@@ -28,57 +29,67 @@ func CheckAuthCookie(r *http.Request) (string, Response, int) {
 	})
 
 	if err != nil {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Недействительный токен: " + err.Error(),
-		}, 0
+		}
 	}
 
 	// Проверяем, валиден ли токен
 	if !token.Valid {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Токен недействителен",
-		}, 0
+		}
 	}
 
 	// Извлекаем claims (данные из токена)
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Не удалось извлечь данные из токена",
-		}, 0
+		}
 	}
 
 	// Извлекаем username
 	username, ok := claims["username"].(string)
 	if !ok || username == "" {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Логин пользователя не найден в токене",
-		}, 0
+		}
+	}
+
+	// Извлекаем userId
+	userId, ok := claims["user_id"].(float64)
+	if !ok {
+		return "", -1, 0, Response{
+			Success: false,
+			Message: "ID пользователя не найден в токене",
+		}
+	}
+
+	// Извлекаем rights
+	rights, ok := claims["rights"].(float64)
+	if !ok {
+		return "", -1, 0, Response{
+			Success: false,
+			Message: "Права пользователя нарушены",
+		}
 	}
 
 	// Проверяем срок действия
 	exp, ok := claims["exp"].(float64)
 	if !ok || time.Now().Unix() > int64(exp) {
-		return "", Response{
+		return "", -1, 0, Response{
 			Success: false,
 			Message: "Срок действия токена истёк",
-		}, 0
-	}
-
-	rights, ok := claims["rights"].(float64)
-	if !ok {
-		return "", Response{
-			Success: false,
-			Message: "Права пользователя нарушены",
-		}, 0
+		}
 	}
 
 	// Возвращаем логин пользователя, его права и успешный ответ
-	return username, Response{
+	return username, int(userId), int(rights), Response{
 		Success: true,
-	}, int(rights)
+	}
 }

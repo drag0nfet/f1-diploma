@@ -9,9 +9,8 @@ import (
 // AuthMiddleware позволяет доступ всем, добавляя информацию об авторизации
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Вместо _ возвращаются права пользователя в виде бинарной маски (int)
-		username, response, _ := services.CheckAuthCookie(r)
-		// Добавляем информацию об авторизации в заголовки
+
+		username, _, _, response := services.CheckAuthCookie(r)
 		if response.Success {
 			w.Header().Set("X-Username", username)
 		} else {
@@ -25,10 +24,9 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 // StrictAuthMiddleware разрешает доступ только авторизованным пользователям
 func StrictAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Вместо _ возвращаются права пользователя в виде бинарной маски (int)
-		username, response, _ := services.CheckAuthCookie(r)
+
+		username, _, _, response := services.CheckAuthCookie(r)
 		if !response.Success {
-			// Если пользователь не авторизован, возвращаем ошибку
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(response)

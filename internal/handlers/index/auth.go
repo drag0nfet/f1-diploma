@@ -47,7 +47,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := services.NewCookie(w, auth.Username, user.Rights)
+	cookie := services.NewCookie(w, auth.Username, user.Rights, user.UserID)
 	if cookie.Name == "" {
 		return // Ошибка уже обработана внутри NewCookie
 	}

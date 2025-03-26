@@ -22,7 +22,7 @@ func DeleteDiscuss(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Проверяем авторизацию и права
-	_, response, rights := services.CheckAuthCookie(r)
+	_, _, rights, response := services.CheckAuthCookie(r)
 	if !response.Success {
 		json.NewEncoder(w).Encode(response)
 		return
@@ -42,7 +42,6 @@ func DeleteDiscuss(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Удаляем тему из базы
 	if err := database.DB.Delete(&models.Chat{}, req.ChatID).Error; err != nil {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка удаления темы"})
 		return

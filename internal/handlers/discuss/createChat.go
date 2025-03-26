@@ -30,9 +30,9 @@ func CreateChat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// проверка авторизации - на практике всегда проходит успешно
-	username, _, _ := services.CheckAuthCookie(r)
-	if username == "" {
-		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не авторизован"})
+	if _, _, _, response := services.CheckAuthCookie(r); !response.Success {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 

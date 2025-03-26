@@ -12,11 +12,12 @@ type Response struct {
 	Message string `json:"message,omitempty"`
 }
 
-func NewCookie(w http.ResponseWriter, username string, rights int) http.Cookie {
+func NewCookie(w http.ResponseWriter, username string, rights, userId int) http.Cookie {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
+		"user_id":  userId,
 		"rights":   rights,
-		"exp":      time.Now().Add(time.Minute).Unix(),
+		"exp":      time.Now().Add(time.Hour).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte("Wv1%`j9pr]0d[s'_HwX,U|m;6^3>u="))

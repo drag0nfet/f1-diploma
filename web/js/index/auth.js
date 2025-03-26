@@ -24,6 +24,7 @@ export function initAuth() {
             })
             .then(data => {
                 if (data.success && data.username) {
+                    console.log(data.username, " login")
                     const username = data.username;
                     const ip = window.location.hostname;
                     const port = ":5051";
@@ -65,6 +66,7 @@ export function initAuth() {
         fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ username, password })
         })
             .then(response => {

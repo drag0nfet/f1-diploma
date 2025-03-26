@@ -1,5 +1,5 @@
 import { initMenu }     from '../menu/menu.js';
-import {loadTopicData}  from "../discuss/loadTopicData";
+import {loadTopicData}  from "./loadTopicData.js";
 
 
 document.addEventListener("DOMContentLoaded", function () {
