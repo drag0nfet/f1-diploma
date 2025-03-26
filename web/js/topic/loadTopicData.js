@@ -37,6 +37,7 @@ function loadMessages(topicId) {
             messagesContainer.innerHTML = "";
             if (data.success && Array.isArray(data.messages)) {
                 data.messages.forEach(message => {
+                    console.log(message)
                     addMessageToDOM(message)
                 });
             }

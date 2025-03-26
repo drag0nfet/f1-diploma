@@ -5,6 +5,7 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -48,18 +49,30 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Ищем сообщения в базе
-	var messages []models.Message
-	if err := database.DB.Where("chat_id = ?", topicId).Order("message_time ASC").Find(&messages).Error; err != nil {
+	type MessageWithUsername struct {
+		models.Message
+		Username string `gorm:"column:login" json:"username"`
+	}
+
+	var messages []MessageWithUsername
+	if err := database.DB.
+		Table("\"Message\"").
+		Select("\"Message\".*, \"User\".login").
+		Joins("LEFT JOIN \"User\" ON \"Message\".sender_id = \"User\".user_id").
+		Where("\"Message\".chat_id = ?", topicId).
+		Order("\"Message\".message_time ASC").
+		Find(&messages).Error; err != nil {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка загрузки сообщений"})
 		return
 	}
+	log.Println(messages[len(messages)-1].Username)
 
 	// Формируем ответ
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(struct {
-		Success  bool             `json:"success"`
-		Messages []models.Message `json:"messages"`
-		Message  string           `json:"error_msg,omitempty"`
+		Success  bool                  `json:"success"`
+		Messages []MessageWithUsername `json:"messages"`
+		Message  string                `json:"error_msg,omitempty"`
 	}{
 		Success:  true,
 		Messages: messages,

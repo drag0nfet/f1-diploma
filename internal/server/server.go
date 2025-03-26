@@ -50,7 +50,6 @@ func Run() {
 			http.ServeFile(w, r, "web/account.html")
 		}))
 		router.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			log.Println("goToTopic")
 			http.ServeFile(w, r, "web/topic.html")
 		}))
 	}
