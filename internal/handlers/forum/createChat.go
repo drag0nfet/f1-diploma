@@ -1,4 +1,4 @@
-package discuss
+package forum
 
 import (
 	"diploma/internal/database"

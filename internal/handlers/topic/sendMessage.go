@@ -5,7 +5,7 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
-	"log"
+	"gopkg.in/guregu/null.v4"
 	"net/http"
 	"strconv"
 	"time"
@@ -38,9 +38,9 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		ChatID  string `json:"chat_id"`
 		Content string `json:"content"`
+		ReplyID string `json:"reply_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		log.Println(req, err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Неверный формат данных"})
 		return
@@ -54,6 +54,26 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var replyID null.Int
+	if req.ReplyID != "" {
+		rid, err := strconv.Atoi(req.ReplyID)
+		if err != nil || rid <= 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка при определении reply_id"})
+			return
+		}
+
+		// Проверяем, существует ли сообщение с таким reply_id
+		var existingMessage models.Message
+		if err := database.DB.Where("message_id = ?", rid).First(&existingMessage).Error; err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Сообщение, на которое вы отвечаете, не найдено"})
+			return
+		}
+
+		replyID = null.IntFrom(int64(rid))
+	}
+
 	if req.Content == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Текст сообщения не указан"})
@@ -61,15 +81,16 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Создаём новое сообщение
-	message := models.Message{
+	preMessage := models.Message{
 		ChatID:      chatID,
 		Value:       req.Content,
-		SenderID:    userId,
 		MessageTime: time.Now(),
+		SenderID:    userId,
+		ReplyID:     replyID,
 	}
 
 	// Сохраняем сообщение в базе
-	if err := database.DB.Create(&message).Error; err != nil {
+	if err := database.DB.Create(&preMessage).Error; err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(services.Response{
 			Success: false,
@@ -82,10 +103,21 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
+	type MessageWithUsername struct {
+		models.Message
+		Username string `gorm:"column:login" json:"username"`
+	}
+
+	username, _, _, _ := services.CheckAuthCookie(r)
+	message := MessageWithUsername{
+		Message:  preMessage,
+		Username: username,
+	}
+
 	json.NewEncoder(w).Encode(struct {
-		Success  bool           `json:"success"`
-		Message  models.Message `json:"message"`
-		ErrorMsg string         `json:"error-msg,omitempty"`
+		Success  bool                `json:"success"`
+		Message  MessageWithUsername `json:"message"`
+		ErrorMsg string              `json:"error-msg,omitempty"`
 	}{
 		Success: true,
 		Message: message,

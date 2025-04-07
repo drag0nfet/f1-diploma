@@ -1,4 +1,5 @@
 import {addMessageToDOM} from "./addMessageToDOM.js";
+import {currentReplyId, resetReplyId} from "./replyBtn.js";
 
 export function initSendMessage(topicId){
     const sendBtn = document.getElementById("send-message-btn");
@@ -8,6 +9,15 @@ export function initSendMessage(topicId){
         event.preventDefault();
 
         const content = messageInput.value.trim();
+
+        const body = {
+            chat_id: topicId,
+            content: content
+        };
+
+        if (currentReplyId) {
+            body.reply_id = currentReplyId;
+        }
         fetch('/send-message', {
             method: 'POST',
             credentials: 'include',
@@ -15,17 +25,19 @@ export function initSendMessage(topicId){
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            body: JSON.stringify({
-                chat_id: topicId,
-                content: content
-            })
+            body: JSON.stringify(body)
         })
             .then(response => response.json())
             .then(data => {
-                console.log("Server response:", data); // Выводим весь ответ
+
                 if (data.success) {
                     addMessageToDOM(data.message);
                     messageInput.value = "";
+                    resetReplyId()
+                    const replyBanner = document.getElementById("reply-banner");
+                    if (replyBanner) {
+                        replyBanner.remove();
+                    }
                 } else {
                     alert(data.message || "Ошибка при отправке сообщения");
                 }

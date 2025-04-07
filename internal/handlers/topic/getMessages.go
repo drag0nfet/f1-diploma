@@ -5,7 +5,6 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -65,7 +64,6 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка загрузки сообщений"})
 		return
 	}
-	log.Println(messages[len(messages)-1].Username)
 
 	// Формируем ответ
 	w.Header().Set("Content-Type", "application/json")

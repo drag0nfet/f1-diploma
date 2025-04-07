@@ -13,6 +13,7 @@ export function loadTopicData(topicId) {
         .then(data => {
             if (data.success) {
                 document.getElementById("topic-title").textContent = data.topic.title;
+                document.querySelector(".header").textContent = data.topic.title;
                 document.getElementById("message-form").style.display = "block";
                 loadMessages(topicId);
                 initSendMessage(topicId);

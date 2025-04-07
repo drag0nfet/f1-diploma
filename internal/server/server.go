@@ -3,7 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/account"
-	"diploma/internal/handlers/discuss"
+	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
 	"diploma/internal/handlers/topic"
 	"diploma/internal/services"
@@ -25,9 +25,9 @@ func Run() {
 		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
 		// Работа на странице форума
-		router.HandleFunc("/create-discuss", discuss.CreateChat)
-		router.HandleFunc("/get-topics", discuss.GetTopics)
-		router.HandleFunc("/delete-discuss", discuss.DeleteDiscuss)
+		router.HandleFunc("/create-discuss", forum.CreateChat)
+		router.HandleFunc("/get-topics", forum.GetTopics)
+		router.HandleFunc("/delete-discuss", forum.DeleteDiscuss)
 
 		// Работа на странице топика
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
@@ -39,28 +39,28 @@ func Run() {
 	{
 		// Детекция авторизации
 		router.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/index.html")
+			http.ServeFile(w, r, "web/pages/index.html")
 		}))
 		router.HandleFunc("/web/discuss", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/discuss.html")
+			http.ServeFile(w, r, "web/pages/forum.html")
 		}))
 
 		// Блокировка неавторизованных
 		router.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/account.html")
+			http.ServeFile(w, r, "web/pages/account.html")
 		}))
 		router.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/topic.html")
+			http.ServeFile(w, r, "web/pages/topic.html")
 		}))
 	}
 
-	// Обработчик для статических файлов (JS, CSS)
 	// Общий маршрут, поэтому в самом низу по порядку регистрации перехода
 	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/web/styles.css" {
+		// Обработчики для статических файлов (JS, CSS)
+		if r.URL.Path == "/web/styles/general.css" {
 			w.Header().Set("Content-Type", "text/css")
 		}
-		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/discuss/createTheme.js" {
+		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/forum/createTheme.js" {
 			w.Header().Set("Content-Type", "application/javascript")
 		}
 		fileServer := http.FileServer(http.Dir("web"))

@@ -1,0 +1,260 @@
+/* Контейнер сообщений */
+#messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Плитка сообщения */
+.message-item {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Слоты */
+.message-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.message-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.message-id {
+    color: #777;
+    font-size: 0.9em;
+}
+
+.message-content {
+    margin-bottom: 10px;
+    color: #333;
+    word-wrap: break-word;
+}
+
+.message-timestamp {
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Серая зона для кнопок */
+.message-actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 5px;
+    transition: opacity 0.3s ease;
+}
+
+.message-item:hover .message-actions {
+    opacity: 1;
+}
+
+/* Кнопки */
+.reply-btn,
+.delete-btn,
+.ban-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.reply-btn {
+    background-color: #0969A2;
+    color: white;
+}
+
+.reply-btn:hover {
+    background-color: #3D9AD1;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.ban-btn {
+    background-color: #f39c12;
+    color: white;
+}
+
+.ban-btn:hover {
+    background-color: #e67e22;
+}
+
+/* Скрываем кнопки для модераторов по умолчанию */
+.delete-btn,
+.ban-btn {
+    display: none;
+}
+
+/* Показываем кнопки для модераторов */
+.message-item.moderator .delete-btn,
+.message-item.moderator .ban-btn {
+    display: inline-block;
+}
+
+/* Стили для ответов */
+.message-item.reply {
+    margin-left: 20px;
+    max-width: calc(100% - 20px);
+}
+
+/* Ограничение вложенности (4 уровня) */
+.message-item.reply.level-1 { margin-left: 20px; max-width: calc(100% - 20px); }
+.message-item.reply.level-2 { margin-left: 40px; max-width: calc(100% - 40px); }
+.message-item.reply.level-3 { margin-left: 60px; max-width: calc(100% - 60px); }
+.message-item.reply.level-4 { margin-left: 80px; max-width: calc(100% - 80px); }
+.message-item.reply.level-5 { margin-left: 80px; max-width: calc(100% - 80px); }
+
+/* Подпись "в ответ на" */
+.reply-to {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 0.8em;
+    color: #555;
+    background: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    z-index: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Плашка "в ответ на" */
+.reply-banner {
+    background-color: #e0e0e0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #333;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* Крестик */
+.cancel-reply {
+    display: none;
+    cursor: pointer;
+    color: #777;
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
+.reply-banner:hover .cancel-reply {
+    display: inline-block;
+}
+
+/* Форма отправки сообщения */
+#topic-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+#messages-container {
+    flex: 1;
+}
+
+#message-form {
+    margin-top: auto;
+}
+
+.message-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#message-text {
+    flex: 1;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+#send-message-btn {
+    padding: 10px 20px;
+    background-color: #0969A2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#send-message-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .message-item {
+        padding: 10px;
+    }
+
+    .message-item.reply.level-1 { margin-left: 10px; max-width: calc(100% - 10px); }
+    .message-item.reply.level-2 { margin-left: 20px; max-width: calc(100% - 20px); }
+    .message-item.reply.level-3 { margin-left: 30px; max-width: calc(100% - 30px); }
+    .message-item.reply.level-4 { margin-left: 40px; max-width: calc(100% - 40px); }
+    .message-item.reply.level-5 { margin-left: 40px; max-width: calc(100% - 40px); }
+
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .message-actions {
+        padding: 5px;
+    }
+
+    .reply-btn,
+    .delete-btn,
+    .ban-btn {
+        padding: 4px 8px;
+        font-size: 0.8em;
+    }
+
+    .message-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #send-message-btn {
+        width: 100%;
+    }
+}
