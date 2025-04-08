@@ -1,7 +1,8 @@
-import {addMessageToDOM} from "./addMessageToDOM.js";
-import {currentReplyId, resetReplyId} from "./replyBtn.js";
+import { addMessageToDOM } from "./addMessageToDOM.js";
+import { currentReplyId, resetReplyId } from "./replyBtn.js";
+import { initReplyBtn } from "./replyBtn.js";
 
-export function initSendMessage(topicId){
+export function initSendMessage(topicId) {
     const sendBtn = document.getElementById("send-message-btn");
     const messageInput = document.getElementById("message-text");
 
@@ -29,15 +30,16 @@ export function initSendMessage(topicId){
         })
             .then(response => response.json())
             .then(data => {
-
                 if (data.success) {
                     addMessageToDOM(data.message);
                     messageInput.value = "";
-                    resetReplyId()
+                    resetReplyId();
                     const replyBanner = document.getElementById("reply-banner");
                     if (replyBanner) {
-                        replyBanner.remove();
+                        replyBanner.style.display = "none";
+                        replyBanner.innerHTML = "";
                     }
+                    initReplyBtn();
                 } else {
                     alert(data.message || "Ошибка при отправке сообщения");
                 }

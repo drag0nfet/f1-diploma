@@ -1,5 +1,6 @@
-import {initSendMessage} from "./sendMessage.js";
-import {addMessageToDOM} from "./addMessageToDOM.js";
+import { initSendMessage } from "./sendMessage.js";
+import { addMessageToDOM } from "./addMessageToDOM.js";
+import { initReplyBtn } from "./replyBtn.js";
 
 export function loadTopicData(topicId) {
     fetch(`/get-topic/${topicId}`, {
@@ -38,9 +39,10 @@ function loadMessages(topicId) {
             messagesContainer.innerHTML = "";
             if (data.success && Array.isArray(data.messages)) {
                 data.messages.forEach(message => {
-                    console.log(message)
-                    addMessageToDOM(message)
+                    addMessageToDOM(message);
                 });
+                console.log("Reply banner before initReplyBtn:", document.getElementById("reply-banner")); // Отладка
+                initReplyBtn();
             }
         })
         .catch(error => console.error("Ошибка загрузки сообщений:", error));

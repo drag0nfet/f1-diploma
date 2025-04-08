@@ -22,13 +22,17 @@
         <div id="messages-container">
             <!-- Сообщения будут подгружаться сюда -->
         </div>
-        <div id="message-form" style="display: none;">
-            <div class="reply-banner" id="reply-banner" style="display: none;"></div>
-            <form id="send-message-form" class="message-form">
-                <label for="message-text"></label>
-                <textarea id="message-text" name="message_text" placeholder="Введите сообщение..." required></textarea>
-                <button type="submit" id="send-message-btn">Отправить</button>
-            </form>
+        <div id="message-form">
+            <div class="message-form-container">
+                <div class="reply-to reply-banner" id="reply-banner"></div>
+                <form id="send-message-form" class="message-form">
+                    <label for="message-text"></label>
+                    <div class="message-text-wrapper">
+                        <textarea id="message-text" name="message_text" placeholder="Введите сообщение..." required></textarea>
+                    </div>
+                    <button type="submit" id="send-message-btn">Отправить</button>
+                </form>
+            </div>
         </div>
     </main>
     <aside class="right-sidebar">

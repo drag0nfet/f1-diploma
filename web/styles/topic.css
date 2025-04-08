@@ -118,60 +118,71 @@
     display: inline-block;
 }
 
-/* Стили для ответов */
-.message-item.reply {
-    margin-left: 20px;
-    max-width: calc(100% - 20px);
-}
-
-/* Ограничение вложенности (4 уровня) */
-.message-item.reply.level-1 { margin-left: 20px; max-width: calc(100% - 20px); }
-.message-item.reply.level-2 { margin-left: 40px; max-width: calc(100% - 40px); }
-.message-item.reply.level-3 { margin-left: 60px; max-width: calc(100% - 60px); }
-.message-item.reply.level-4 { margin-left: 80px; max-width: calc(100% - 80px); }
-.message-item.reply.level-5 { margin-left: 80px; max-width: calc(100% - 80px); }
-
 /* Подпись "в ответ на" */
 .reply-to {
     position: absolute;
     top: -10px;
-    right: 10px;
-    font-size: 0.8em;
+    font-size: 0.9em;
     color: #555;
     background: #fff;
-    padding: 2px 5px;
+    padding: 4px 8px;
     border-radius: 3px;
     border: 1px solid #ddd;
     z-index: 1;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* Для сообщений — справа */
+.message-item .reply-to {
+    right: 10px;
+    left: auto;
+}
+
+/* Обёртка для текстового поля */
+.message-text-wrapper {
+    width: 100%;
+}
+
+/* Для панели отправки — привязываем к .message-form-container */
+.message-form-container {
+    position: relative;
+}
+
+.message-form-container .reply-to {
+    top: -30px; /* Перемещаем выше, чтобы плашка была на границе с #messages-container */
+    left: 5px; /* Отступ 5px слева */
+    right: 5px; /* Отступ 5px справа */
+    width: calc(100% - 10px); /* Ширина = ширина .message-form-container минус 10px */
+    margin: 0 auto; /* Центрируем */
+}
+
 /* Плашка "в ответ на" */
 .reply-banner {
-    background-color: #e0e0e0;
-    padding: 8px 12px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9em;
-    color: #333;
-    max-width: 100%;
-    overflow-wrap: break-word;
+    display: none;
+    position: absolute;
+    padding-right: 20px; /* Место для крестика */
 }
 
 /* Крестик */
 .cancel-reply {
     display: none;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    color: #777;
-    font-size: 1.2em;
-    margin-left: 10px;
+    color: #e74c3c;
+    font-size: 1em;
 }
 
 .reply-banner:hover .cancel-reply {
     display: inline-block;
+}
+
+/* Контейнер формы отправки */
+.message-form-container {
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
 }
 
 /* Форма отправки сообщения */
@@ -191,14 +202,14 @@
 
 .message-form {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
     gap: 10px;
     width: 100%;
     margin-top: 20px;
 }
 
 #message-text {
-    flex: 1;
+    width: 100%;
     min-height: 60px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -208,6 +219,7 @@
 }
 
 #send-message-btn {
+    align-self: flex-start;
     padding: 10px 20px;
     background-color: #0969A2;
     color: white;
@@ -225,12 +237,6 @@
     .message-item {
         padding: 10px;
     }
-
-    .message-item.reply.level-1 { margin-left: 10px; max-width: calc(100% - 10px); }
-    .message-item.reply.level-2 { margin-left: 20px; max-width: calc(100% - 20px); }
-    .message-item.reply.level-3 { margin-left: 30px; max-width: calc(100% - 30px); }
-    .message-item.reply.level-4 { margin-left: 40px; max-width: calc(100% - 40px); }
-    .message-item.reply.level-5 { margin-left: 40px; max-width: calc(100% - 40px); }
 
     .message-header {
         flex-direction: column;
@@ -250,11 +256,10 @@
     }
 
     .message-form {
-        flex-direction: column;
-        align-items: stretch;
+        gap: 10px;
     }
 
     #send-message-btn {
-        width: 100%;
+        width: auto;
     }
 }

@@ -8,17 +8,10 @@ export function addMessageToDOM(message) {
 
     // Проверяем, является ли сообщение ответом
     const isReply = message.reply_id !== undefined && message.reply_id !== null;
-    console.log(message.message_id, message.reply_id, isReply)
-    let replyLevel = message.reply_level || 0; // Уровень вложенности (заглушка)
-
-    // Ограничиваем уровень вложенности до 4
-    if (replyLevel > 4) {
-        replyLevel = 4;
-    }
 
     // Добавляем классы для стилизации
     if (isReply) {
-        messageElement.classList.add("reply", `level-${replyLevel}`);
+        messageElement.classList.add("reply");
     }
     if (isModerator) {
         messageElement.classList.add("moderator");
@@ -36,7 +29,8 @@ export function addMessageToDOM(message) {
                 <span class="message-id">#${message.message_id}</span>
             </div>
         </div>
-        ${isReply ? `<div class="reply-to">в ответ на #${message.reply_id}</div>` : ''}
+        ${isReply ? `<div class="reply-to">в ответ на <a href="#" 
+            class="reply-link" data-message-id="${message.reply_id}">#${message.reply_id}</a></div>` : ''}
         <div class="message-content">${message.value}</div>
         <div class="message-timestamp">${formattedTime}</div>
         <div class="message-actions">
@@ -47,5 +41,21 @@ export function addMessageToDOM(message) {
     `;
 
     messagesContainer.appendChild(messageElement);
+
+    // Привязываем обработчик для ссылок reply-link
+    if (isReply) {
+        const replyLink = messageElement.querySelector(".reply-link");
+        replyLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            const targetMessageId = this.getAttribute("data-message-id");
+            const targetMessage = Array.from(document.querySelectorAll(".message-id"))
+                .find(el => el.textContent === `#${targetMessageId}`)
+                ?.closest(".message-item");
+            if (targetMessage) {
+                targetMessage.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        });
+    }
+
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
