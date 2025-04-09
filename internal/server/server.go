@@ -14,10 +14,12 @@ import (
 
 func Run() {
 	router := mux.NewRouter()
-	//mux := http.NewServeMux()
 
 	// API маршруты
 	{
+		// Общие маршруты
+		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
+
 		// Идентификация пользователя
 		router.HandleFunc("/register", index.Register)
 		router.HandleFunc("/login", index.Login)
@@ -33,7 +35,7 @@ func Run() {
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
-		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
+		router.HandleFunc("/block-user/{username}", topic.BlockUser)
 	}
 
 	// Страничные маршруты

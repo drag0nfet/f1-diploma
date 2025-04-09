@@ -1,6 +1,5 @@
 export function initDeleteBtns() {
     const deleteButtons = document.getElementsByClassName("delete-btn");
-    console.log(deleteButtons.length)
     for (let i = 0; i < deleteButtons.length; i++) {
         deleteButtons[i].addEventListener("click", function (event) {
             event.preventDefault();

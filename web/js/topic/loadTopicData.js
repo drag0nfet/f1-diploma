@@ -2,6 +2,7 @@ import { initSendMessage } from "./sendMessage.js";
 import { addMessageToDOM } from "./addMessageToDOM.js";
 import { initReplyBtn } from "./replyBtn.js";
 import { initDeleteBtns } from "../deleteMessage.js";
+import {initBlockButtons} from "./blockUser.js";
 
 async function getUserRights() {
     try {
@@ -73,6 +74,7 @@ function loadMessages(topicId, rights) {
                 });
                 initReplyBtn();
                 initDeleteBtns();
+                initBlockButtons()
             }
         })
         .catch(error => console.error("Ошибка загрузки сообщений:", error));

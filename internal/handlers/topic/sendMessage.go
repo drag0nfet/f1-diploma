@@ -27,10 +27,19 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Проверяем авторизацию, получаем userId для создания сообщения
-	_, userId, _, response := services.CheckAuthCookie(r)
+	_, userId, rights, response := services.CheckAuthCookie(r)
 	if !response.Success {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	if rights%4/2 == 0 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(services.Response{
+			Success: false,
+			Message: "Вы были заблокированы. Обратитесь к администратору",
+		})
 		return
 	}
 
