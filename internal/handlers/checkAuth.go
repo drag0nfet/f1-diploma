@@ -15,27 +15,29 @@ func CheckAuth(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(response)
-		w.WriteHeader(http.StatusForbidden) // 403 Forbidden
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
 	// Проверяем метод
-	if r.Method != http.MethodGet { // Изменим с POST на GET, так как фронт использует GET
+	if r.Method != http.MethodGet {
 		response := services.Response{Success: false, Message: "Метод не поддерживается"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	username, _, rights, response := services.CheckAuthCookie(r)
+	username, id, rights, response := services.CheckAuthCookie(r)
 	w.Header().Set("Content-Type", "application/json")
 	jsonResponse := struct {
 		Success  bool   `json:"success"`
 		Username string `json:"username,omitempty"`
-		Rights   int    `json:"rights,omitempty"`
+		Id       int    `json:"id,omitempty"`
+		Rights   int    `json:"rights"`
 		Message  string `json:"message,omitempty"`
 	}{
 		Success:  response.Success,
 		Username: username,
+		Id:       id,
 		Rights:   rights,
 		Message:  response.Message,
 	}

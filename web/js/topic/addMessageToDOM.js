@@ -1,10 +1,10 @@
-export function addMessageToDOM(message) {
+export function addMessageToDOM(message, rights) {
     const messagesContainer = document.getElementById("messages-container");
     const messageElement = document.createElement("div");
     messageElement.className = "message-item";
 
-    // Проверяем, является ли пользователь модератором (заглушка, пока без серверной логики)
-    const isModerator = false; // Заменить на реальную проверку
+    // Проверяем, является ли пользователь модератором
+    const isModerator = (rights % 2 === 1);
 
     // Проверяем, является ли сообщение ответом
     const isReply = message.reply_id !== undefined && message.reply_id !== null;

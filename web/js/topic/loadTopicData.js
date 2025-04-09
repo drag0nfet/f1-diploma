@@ -2,8 +2,38 @@ import { initSendMessage } from "./sendMessage.js";
 import { addMessageToDOM } from "./addMessageToDOM.js";
 import { initReplyBtn } from "./replyBtn.js";
 
-export function loadTopicData(topicId) {
-    fetch(`/get-topic/${topicId}`, {
+async function getUserRights() {
+    try {
+        const response = await fetch('/check-auth', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (response.status === 401) {
+            console.warn("Не авторизован");
+            return null;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            return parseInt(data.rights, 10);
+        } else {
+            console.warn("Не удалось получить rights:", data.message);
+            return null;
+        }
+    } catch (error) {
+        console.error("Ошибка при получении прав пользователя:", error);
+        return null;
+    }
+}
+
+export async function loadTopicData(topicId) {
+    const rights = await getUserRights();
+        fetch(`/get-topic/${topicId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -16,8 +46,8 @@ export function loadTopicData(topicId) {
                 document.getElementById("topic-title").textContent = data.topic.title;
                 document.querySelector(".header").textContent = data.topic.title;
                 document.getElementById("message-form").style.display = "block";
-                loadMessages(topicId);
-                initSendMessage(topicId);
+                loadMessages(topicId, rights);
+                initSendMessage(topicId, rights);
             } else {
                 document.getElementById("topic-title").textContent = "Ошибка: " + data.message;
             }
@@ -25,7 +55,7 @@ export function loadTopicData(topicId) {
         .catch(error => console.error("Ошибка загрузки темы:", error));
 }
 
-function loadMessages(topicId) {
+function loadMessages(topicId, rights) {
     fetch(`/get-messages/${topicId}`, {
         method: 'GET',
         credentials: 'include',
@@ -39,9 +69,8 @@ function loadMessages(topicId) {
             messagesContainer.innerHTML = "";
             if (data.success && Array.isArray(data.messages)) {
                 data.messages.forEach(message => {
-                    addMessageToDOM(message);
+                    addMessageToDOM(message, rights);
                 });
-                console.log("Reply banner before initReplyBtn:", document.getElementById("reply-banner")); // Отладка
                 initReplyBtn();
             }
         })

@@ -2,13 +2,16 @@ import { addMessageToDOM } from "./addMessageToDOM.js";
 import { currentReplyId, resetReplyId } from "./replyBtn.js";
 import { initReplyBtn } from "./replyBtn.js";
 
-export function initSendMessage(topicId) {
+export function initSendMessage(topicId, rights) {
     const sendBtn = document.getElementById("send-message-btn");
     const messageInput = document.getElementById("message-text");
 
     sendBtn.addEventListener("click", function (event) {
         event.preventDefault();
-
+        if (rights % 4 / 2 === 0) {
+            alert("Вы заблокированы за нарушение правил. Обратитесь к администратору")
+            return;
+        }
         const content = messageInput.value.trim();
 
         const body = {
@@ -31,7 +34,7 @@ export function initSendMessage(topicId) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    addMessageToDOM(data.message);
+                    addMessageToDOM(data.message, rights);
                     messageInput.value = "";
                     resetReplyId();
                     const replyBanner = document.getElementById("reply-banner");

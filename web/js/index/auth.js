@@ -9,7 +9,7 @@ export function initAuth() {
     function checkAuthStatus() {
         fetch('/check-auth', {
             method: 'GET',
-            credentials: 'include', // Отправляем куки с запросом
+            credentials: 'include',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
@@ -24,7 +24,6 @@ export function initAuth() {
             })
             .then(data => {
                 if (data.success && data.username) {
-                    console.log(data.username, " login")
                     const username = data.username;
                     const ip = window.location.hostname;
                     const port = ":5051";
