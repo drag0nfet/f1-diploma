@@ -1,6 +1,7 @@
 import { initSendMessage } from "./sendMessage.js";
 import { addMessageToDOM } from "./addMessageToDOM.js";
 import { initReplyBtn } from "./replyBtn.js";
+import { initDeleteBtns } from "../deleteMessage.js";
 
 async function getUserRights() {
     try {
@@ -43,8 +44,7 @@ export async function loadTopicData(topicId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.getElementById("topic-title").textContent = data.topic.title;
-                document.querySelector(".header").textContent = data.topic.title;
+                document.getElementById("topic-title").textContent = data.topic.Title;
                 document.getElementById("message-form").style.display = "block";
                 loadMessages(topicId, rights);
                 initSendMessage(topicId, rights);
@@ -72,6 +72,7 @@ function loadMessages(topicId, rights) {
                     addMessageToDOM(message, rights);
                 });
                 initReplyBtn();
+                initDeleteBtns();
             }
         })
         .catch(error => console.error("Ошибка загрузки сообщений:", error));

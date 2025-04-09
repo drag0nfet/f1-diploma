@@ -33,6 +33,7 @@ func Run() {
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
+		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
 	}
 
 	// Страничные маршруты

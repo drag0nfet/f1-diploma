@@ -1,3 +1,5 @@
+import {deleteMessage} from "../deleteMessage.js";
+
 export function addMessageToDOM(message, rights) {
     const messagesContainer = document.getElementById("messages-container");
     const messageElement = document.createElement("div");
@@ -42,7 +44,6 @@ export function addMessageToDOM(message, rights) {
 
     messagesContainer.appendChild(messageElement);
 
-    // Привязываем обработчик для ссылок reply-link
     if (isReply) {
         const replyLink = messageElement.querySelector(".reply-link");
         replyLink.addEventListener("click", function (event) {
@@ -56,6 +57,16 @@ export function addMessageToDOM(message, rights) {
             }
         });
     }
+
+    const deleteBtn = messageElement.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const messageElement = this.closest(".message-item");
+        const messageIdElement = messageElement.querySelector(".message-id");
+
+        deleteMessage(messageElement, messageIdElement);
+    });
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
