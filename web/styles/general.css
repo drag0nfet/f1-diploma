@@ -71,6 +71,19 @@ button {
     margin-top: 10px;
 }
 
+.button-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #0969A2;
+    color: white;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
 button:hover {
     background-color: #3D9AD1;
 }

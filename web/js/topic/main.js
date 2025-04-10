@@ -1,4 +1,4 @@
-import { initMenu }     from '../menu/menu.js';
+import { initMenu }     from '../menu.js';
 import {loadTopicData}  from "./loadTopicData.js";
 
 document.addEventListener("DOMContentLoaded", function () {

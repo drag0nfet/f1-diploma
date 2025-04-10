@@ -1,6 +1,6 @@
 import { initSendMessage } from "./sendMessage.js";
 import { addMessageToDOM } from "./addMessageToDOM.js";
-import { initReplyBtn } from "./replyBtn.js";
+import { initReplyBtn } from "./reply.js";
 import { initDeleteBtns } from "../deleteMessage.js";
 import {initBlockButtons} from "./blockUser.js";
 

@@ -1,4 +1,4 @@
-package forum
+package bar
 
 import (
 	"diploma/internal/database"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func DeleteTopic(w http.ResponseWriter, r *http.Request) {
+func DeleteDish(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("X-Requested-With") != "XMLHttpRequest" {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Прямой доступ запрещён"})
 		w.WriteHeader(http.StatusForbidden)
@@ -28,24 +28,24 @@ func DeleteTopic(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if rights%2 != 1 {
+	if rights&4 != 4 {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Недостаточно прав"})
 		return
 	}
 
 	// Декодируем тело запроса
 	var req struct {
-		ChatID int `json:"chat_id"`
+		DishID int `json:"dish_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Неверный запрос"})
 		return
 	}
 
-	if err := database.DB.Delete(&models.Chat{}, req.ChatID).Error; err != nil {
-		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка удаления темы"})
+	if err := database.DB.Delete(&models.Dish{}, req.DishID).Error; err != nil {
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка удаления блюда"})
 		return
 	}
 
-	json.NewEncoder(w).Encode(services.Response{Success: true, Message: "Тема удалена"})
+	json.NewEncoder(w).Encode(services.Response{Success: true, Message: "Блюдо удалено"})
 }

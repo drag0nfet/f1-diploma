@@ -34,6 +34,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Нет бита 2
 	if rights%4/2 == 0 {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(services.Response{

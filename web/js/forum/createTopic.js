@@ -1,13 +1,13 @@
-import {addTopicToDOM} from "./addTopicToDOM.js";
+import {loadTopic} from "./loadTopic.js";
 
-export function initCreateTheme(isModerator) {
-    const title = document.getElementById("discuss_title").value.trim();
+export function initCreateTheme() {
+    const title = document.getElementById("topic_title").value.trim();
     if (!title) {
         alert("Введите название темы!");
         return;
     }
 
-    fetch('/create-discuss', {
+    fetch('/create-topic', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -20,8 +20,8 @@ export function initCreateTheme(isModerator) {
         .then(data => {
             if (data.success) {
                 alert("Тема создана!");
-                document.getElementById("discuss_title").value = ""; // Очистка поля
-                addTopicToDOM(data.topicId, title, isModerator, true); // Добавляем новую тему
+                document.getElementById("topic_title").value = ""; // Очистка поля
+                loadTopic(data.topicId, title, true, true); // Добавляем новую тему
             } else {
                 alert("Ошибка: " + data.message);
             }

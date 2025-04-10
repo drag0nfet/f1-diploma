@@ -1,6 +1,6 @@
-import {loadTopics} from "./checkAuth.js"
+import {loadForumData} from "./loadForumData.js";
 
-export function handleDeleteTopic(event) {
+export function deleteTopic(event) {
     const chatId = event.target.getAttribute("data-chat-id");
     if (!chatId) {
         console.error("chat_id не найден");
@@ -11,7 +11,7 @@ export function handleDeleteTopic(event) {
         return;
     }
 
-    fetch('/delete-discuss', {
+    fetch('/delete-topic', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -24,7 +24,7 @@ export function handleDeleteTopic(event) {
         .then(data => {
             if (data.success) {
                 alert("Тема удалена!");
-                loadTopics(true); // Перезагружаем список тем
+                loadForumData(true); // Перезагружаем список тем
             } else {
                 alert("Ошибка: " + data.message);
             }

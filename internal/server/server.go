@@ -3,6 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/account"
+	"diploma/internal/handlers/bar"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
 	"diploma/internal/handlers/topic"
@@ -27,15 +28,22 @@ func Run() {
 		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
 		// Работа на странице форума
-		router.HandleFunc("/create-discuss", forum.CreateChat)
+		router.HandleFunc("/create-topic", forum.CreateTopic)
 		router.HandleFunc("/get-topics", forum.GetTopics)
-		router.HandleFunc("/delete-discuss", forum.DeleteDiscuss)
+		router.HandleFunc("/delete-topic", forum.DeleteTopic)
 
 		// Работа на странице топика
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
 		router.HandleFunc("/block-user/{username}", topic.BlockUser)
+
+		// Работа на странице бара
+		router.HandleFunc("/get-dishes", bar.GetDishes)
+		router.HandleFunc("/delete-dish", bar.DeleteDish)
+
+		// Работа на странице добавления
+		router.HandleFunc("/create_dish", bar.CreateDish)
 	}
 
 	// Страничные маршруты
@@ -44,15 +52,21 @@ func Run() {
 		router.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/index.html")
 		}))
-		router.HandleFunc("/web/discuss", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/web/forum", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/forum.html")
+		}))
+		router.HandleFunc("/web/bar", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/pages/bar.html")
+		}))
+		router.HandleFunc("/web/bar/create_dish", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/pages/create_dish.html")
 		}))
 
 		// Блокировка неавторизованных
 		router.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/account.html")
 		}))
-		router.HandleFunc("/discuss/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/topic.html")
 		}))
 	}
@@ -63,7 +77,7 @@ func Run() {
 		if r.URL.Path == "/web/styles/general.css" {
 			w.Header().Set("Content-Type", "text/css")
 		}
-		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/forum/createTheme.js" {
+		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/forum/createTopic.js" {
 			w.Header().Set("Content-Type", "application/javascript")
 		}
 		fileServer := http.FileServer(http.Dir("web"))

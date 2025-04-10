@@ -1,6 +1,6 @@
 import { addMessageToDOM } from "./addMessageToDOM.js";
-import { currentReplyId, resetReplyId } from "./replyBtn.js";
-import { initReplyBtn } from "./replyBtn.js";
+import { currentReplyId, resetReplyId } from "./reply.js";
+import { initReplyBtn } from "./reply.js";
 
 export function initSendMessage(topicId, rights) {
     const sendBtn = document.getElementById("send-message-btn");

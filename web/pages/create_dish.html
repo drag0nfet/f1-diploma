@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление блюда в меню</title>
+    <link rel="stylesheet" href="/web/styles/general.css">
+    <link rel="stylesheet" href="/web/styles/create_dish.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">Шапка сайта</header>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/web/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="#" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <main class="main">
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <div class="create-dish-form">
+            <h2>Добавить блюдо</h2>
+            <form id="dish-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="dish-name">Название блюда</label>
+                    <input type="text" id="dish-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dish-description">Описание</label>
+                    <textarea id="dish-description" name="description" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dish-cost">Цена (в рублях)</label>
+                    <input type="number" id="dish-cost" name="cost" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="dish-image">Фотография блюда</label>
+                    <input type="file" id="dish-image" name="image" accept="image/*" required>
+                </div>
+                <button type="submit" id="create_dish-btn">Добавить блюдо</button>
+            </form>
+        </div>
+    </main>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="/web/js/bar/create_dish/main.js"></script>
+</body>
+</html>

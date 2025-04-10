@@ -1,0 +1,88 @@
+/* Стили для формы добавления блюда */
+.create-dish-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.create-dish-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input[type="file"] {
+    padding: 5px 0;
+}
+
+.form-group input[type="number"]::-webkit-inner-spin-button,
+.form-group input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+/* Переопределяем кнопку, чтобы она отличалась от general.css */
+.create-dish-form button[type="submit"] {
+    background-color: #28a745;
+    padding: 12px;
+    width: 100%;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.create-dish-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .create-dish-form {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .create-dish-form h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group textarea {
+        font-size: 0.9rem;
+    }
+
+    .create-dish-form button[type="submit"] {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

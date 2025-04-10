@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бар ресторана</title>
+    <link rel="stylesheet" href="/web/styles/general.css">
+    <link rel="stylesheet" href="/web/styles/bar.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">Меню бара</header>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="#" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <div id="user-content" style="display: none;">
+        <main class="main" id="bar-content">
+            <button class="menu-btn" id="menu-btn">☰</button>
+            <div id="moderator-content" style="display: none;">
+                <a href="/web/bar/create_dish" class="button-link">Добавить блюдо в меню</a>
+            </div>
+            <div id="dishes-container">
+                <!-- Меню будут подгружаться сюда -->
+            </div>
+        </main>
+    </div>
+    <aside class="right-sidebar">
+        <div id="greeting" style="display: none;">
+            <h2>В данном разделе вы можете ознакомиться с меню бара</h2>
+        </div>
+    </aside>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="/web/js/bar/main.js"></script>
+</body>
+</html>

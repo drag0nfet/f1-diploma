@@ -6,7 +6,8 @@ create table if not exists "Message"
     sender_id    integer                                                      not null
         references "User",
     value        varchar(256)                                                 not null,
-    message_time timestamp with time zone                                     not null
+    message_time timestamp with time zone                                     not null,
+    reply_id     integer
 )
     partition by RANGE (message_id);
 
