@@ -52,7 +52,7 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, moderatorId, _, response := services.CheckAuthCookie(r)
+	_, moderatorId, moderatorRights, response := services.CheckAuthCookie(r)
 	if !response.Success {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(response)
@@ -61,6 +61,15 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 	if user.UserID == moderatorId {
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Нельзя заблокировать самого себя"})
+		return
+	}
+
+	if user.Rights%2 == 1 && moderatorRights/2147483648 != 1 {
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(services.Response{
+			Success: false,
+			Message: "Нельзя заблокировать модератора форума. Обратитесь к администратору",
+		})
 		return
 	}
 
