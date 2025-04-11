@@ -10,15 +10,13 @@ export function initBlockButtons() {
             const messageId = parseInt(messageItem.querySelector(".message-id")
                 .textContent.replace('#', '').trim());
 
-            // Удаление сообщения в интерфейсе
-            deleteMessage(messageItem, messageId);
             // Ограничение прав пользователя и создание записи в таблице блокировок
-            blockUser(messageId);
+            blockUser(messageId, messageItem);
         });
     }
 }
 
-function blockUser(messageId) {
+function blockUser(messageId, messageItem) {
     fetch(`/block-user/${messageId}`, {
         method: 'POST',
         credentials: "include",
@@ -28,15 +26,19 @@ function blockUser(messageId) {
         }
     })
         .then(response => {
-            if (!response.ok) {
-                console.error('Ошибка при блокировке пользователя:', response.message)
-            } else {
-                alert('Вы успешно заблокировали пользователя')
-            }
+            return response.json().then(data => {
+                if (!response.ok) {
+                    throw new Error(data.message || "Неизвестная ошибка");
+                }
+                return data;
+            });
+        })
+        .then(_ => {
+            alert('Вы успешно заблокировали пользователя');
+            deleteMessage(messageItem, messageId);
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            alert('Не удалось заблокировать пользователя. Попробуйте еще раз.');
+            alert('Не удалось заблокировать пользователя: ' + error.message);
         });
-
 }
