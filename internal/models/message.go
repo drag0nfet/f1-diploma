@@ -10,6 +10,7 @@ type Message struct {
 	Value       string    `gorm:"column:value;type:varchar(256);not null" json:"value"`
 	MessageTime time.Time `gorm:"column:message_time;not null" json:"message_time"`
 	ReplyID     null.Int  `gorm:"column:reply_id" json:"reply_id"`
+	IsDeleted   bool      `gorm:"column:is_deleted" json:"is_deleted"`
 }
 
 func (Message) TableName() string {

@@ -6,12 +6,11 @@ import (
 	"diploma/internal/services"
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
+	"strconv"
 )
 
 func BlockUser(w http.ResponseWriter, r *http.Request) {
-	log.Println("BlockUser")
 	if r.Header.Get("X-Requested-With") != "XMLHttpRequest" {
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Прямой доступ запрещён"})
@@ -25,26 +24,40 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	username, ok := vars["username"]
+	messageIdText, ok := vars["messageId"]
 	if !ok {
-		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Пользователь не указан"})
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Сообщение не указано"})
+		return
+	}
+
+	messageId, err := strconv.Atoi(messageIdText)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Некорректный message_id"})
 		return
 	}
 
 	var user models.User
-	if err := database.DB.Where("login = ?", username).First(&user).Error; err != nil {
+
+	err = database.DB.
+		Table("Message").
+		Select("\"User\".*").
+		Joins("JOIN \"User\" ON \"Message\".sender_id = \"User\".user_id").
+		Where("\"Message\".message_id = ?", messageId).
+		Scan(&user).Error
+
+	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Пользователь не найден"})
 		return
 	}
 
-	if _, _, _, response := services.CheckAuthCookie(r); !response.Success {
+	_, moderatorId, _, response := services.CheckAuthCookie(r)
+	if !response.Success {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-
-	_, moderatorId, _, _ := services.CheckAuthCookie(r)
 	if user.UserID == moderatorId {
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Нельзя заблокировать самого себя"})
@@ -56,6 +69,19 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 	if err := database.DB.Save(&user).Error; err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка при обновлении прав пользователя"})
+		return
+	}
+
+	blockNote := models.ForumBlockList{
+		UserID:      user.UserID,
+		MessageID:   messageId,
+		ModeratorID: moderatorId,
+	}
+
+	if err := database.DB.Create(&blockNote).Error; err != nil {
+		response := services.Response{Success: false, Message: "Ошибка при добавлении блокировки в список блокировок"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 

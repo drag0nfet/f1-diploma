@@ -36,7 +36,7 @@ func Run() {
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
-		router.HandleFunc("/block-user/{username}", topic.BlockUser)
+		router.HandleFunc("/block-user/{messageId}", topic.BlockUser)
 
 		// Работа на странице бара
 		router.HandleFunc("/get-dishes", bar.GetDishes)

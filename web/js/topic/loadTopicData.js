@@ -1,5 +1,5 @@
 import { initSendMessage } from "./sendMessage.js";
-import { addMessageToDOM } from "./addMessageToDOM.js";
+import { loadMessage } from "./loadMessage.js";
 import { initReplyBtn } from "./reply.js";
 import { initDeleteBtns } from "../deleteMessage.js";
 import {initBlockButtons} from "./blockUser.js";
@@ -70,7 +70,9 @@ function loadMessages(topicId, rights) {
             messagesContainer.innerHTML = "";
             if (data.success && Array.isArray(data.messages)) {
                 data.messages.forEach(message => {
-                    addMessageToDOM(message, rights);
+                    if (!message.is_deleted) {
+                        loadMessage(message, rights);
+                    }
                 });
                 initReplyBtn();
                 initDeleteBtns();

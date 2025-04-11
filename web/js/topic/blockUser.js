@@ -1,3 +1,5 @@
+import {deleteMessage} from "../deleteMessage.js";
+
 export function initBlockButtons() {
     const blockButtons = document.getElementsByClassName("ban-btn");
     for (let i = 0; i < blockButtons.length; i++) {
@@ -5,16 +7,19 @@ export function initBlockButtons() {
             event.preventDefault();
 
             const messageItem = this.closest(".message-item");
-            const messageAuthorElement = messageItem.querySelector(".message-author");
-            const messageAuthor = messageAuthorElement.textContent;
+            const messageId = parseInt(messageItem.querySelector(".message-id")
+                .textContent.replace('#', '').trim());
 
-            blockUser(messageAuthor);
+            // Удаление сообщения в интерфейсе
+            deleteMessage(messageItem, messageId);
+            // Ограничение прав пользователя и создание записи в таблице блокировок
+            blockUser(messageId);
         });
     }
 }
 
-function blockUser(messageAuthor) {
-    fetch(`/block-user/${messageAuthor}`, {
+function blockUser(messageId) {
+    fetch(`/block-user/${messageId}`, {
         method: 'POST',
         credentials: "include",
         headers: {
@@ -24,7 +29,7 @@ function blockUser(messageAuthor) {
     })
         .then(response => {
             if (!response.ok) {
-                console.error('Ошибка при блокировке пользователя:', data)
+                console.error('Ошибка при блокировке пользователя:', response.message)
             } else {
                 alert('Вы успешно заблокировали пользователя')
             }
@@ -33,4 +38,5 @@ function blockUser(messageAuthor) {
             console.error('Ошибка:', error);
             alert('Не удалось заблокировать пользователя. Попробуйте еще раз.');
         });
+
 }

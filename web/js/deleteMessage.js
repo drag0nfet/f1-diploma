@@ -4,17 +4,16 @@ export function initDeleteBtns() {
         deleteButtons[i].addEventListener("click", function (event) {
             event.preventDefault();
 
-            const messageElement = this.closest(".message-item");
-            const messageIdElement = messageElement.querySelector(".message-id");
+            const messageItem = this.closest(".message-item");
+            const messageId = parseInt(messageItem.querySelector(".message-id")
+                .textContent.replace('#', '').trim());
 
-            deleteMessage(messageElement, messageIdElement);
+            deleteMessage(messageItem, messageId);
         });
     }
 }
 
-export function deleteMessage(elem, id) {
-    const messageId = parseInt(id.textContent.replace('#', ''));
-
+export function deleteMessage(elem, messageId) {
     fetch(`/delete-message/${messageId}`, {
         method: 'DELETE',
         headers: {

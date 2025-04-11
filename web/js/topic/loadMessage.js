@@ -1,6 +1,6 @@
 import {deleteMessage} from "../deleteMessage.js";
 
-export function addMessageToDOM(message, rights) {
+export function loadMessage(message, rights) {
     const messagesContainer = document.getElementById("messages-container");
     const messageElement = document.createElement("div");
     messageElement.className = "message-item";

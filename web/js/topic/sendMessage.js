@@ -1,4 +1,4 @@
-import { addMessageToDOM } from "./addMessageToDOM.js";
+import { loadMessage } from "./loadMessage.js";
 import { currentReplyId, resetReplyId } from "./reply.js";
 import { initReplyBtn } from "./reply.js";
 
@@ -34,7 +34,7 @@ export function initSendMessage(topicId, rights) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    addMessageToDOM(data.message, rights);
+                    loadMessage(data.message, rights);
                     messageInput.value = "";
                     resetReplyId();
                     const replyBanner = document.getElementById("reply-banner");

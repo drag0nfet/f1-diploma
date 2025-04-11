@@ -14,8 +14,10 @@ func RunMigrations(db *gorm.DB) error {
 		"internal/database/migrations/004_create_purchase_table.sql",
 		"internal/database/migrations/005_create_message_table.sql",
 		"internal/database/migrations/006_create_chat_table.sql",
-		//"internal/database/migrations/007_alter_message_table.sql",
-		"internal/database/migrations/008_create_dish_table.sql",
+		"internal/database/migrations/007_create_dish_table.sql",
+		"internal/database/migrations/008_alter_message_table.sql",
+		"internal/database/migrations/009_create_forumBlockList_table.sql",
+		"internal/database/migrations/010_alter_message_forumBlockList.sql",
 	}
 
 	for _, file := range files {

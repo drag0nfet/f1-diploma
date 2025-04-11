@@ -43,14 +43,27 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := database.DB.Delete(&message).Error; err != nil {
+	message.IsDeleted = true
+
+	if err := database.DB.Save(&message).Error; err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(services.Response{
 			Success: false,
-			Message: "Ошибка при удалении сообщения",
+			Message: "Ошибка при сохранении удалённого сообщения",
 		})
 		return
 	}
+	/*
+		// Старый вариант удаления, заменён в пользу скрытия
+		if err := database.DB.Delete(&message).Error; err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(services.Response{
+				Success: false,
+				Message: "Ошибка при удалении сообщения",
+			})
+			return
+		}
+	*/
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
