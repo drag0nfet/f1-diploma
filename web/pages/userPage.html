@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет пользователя</title>
+    <title>Страница пользователя</title>
     <link rel="stylesheet" href="/web/styles/general.css">
+    <link rel="stylesheet" href="/web/styles/userPage.css">
 </head>
 <body>
 <div class="container">
-    <header class="header">Личный кабинет</header>
+    <header class="header" id="header">Страница пользователя&nbsp;<span id="user-name"></span></header>
     <aside class="left-sidebar" id="left-sidebar">
         <a href="/" class="sidebar-link" data-code="home">Главная</a>
         <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
@@ -19,10 +20,19 @@
     <main class="main">
         <button class="menu-btn" id="menu-btn">☰</button>
         <h1>Добро пожаловать в ваш личный кабинет!</h1>
-        <a href="#" class="logout-link" id="logout-btn">Выйти из системы</a>
+
+        <div id="host-content" style="display: none">
+            <div class="restriction-block" style="display: none">
+                <h2 class="restrictions-title" >У вас имеются активные блокировки на форуме!</h2>
+                <div id="restrictions-container"></div>
+            </div>
+            <a href="#" class="logout-link" id="logout-btn">Выйти из аккаунта</a>
+        </div>
+
+        <div id="guest-content" style="display: none;"></div>
     </main>
 </div>
 <div class="overlay" id="overlay"></div>
-<script type="module" src="/web/js/account/main.js"></script>
+<script type="module" src="/web/js/userPage/main.js"></script>
 </body>
 </html>

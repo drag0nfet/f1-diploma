@@ -16,7 +16,7 @@ export function initAuth() {
         })
             .then(response => {
                 if (response.status === 401) {
-                    // Если не авторизован (например, при попытке доступа к /account), перенаправляем на /
+                    // Если не авторизован (например, при попытке доступа к /userPage), перенаправляем на /
                     window.location.href = "/";
                     return Promise.reject(new Error("Не авторизован"));
                 }
@@ -27,7 +27,7 @@ export function initAuth() {
                     const username = data.username;
                     const ip = window.location.hostname;
                     const port = ":5051";
-                    const accountLink = `http://${ip}${port}/account`;
+                    const accountLink = `http://${ip}${port}/account/${username}`;
 
                     // Формируем текст со ссылкой
                     greeting.innerHTML = `Привет, <a href="${accountLink}">${username}</a>!`;

@@ -2,11 +2,11 @@ package server
 
 import (
 	"diploma/internal/handlers"
-	"diploma/internal/handlers/account"
 	"diploma/internal/handlers/bar"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
 	"diploma/internal/handlers/topic"
+	"diploma/internal/handlers/userPage"
 	"diploma/internal/services"
 	"github.com/gorilla/mux"
 	"log"
@@ -20,12 +20,16 @@ func Run() {
 	{
 		// Общие маршруты
 		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
+		router.HandleFunc("/check-auth", handlers.CheckAuth)
+
+		// Страница пользователя
+		router.HandleFunc("/logout", userPage.Logout)
+		router.HandleFunc("/get-blocks/{username}", userPage.GetBlocks)
+		router.HandleFunc("/get-messages-list", userPage.GetMessagesList)
 
 		// Идентификация пользователя
 		router.HandleFunc("/register", index.Register)
 		router.HandleFunc("/login", index.Login)
-		router.HandleFunc("/logout", account.Logout)
-		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
 		// Работа на странице форума
 		router.HandleFunc("/create-topic", forum.CreateTopic)
@@ -42,7 +46,7 @@ func Run() {
 		router.HandleFunc("/get-dishes", bar.GetDishes)
 		router.HandleFunc("/delete-dish", bar.DeleteDish)
 
-		// Работа на странице добавления
+		// Работа на странице добавления блюда
 		router.HandleFunc("/create_dish", bar.CreateDish)
 	}
 
@@ -63,8 +67,8 @@ func Run() {
 		}))
 
 		// Блокировка неавторизованных
-		router.HandleFunc("/account", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/account.html")
+		router.HandleFunc("/account/{username}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/pages/userPage.html")
 		}))
 		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/topic.html")

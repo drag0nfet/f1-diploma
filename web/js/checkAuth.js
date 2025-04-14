@@ -14,6 +14,7 @@ const moderatorContent = document.getElementById("moderator-content");
  */
 export async function initAuthStatus(bit, user, page) {
     let isModerator = false;
+    let data;
 
     try {
         const response = await fetch('/check-auth', {
@@ -23,7 +24,7 @@ export async function initAuthStatus(bit, user, page) {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         });
-        const data = await response.json();
+        data = await response.json();
 
         if (data.success && data.username) {
             const rights = data.rights || 0;
@@ -66,7 +67,11 @@ export async function initAuthStatus(bit, user, page) {
         loadBarData(isModerator);
     }
 
-    return isModerator;
+    if (bit !== null) {
+        return isModerator;
+    } else {
+        return data.username;
+    }
 }
 
 function userOrGuestContent(user) {

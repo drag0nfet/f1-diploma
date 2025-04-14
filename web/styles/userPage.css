@@ -1,0 +1,129 @@
+/* Стили для блока блокировок */
+.blocks-block {
+    border: 2px solid #d8b4fe; /* Светло-фиолетовая обводка */
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff; /* Белый фон */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+/* Стили для заголовка */
+.blocks-title {
+    margin: 0 0 15px 0; /* Отступ снизу */
+    font-size: 1.3rem;
+    color: #333; /* Тёмный цвет текста */
+    font-weight: 600; /* Полужирный шрифт */
+}
+
+/* Стили для контейнера элементов блокировок */
+#blocks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Отступы между элементами */
+}
+
+/* Стили для отдельного элемента блокировки */
+.restriction-item {
+    background: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Стили для заголовка элемента (номер нарушения) */
+.restriction-header {
+    margin-bottom: 8px;
+}
+
+/* Стили для номера нарушения */
+.violation-number {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для содержимого сообщения */
+.restriction-message {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* Стили для времени блокировки */
+.restriction-timestamp {
+    margin: 5px 0;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Стили для контейнера действий */
+.restriction-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Стили для кнопки "Обжаловать" */
+.apologise-btn {
+    background-color: #10b981; /* Зелёный цвет */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.apologise-btn:hover {
+    background-color: #059669; /* Тёмный зелёный при наведении */
+}
+
+/* Стили для кнопки "Выйти из аккаунта" */
+.logout-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #dc3545; /* Красный цвет */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.logout-link:hover {
+    background-color: #c82333; /* Тёмный красный при наведении */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .blocks-block {
+        padding: 10px;
+    }
+
+    .blocks-title {
+        font-size: 1.1rem;
+    }
+
+    .restriction-item {
+        padding: 8px;
+    }
+
+    .restriction-message {
+        font-size: 0.9rem;
+    }
+
+    .restriction-timestamp {
+        font-size: 0.8rem;
+    }
+
+    .apologise-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+
+    .logout-link {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}

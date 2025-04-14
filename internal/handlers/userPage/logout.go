@@ -1,4 +1,4 @@
-package account
+package userPage
 
 import (
 	"diploma/internal/services"
@@ -6,8 +6,7 @@ import (
 	"net/http"
 )
 
-func Logout(w http.ResponseWriter, r *http.Request) {
-	// Удаляем куки, устанавливая её срок действия в прошлое
+func Logout(w http.ResponseWriter, _ *http.Request) {
 	cookie := http.Cookie{
 		Name:     "auth",
 		Value:    "",
@@ -19,7 +18,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, &cookie)
 
-	// Возвращаем успешный ответ
 	w.Header().Set("Content-Type", "application/json")
 	response := services.Response{
 		Success: true,
