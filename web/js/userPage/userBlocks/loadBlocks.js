@@ -7,7 +7,7 @@ let messageIdMs = [];
 let blockMs = [];
 
 export function loadBlocks(username) {
-    blocksPart.style.display = "block";
+    blocksPart.style.display = "none";
     fetch(`/get-blocks/${username}`, {
         method: 'GET',
         credentials: 'include',
@@ -44,6 +44,7 @@ export function loadBlocks(username) {
 }
 
 function showBlocks() {
+    blocksPart.style.display = "block";
     const idsParam = messageIdMs.join(",");
     fetch(`/get-messages-list?ids=${idsParam}`, {
         method: 'GET',

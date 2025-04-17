@@ -7,6 +7,7 @@ let messageIdMs = [];
 let requestsMs = [];
 
 export function loadRequests() {
+    requestsBlock.style.display = "none";
     fetch(`/get-requests`, {
         method: 'GET',
         credentials: 'include',

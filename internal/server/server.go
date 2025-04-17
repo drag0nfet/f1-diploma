@@ -71,11 +71,11 @@ func Run() {
 		router.HandleFunc("/web/bar/create_dish", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/create_dish.html")
 		}))
-
-		// Блокировка неавторизованных
-		router.HandleFunc("/account/{username}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/account/{username}", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/userPage.html")
 		}))
+
+		// Блокировка неавторизованных
 		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/topic.html")
 		}))

@@ -15,9 +15,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Модератор форума с битом = 1.
     // Если ты - хост, тебе показывается hostContent, иначе - guestContent
     const {isModerator, username} = await initAuthStatus(1, "user", "userPage");
-    userName.innerHTML = `${username}`;
 
     const urlUsername = window.location.pathname.split('/').pop();
+    userName.innerHTML = `${urlUsername}`;
 
     let sameUser = username === urlUsername;
     if (sameUser) {
