@@ -4,9 +4,10 @@ import {initMenu} from "../menu.js";
 
 let isModerator = false;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     // Модератор имеет в правах бит 1, есть гест-режим
-    isModerator = initAuthStatus(1, "guest", "forum");
+    const {_isModerator, _} = await initAuthStatus(1, "guest", "forum");
+    isModerator = _isModerator;
     initMenu();
 });
 

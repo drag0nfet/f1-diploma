@@ -1,18 +1,20 @@
 import {initLogout}   from './logout.js';
 import {initMenu}     from '../menu.js';
 import {initAuthStatus} from "../checkAuth.js";
-import {loadBlocks} from "./loadBlocks.js";
+import {loadBlocks} from "./userBlocks/loadBlocks.js";
+import {loadRequests} from "./moderatorBlocks/loadRequests.js";
 
-const userName = document.getElementById("user-name");
 const guestContent = document.getElementById("guest-content");
 const hostContent = document.getElementById("host-content");
+const userName = document.getElementById("user-name");
+
 
 document.addEventListener("DOMContentLoaded", async function () {
     initMenu()
 
-    // Модератор здесь не нужен, следовательно, bit=null.
+    // Модератор форума с битом = 1.
     // Если ты - хост, тебе показывается hostContent, иначе - guestContent
-    let username = await initAuthStatus(null, "user", "userPage")
+    const {isModerator, username} = await initAuthStatus(1, "user", "userPage");
     userName.innerHTML = `${username}`;
 
     const urlUsername = window.location.pathname.split('/').pop();
@@ -20,6 +22,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     let sameUser = username === urlUsername;
     if (sameUser) {
         loadBlocks(username)
+        if (isModerator) {
+            loadRequests()
+        }
         initLogout()
         hostContent.style.display = "block";
     } else {

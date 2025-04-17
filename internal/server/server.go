@@ -7,6 +7,8 @@ import (
 	"diploma/internal/handlers/index"
 	"diploma/internal/handlers/topic"
 	"diploma/internal/handlers/userPage"
+	"diploma/internal/handlers/userPage/moderatorBlocks"
+	"diploma/internal/handlers/userPage/userBlocks"
 	"diploma/internal/services"
 	"github.com/gorilla/mux"
 	"log"
@@ -24,9 +26,12 @@ func Run() {
 
 		// Страница пользователя
 		router.HandleFunc("/logout", userPage.Logout)
-		router.HandleFunc("/get-blocks/{username}", userPage.GetBlocks)
 		router.HandleFunc("/get-messages-list", userPage.GetMessagesList)
-		router.HandleFunc("/submit-unblock-request", userPage.UnblockRequest)
+		router.HandleFunc("/get-blocks/{username}", userBlocks.GetBlocks)
+		router.HandleFunc("/submit-unblock-request", userBlocks.UnblockRequest)
+		router.HandleFunc("/get-requests", moderatorBlocks.GetRequests)
+		router.HandleFunc("/approve/{request_id}", moderatorBlocks.Approve)
+		router.HandleFunc("/reject/{request_id}", moderatorBlocks.Reject)
 
 		// Идентификация пользователя
 		router.HandleFunc("/register", index.Register)

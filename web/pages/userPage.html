@@ -20,12 +20,17 @@
     </aside>
     <main class="main">
         <button class="menu-btn" id="menu-btn">☰</button>
-        <h1>Добро пожаловать в ваш личный кабинет!</h1>
 
         <div id="host-content" style="display: none">
+            <h1>Добро пожаловать в ваш личный кабинет!</h1>
             <div class="restriction-block" style="display: none">
-                <h2 class="restrictions-title" >У вас имеются активные блокировки на форуме!</h2>
+                <h2 class="restrictions-title">У вас имеются активные блокировки на форуме!</h2>
                 <div id="restrictions-container"></div>
+            </div>
+
+            <div class="requests-block" style="display: none">
+                <h2 class="requests-title" >Вы можете рассмотреть следующие запросы на разблокировку пользователей форума.</h2>
+                <div id="requests-container"></div>
             </div>
             <a href="#" class="logout-link" id="logout-btn">Выйти из аккаунта</a>
         </div>

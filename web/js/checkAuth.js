@@ -10,7 +10,7 @@ const moderatorContent = document.getElementById("moderator-content");
  * @param bit - отвечает за бит модератора
  * @param user - права пользователя по умолчанию - может быть "guest" или "user"
  * @param page - страница, запрашивающая изменение отображения контента.
- * @returns {Promise<boolean>} - возвращает Promise с наличием бита модератора
+ * @returns {Promise<{isModerator: boolean, username: string}>} - возвращает структуру с полями isModerator - наличие бита модератора, username - юзернейм пользователя
  */
 export async function initAuthStatus(bit, user, page) {
     let isModerator = false;
@@ -56,7 +56,6 @@ export async function initAuthStatus(bit, user, page) {
         } else {
             // Не авторизован
             userOrGuestContent(user);
-            console.log("Пользователь не авторизован:", data.message);
         }
     } catch (error) {
         userOrGuestContent(user);
@@ -67,11 +66,10 @@ export async function initAuthStatus(bit, user, page) {
         loadBarData(isModerator);
     }
 
-    if (bit !== null) {
-        return isModerator;
-    } else {
-        return data.username;
-    }
+    return {
+        isModerator: isModerator,
+        username: data.username,
+    };
 }
 
 function userOrGuestContent(user) {

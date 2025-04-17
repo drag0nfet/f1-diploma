@@ -1,4 +1,4 @@
-package userPage
+package userBlocks
 
 import (
 	"diploma/internal/database"
