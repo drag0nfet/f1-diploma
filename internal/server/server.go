@@ -26,6 +26,7 @@ func Run() {
 		router.HandleFunc("/logout", userPage.Logout)
 		router.HandleFunc("/get-blocks/{username}", userPage.GetBlocks)
 		router.HandleFunc("/get-messages-list", userPage.GetMessagesList)
+		router.HandleFunc("/submit-unblock-request", userPage.UnblockRequest)
 
 		// Идентификация пользователя
 		router.HandleFunc("/register", index.Register)

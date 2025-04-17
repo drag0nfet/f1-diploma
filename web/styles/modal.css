@@ -1,0 +1,94 @@
+/* Стили для модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1000; /* Над всем контентом */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px; /* Фиксированная ширина */
+    max-width: 90%; /* Адаптивность для маленьких экранов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-header {
+    font-size: 1.5rem; /* На 6 кеглей больше, чем стандартный текст (обычно 16px = 1rem) */
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.modal-message {
+    background-color: #e0f7fa; /* Светло-голубая заливка */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Разрешить изменение высоты */
+    min-height: 100px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.modal-submit-btn {
+    display: block;
+    margin: 0 auto;
+    background-color: #10b981; /* Зелёный, как у кнопки "Обжаловать" */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.modal-submit-btn:hover {
+    background-color: #059669; /* Тёмный зелёный при наведении */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .modal-header {
+        font-size: 1.3rem;
+    }
+
+    .modal-message {
+        font-size: 0.9rem;
+    }
+
+    .modal-textarea {
+        font-size: 0.9rem;
+    }
+
+    .modal-submit-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}

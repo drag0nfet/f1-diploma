@@ -1,4 +1,4 @@
-import { initApologiseButtons } from "./initApologiseButtons.js";
+import { initApologizeButtons } from "./initApologizeButtons.js";
 
 const blocksContainer = document.getElementById("restrictions-container");
 const blocksPart = document.querySelector(".restriction-block");
@@ -61,7 +61,7 @@ function showBlocks() {
                         showBlock(message, block, index + 1);
                     }
                 });
-                initApologiseButtons();
+                initApologizeButtons();
             } else {
                 header.innerHTML = "<p>Не удалось загрузить сообщения для ограничений.</p>";
             }
@@ -78,14 +78,19 @@ function showBlock(message, block, violationNumber) {
 
     const formattedTime = new Date(block.time_got).toLocaleString();
 
+    const isPending = block.status === "WAITING";
+    const buttonText = isPending ? "Ожидается решение модератора" : "Обжаловать";
+    const buttonDisabled = isPending ? "disabled" : "";
+
     blockElement.innerHTML = `
         <div class="restriction-header">
             <span class="violation-number">Нарушение #${violationNumber}</span>
         </div>
+        <div class="ghost" style="display: none">${block.message_id}:${block.user_id}</div>
         <div class="restriction-message">Сообщение: ${message.value}</div>
         <div class="restriction-timestamp">Время блокировки: ${formattedTime}</div>
         <div class="restriction-actions">
-            <button class="apologise-btn" data-block-id="${block.message_id}">Обжаловать</button>
+            <button class="apologize-btn" data-block-id="${block.message_id}" ${buttonDisabled}>${buttonText}</button>
         </div>
     `;
 

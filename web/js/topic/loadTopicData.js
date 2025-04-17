@@ -76,7 +76,7 @@ function loadMessages(topicId, rights) {
                 });
                 initReplyBtn();
                 initDeleteBtns();
-                initBlockButtons()
+                initBlockButtons();
             }
         })
         .catch(error => console.error("Ошибка загрузки сообщений:", error));

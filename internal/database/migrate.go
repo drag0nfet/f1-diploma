@@ -17,7 +17,9 @@ func RunMigrations(db *gorm.DB) error {
 		"internal/database/migrations/007_create_dish_table.sql",
 		"internal/database/migrations/008_alter_message_table.sql",
 		"internal/database/migrations/009_create_forumBlockList_table.sql",
-		"internal/database/migrations/010_alter_message_forumBlockList.sql",
+		"internal/database/migrations/010_alter_forumBlockList_table.sql",
+		"internal/database/migrations/011_create_unblockRequest_table.sql",
+		"internal/database/migrations/012_alter_forumBlockList_table.sql",
 	}
 
 	for _, file := range files {

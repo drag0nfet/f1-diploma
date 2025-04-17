@@ -47,6 +47,37 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Считаем блокировки на форуме
+	var blockCount int64
+	if err := database.DB.
+		Table("\"ForumBlockList\"").
+		Where("user_id = ? AND is_valid = ?", user.UserID, true).
+		Count(&blockCount).Error; err != nil {
+		response := services.Response{Success: false, Message: "Ошибка проверки блокировок"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Если нет активных блокировок (blockCount == 0), устанавливаем второй бит в 1
+	if blockCount == 0 {
+		if user.Rights%4 < 2 { // Если второй бит 0 (rights%4 = 0 или 1)
+			user.Rights += 2 // Устанавливаем второй бит в 1 (rights%4 станет 2 или 3)
+		}
+	} else {
+		if user.Rights%4 >= 2 { // Если второй бит 1 (rights%4 = 2 или 3)
+			user.Rights -= 2 // Устанавливаем второй бит в 0 (rights%4 станет 0 или 1)
+		}
+	}
+
+	// Обновляем права пользователя в базе
+	if err := database.DB.Save(&user).Error; err != nil {
+		response := services.Response{Success: false, Message: "Ошибка обновления прав пользователя"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	cookie := services.NewCookie(w, auth.Username, user.Rights, user.UserID)
 	if cookie.Name == "" {
 		return // Ошибка уже обработана внутри NewCookie

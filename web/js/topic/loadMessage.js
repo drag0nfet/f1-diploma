@@ -1,4 +1,4 @@
-import {deleteMessage} from "../deleteMessage.js";
+import { deleteMessage } from "../deleteMessage.js";
 
 export function loadMessage(message, rights) {
     const messagesContainer = document.getElementById("messages-container");
@@ -65,7 +65,19 @@ export function loadMessage(message, rights) {
         const messageElement = this.closest(".message-item");
         const messageIdElement = messageElement.querySelector(".message-id");
 
-        deleteMessage(messageElement, messageIdElement);
+        if (!messageIdElement) {
+            console.error("Не удалось найти .message-id в .message-item:", messageElement);
+            return;
+        }
+
+        const messageIdText = messageIdElement.textContent.replace('#', '').trim();
+        const messageId = parseInt(messageIdText);
+        if (isNaN(messageId)) {
+            console.error("Не удалось извлечь messageId из текста:", messageIdText);
+            return;
+        }
+
+        deleteMessage(messageElement, messageId);
     });
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;

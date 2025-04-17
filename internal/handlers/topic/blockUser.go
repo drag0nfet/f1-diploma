@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func BlockUser(w http.ResponseWriter, r *http.Request) {
@@ -85,6 +86,7 @@ func BlockUser(w http.ResponseWriter, r *http.Request) {
 		UserID:      user.UserID,
 		MessageID:   messageId,
 		ModeratorID: moderatorId,
+		TimeGot:     time.Now(),
 	}
 
 	if err := database.DB.Create(&blockNote).Error; err != nil {
