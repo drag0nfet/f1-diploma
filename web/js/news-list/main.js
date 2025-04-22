@@ -1,11 +1,28 @@
-import {loadNews} from "../editing_news/loadNews.js";
+import {loadNews} from "./loadNews.js";
+import {initAuthStatus} from "../checkAuth.js";
+import {initMenu} from "../menu.js";
 
 const mainHeader = document.getElementById("main-head");
 const newsContainer = document.getElementById("news-container");
 
+function initEdit() {
+    newsContainer.addEventListener("click", function (e) {
+        if (e.target.classList.contains("edit-btn")) {
+            const newsId = e.target.getAttribute("data-news-id");
+            window.location.href = `/editing_news?id=${newsId}`;
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    initMenu()
     const params = new URLSearchParams(window.location.search);
     const status = params.get("status");
+
+    let {success, _} = initAuthStatus(8, "user", "news-list")
+    if (!success) {
+        mainHeader.innerHTML = "А вам здесь быть не положено! Авторизуйтесь!";
+    }
 
     if (status === "draft") {
         renderDraftNews();
@@ -15,12 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderDefaultNews();
     }
 
-    newsContainer.addEventListener("click", function (e) {
-        if (e.target.classList.contains("edit-btn")) {
-            const newsId = e.target.getAttribute("data-news-id");
-            window.location.href = '/editing_news?id=${newsId}';
-        }
-    });
+    initEdit()
 });
 
 function renderDraftNews() {
@@ -34,5 +46,5 @@ function renderArchiveNews() {
 }
 
 function renderDefaultNews() {
-    mainHeader.innerHTML = "А вам здесь быть не положено! Авторизуйтесь!";
+    mainHeader.innerHTML = "А вам здесь быть не положено!";
 }

@@ -7,7 +7,6 @@ import (
 )
 
 func CheckAuth(w http.ResponseWriter, r *http.Request) {
-	// Проверяем заголовок X-Requested-With
 	if r.Header.Get("X-Requested-With") != "XMLHttpRequest" {
 		response := services.Response{
 			Success: false,
@@ -19,7 +18,6 @@ func CheckAuth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Проверяем метод
 	if r.Method != http.MethodGet {
 		response := services.Response{Success: false, Message: "Метод не поддерживается"}
 		json.NewEncoder(w).Encode(response)

@@ -30,10 +30,11 @@ func Run() {
 		router.HandleFunc("/login", index.Login)
 
 		// Редактирование новости
-		router.HandleFunc("/update-news-status", news.UpdateNewsStatus)
-		router.HandleFunc("/delete-news", news.DeleteNews)
+		router.HandleFunc("/update-news", news.UpdateNews)
+		router.HandleFunc("/delete-news/{news_id}", news.DeleteNews)
 		router.HandleFunc("/create-news", news.CreateNews)
 		router.HandleFunc("/load-news-by-status", news.LoadNews)
+		router.HandleFunc("/load-news-info", news.LoadNewsInfo)
 
 		// Страница пользователя
 		router.HandleFunc("/logout", userPage.Logout)

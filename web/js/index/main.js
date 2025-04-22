@@ -2,7 +2,7 @@ import { initMenu }     from '../menu.js';
 import { initAuth }     from './auth.js';
 import { initRegister } from "./register.js";
 import {initAuthStatus} from "../checkAuth.js";
-import {loadNews} from "../editing_news/loadNews.js";
+import {loadNews} from "../news-list/loadNews.js";
 import {initCreateNews} from "./initCreateNews.js";
 
 document.addEventListener("DOMContentLoaded", async function () {

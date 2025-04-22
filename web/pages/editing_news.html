@@ -23,31 +23,37 @@
             <h2>Создание/Редактирование новости</h2>
             <div class="news-form">
                 <label>
-                    Название новости (макс. 64 символа):
+                    Название новости:
                     <input type="text" id="news-title" placeholder="Введите название" maxlength="64" required>
                 </label>
                 <label>
-                    Описание:
+                    Краткое описание:
                     <textarea id="news-description" placeholder="Введите описание (опционально)" rows="4"></textarea>
                 </label>
                 <label>
-                    Комментарий (Markdown):
-                    <textarea id="news-comment" placeholder="Введите комментарий в формате Markdown" rows="6" oninput="updateMarkdownPreview()"></textarea>
+                    Содержание:
+                    <textarea id="news-comment" placeholder="Введите содержание в формате Markdown" rows="6" oninput="updateMarkdownPreview()" required></textarea>
                 </label>
                 <div class="markdown-preview">
-                    <h3>Предпросмотр:</h3>
+                    <h3>Предпросмотр содержания:</h3>
                     <div id="markdown-preview-content"></div>
                 </div>
-                <label>
-                    Изображение в формате jpeg, png или bmp:
-                    <input type="file" id="news-image" accept="image/jpeg,image/png,image/bmp">
-                </label>
+                <div class="image-preview-container">
+                    <div class="current-image">
+                        <h3>Текущее изображение:</h3>
+                        <img id="current-image-preview" style="display: none;" alt="Текущее изображение" src="">
+                    </div>
+                    <label>
+                        Новое изображение (jpeg, png, bmp, webp):
+                        <input type="file" id="news-image" accept="image/jpeg,image/png,image/bmp,image/webp">
+                    </label>
+                </div>
             </div>
             <div class="news-actions">
-                <button class="action-btn publish-btn" data-status="ACTIVE">Опубликовать</button>
-                <button class="action-btn draft-btn" data-status="DRAFT">Сохранить черновик</button>
-                <button class="action-btn archive-btn" data-status="ARCHIVE">Отправить в архив</button>
-                <button class="action-btn delete-btn">Удалить</button>
+                <button class="action-btn publish-btn" id="publish-btn" data-status="ACTIVE">Опубликовать</button>
+                <button class="action-btn draft-btn" id="draft-btn" data-status="DRAFT">Сохранить черновик</button>
+                <button class="action-btn archive-btn" id="archive-btn" data-status="ARCHIVE">Отправить в архив</button>
+                <button class="action-btn delete-btn" id="delete-btn">Удалить</button>
             </div>
         </div>
     </main>
