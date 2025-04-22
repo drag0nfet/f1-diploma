@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <header class="header">Шапка сайта</header>
+    <header class="header">Новости</header>
     <aside class="left-sidebar" id="left-sidebar">
         <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
         <a href="#" class="sidebar-link" data-code="goods">Товары</a>
@@ -17,7 +17,15 @@
     </aside>
     <main class="main">
         <button class="menu-btn" id="menu-btn">☰</button>
-        <p>Основной контент...</p>
+        <div id="moderator-content" style="display: none">
+            <label>
+                <input type="text" id="news_title" placeholder="Введите название новости: " required maxlength="64">
+                <button class="news-btn" id="create_news-btn">Добавить новость</button>
+            </label>
+            <button class="news-btn" id="draft_news-btn">Открыть черновики новостей</button>
+            <button class="news-btn" id="archive_news-btn">Открыть архив новостей</button>
+        </div>
+        <div class="news-container" id="news-container"></div>
     </main>
     <aside class="right-sidebar" id="right-sidebar">
         <div id="auth-form">

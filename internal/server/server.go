@@ -5,6 +5,7 @@ import (
 	"diploma/internal/handlers/bar"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
+	"diploma/internal/handlers/index/news"
 	"diploma/internal/handlers/topic"
 	"diploma/internal/handlers/userPage"
 	"diploma/internal/handlers/userPage/moderatorBlocks"
@@ -24,6 +25,16 @@ func Run() {
 		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
 		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
+		// Страница домашняя
+		router.HandleFunc("/register", index.Register)
+		router.HandleFunc("/login", index.Login)
+
+		// Редактирование новости
+		router.HandleFunc("/update-news-status", news.UpdateNewsStatus)
+		router.HandleFunc("/delete-news", news.DeleteNews)
+		router.HandleFunc("/create-news", news.CreateNews)
+		router.HandleFunc("/load-news-by-status", news.LoadNews)
+
 		// Страница пользователя
 		router.HandleFunc("/logout", userPage.Logout)
 		router.HandleFunc("/get-messages-list", userPage.GetMessagesList)
@@ -33,27 +44,23 @@ func Run() {
 		router.HandleFunc("/approve/{request_id}", moderatorBlocks.Approve)
 		router.HandleFunc("/reject/{request_id}", moderatorBlocks.Reject)
 
-		// Идентификация пользователя
-		router.HandleFunc("/register", index.Register)
-		router.HandleFunc("/login", index.Login)
-
-		// Работа на странице форума
+		// Страница форума
 		router.HandleFunc("/create-topic", forum.CreateTopic)
 		router.HandleFunc("/get-topics", forum.GetTopics)
 		router.HandleFunc("/delete-topic", forum.DeleteTopic)
 
-		// Работа на странице топика
+		// Страница топика
 		router.HandleFunc("/get-topic/{topicId}", topic.GetTopic)
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
 		router.HandleFunc("/block-user/{messageId}", topic.BlockUser)
 
-		// Работа на странице бара
+		// Страница бара
 		router.HandleFunc("/get-dishes", bar.GetDishes)
 		router.HandleFunc("/delete-dish", bar.DeleteDish)
 
-		// Работа на странице добавления блюда
-		router.HandleFunc("/create_dish", bar.CreateDish)
+		// Страница добавления блюда
+		router.HandleFunc("/create-dish", bar.CreateDish)
 	}
 
 	// Страничные маршруты
@@ -74,6 +81,12 @@ func Run() {
 		router.HandleFunc("/account/{username}", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "web/pages/userPage.html")
 		}))
+		router.HandleFunc("/news-list", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/pages/news-list.html")
+		}))
+		router.HandleFunc("/editing_news", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "web/pages/editing_news.html")
+		}))
 
 		// Блокировка неавторизованных
 		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
@@ -82,17 +95,7 @@ func Run() {
 	}
 
 	// Общий маршрут, поэтому в самом низу по порядку регистрации перехода
-	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Обработчики для статических файлов (JS, CSS)
-		if r.URL.Path == "/web/styles/general.css" {
-			w.Header().Set("Content-Type", "text/css")
-		}
-		if r.URL.Path == "/web/js/main.js" || r.URL.Path == "/web/js/forum/createTopic.js" {
-			w.Header().Set("Content-Type", "application/javascript")
-		}
-		fileServer := http.FileServer(http.Dir("web"))
-		fileServer.ServeHTTP(w, r)
-	})))
+	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("web"))))
 
 	handler := services.EnableCORS(router)
 

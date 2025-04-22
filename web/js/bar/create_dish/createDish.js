@@ -7,7 +7,7 @@ export function createDish() {
 
     const formData = new FormData(form);
 
-    fetch("/create_dish", {
+    fetch("/create-dish", {
         method: "POST",
         body: formData,
         headers: {

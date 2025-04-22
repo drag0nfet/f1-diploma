@@ -1,9 +1,32 @@
 import { initMenu }     from '../menu.js';
 import { initAuth }     from './auth.js';
 import { initRegister } from "./register.js";
+import {initAuthStatus} from "../checkAuth.js";
+import {loadNews} from "../editing_news/loadNews.js";
+import {initCreateNews} from "./initCreateNews.js";
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     initMenu();
     initAuth();
     initRegister();
+
+    // Модератор новостей - 3 бит = 8, есть гест-режим
+    await initAuthStatus(8, "user", "index");
+
+    loadNews("ACTIVE", 1, 10);
+});
+
+document.getElementById("create_news-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    initCreateNews();
+});
+
+document.getElementById("draft_news-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = "/news-list?status=draft";
+});
+
+document.getElementById("archive_news-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = "/news-list?status=archive";
 });

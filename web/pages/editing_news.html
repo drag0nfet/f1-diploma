@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание/Редактирование новости</title>
+    <link rel="stylesheet" href="/web/styles/general.css">
+    <link rel="stylesheet" href="/web/styles/editing_news.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/web/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="#" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <main class="main">
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <div class="news-form-container">
+            <h2>Создание/Редактирование новости</h2>
+            <div class="news-form">
+                <label>
+                    Название новости (макс. 64 символа):
+                    <input type="text" id="news-title" placeholder="Введите название" maxlength="64" required>
+                </label>
+                <label>
+                    Описание:
+                    <textarea id="news-description" placeholder="Введите описание (опционально)" rows="4"></textarea>
+                </label>
+                <label>
+                    Комментарий (Markdown):
+                    <textarea id="news-comment" placeholder="Введите комментарий в формате Markdown" rows="6" oninput="updateMarkdownPreview()"></textarea>
+                </label>
+                <div class="markdown-preview">
+                    <h3>Предпросмотр:</h3>
+                    <div id="markdown-preview-content"></div>
+                </div>
+                <label>
+                    Изображение в формате jpeg, png или bmp:
+                    <input type="file" id="news-image" accept="image/jpeg,image/png,image/bmp">
+                </label>
+            </div>
+            <div class="news-actions">
+                <button class="action-btn publish-btn" data-status="ACTIVE">Опубликовать</button>
+                <button class="action-btn draft-btn" data-status="DRAFT">Сохранить черновик</button>
+                <button class="action-btn archive-btn" data-status="ARCHIVE">Отправить в архив</button>
+                <button class="action-btn delete-btn">Удалить</button>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="overlay" id="overlay"></div>
+<script>
+    function updateMarkdownPreview() {
+        const commentInput = document.getElementById("news-comment").value;
+        const previewDiv = document.getElementById("markdown-preview-content");
+        previewDiv.innerHTML = marked.parse(commentInput);
+    }
+</script>
+<script type="module" src="/web/js/editing_news/main.js"></script>
+</body>
+</html>

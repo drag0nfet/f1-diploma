@@ -1,3 +1,5 @@
+import {initAuthStatus} from "../checkAuth.js";
+
 export function initAuth() {
     const loginBtn = document.getElementById("login-btn");
     const usernameInput = document.getElementById("username");
@@ -78,7 +80,9 @@ export function initAuth() {
             })
             .then(data => {
                 if (data.success) {
-                    checkAuthStatus(); // Обновляем статус после логина
+                    // Обновляем статус после логина
+                    checkAuthStatus();
+                    initAuthStatus(8, "guest", "index");
                 } else {
                     alert(data.message || "Ошибка авторизации.");
                 }

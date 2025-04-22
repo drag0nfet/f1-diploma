@@ -1,29 +1,38 @@
 package database
 
 import (
-	"gorm.io/gorm"
+	"io/fs"
 	"log"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+
+	"gorm.io/gorm"
 )
 
 func RunMigrations(db *gorm.DB) error {
-	files := []string{
-		"internal/database/migrations/001_create_users_table.sql",
-		"internal/database/migrations/002_create_item_table.sql",
-		"internal/database/migrations/003_create_itemImage_table.sql",
-		"internal/database/migrations/004_create_purchase_table.sql",
-		"internal/database/migrations/005_create_message_table.sql",
-		"internal/database/migrations/006_create_chat_table.sql",
-		"internal/database/migrations/007_create_dish_table.sql",
-		"internal/database/migrations/008_alter_message_table.sql",
-		"internal/database/migrations/009_create_forumBlockList_table.sql",
-		"internal/database/migrations/010_alter_forumBlockList_table.sql",
-		"internal/database/migrations/011_create_unblockRequest_table.sql",
-		"internal/database/migrations/012_alter_forumBlockList_table.sql",
+	migrationsDir := "internal/database/migrations"
+
+	entries, err := os.ReadDir(migrationsDir)
+	if err != nil {
+		return err
 	}
 
+	var files []fs.DirEntry
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".sql") {
+			files = append(files, entry)
+		}
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].Name() < files[j].Name()
+	})
+
 	for _, file := range files {
-		content, err := os.ReadFile(file)
+		path := filepath.Join(migrationsDir, file.Name())
+		content, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
@@ -32,6 +41,7 @@ func RunMigrations(db *gorm.DB) error {
 			return err
 		}
 	}
+
 	log.Println("Миграция БД успешно выполнена.")
 	return nil
 }
