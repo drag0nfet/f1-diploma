@@ -3,7 +3,6 @@ import { initAuth }     from './auth.js';
 import { initRegister } from "./register.js";
 import {initAuthStatus} from "../checkAuth.js";
 import {loadNews} from "../news-list/loadNews.js";
-import {initCreateNews} from "./initCreateNews.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     initMenu();
@@ -18,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 document.getElementById("create_news-btn").addEventListener("click", function(e) {
     e.preventDefault();
-    initCreateNews();
+    window.location.href = `/editing_news?id=-1`;
 });
 
 document.getElementById("draft_news-btn").addEventListener("click", function(e) {

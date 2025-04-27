@@ -137,5 +137,13 @@ func UpdateNews(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(services.Response{Success: true, Message: "Новость успешно обновлена"})
+	json.NewEncoder(w).Encode(struct {
+		Success bool   `json:"success"`
+		ID      int    `json:"id"`
+		Message string `json:"message"`
+	}{
+		Success: true,
+		ID:      news.NewsID,
+		Message: "Новость успешно создана или изменена",
+	})
 }

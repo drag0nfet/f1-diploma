@@ -17,12 +17,12 @@ export function loadNewsInfo(news_id) {
         .then(response => {
             if (response.status === 403) {
                 alert("У вас недостаточно прав для редактирования этой новости.");
-                window.location.href = '/news-list?status=draft';
+                window.location.href = '/';
                 throw new Error('Forbidden');
             }
             if (response.status === 404) {
                 alert("Новость не найдена.");
-                window.location.href = '/news-list?status=draft';
+                window.location.href = '/';
                 throw new Error('Not Found');
             }
             return response.json();
@@ -44,14 +44,14 @@ export function loadNewsInfo(news_id) {
                 }
             } else {
                 alert("Ошибка загрузки новости: " + data.message);
-                window.location.href = '/news-list?status=draft';
+                window.location.href = '/';
             }
         })
         .catch(error => {
             if (error.message !== 'Forbidden' && error.message !== 'Not Found') {
                 console.error("Ошибка загрузки новости:", error);
                 alert("Произошла ошибка при загрузке новости.");
-                window.location.href = '/news-list?status=draft';
+                window.location.href = '/';
             }
         });
 }
