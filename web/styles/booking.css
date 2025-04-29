@@ -1,0 +1,38 @@
+.calendar-container {
+    margin-top: 10px;
+}
+
+.calendar-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.flatpickr-calendar {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.flatpickr-day {
+    border-radius: 5px;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: #0969A2;
+    border-color: #0969A2;
+    color: white;
+}
+
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+    background: #3D9AD1;
+    border-color: #3D9AD1;
+}

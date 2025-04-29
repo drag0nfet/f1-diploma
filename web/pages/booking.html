@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование столиков</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/booking.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">Фильтры событий</header>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/web/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/web/bar" class="sidebar-link" data-code="bar">Бар</a>
+    </aside>
+    <main class="main">
+        <button class="menu-btn" id="menu-btn">☰</button>
+
+        <div id="moderator-content">
+            <button class="moderator-btn">Открыть меню модератора</button>
+        </div>
+
+        <div class="events-container" id="events-container"></div>
+    </main>
+    <aside class="right-sidebar" id="right-sidebar">
+        <div class="filter-form">
+            <div class="default-schedule">
+                <p>Сюда вставим обычное расписание бара.</p>
+            </div>
+
+            <div class="filter">
+                <div class="filter-category">
+                    <div class="filter-group">
+                        <label class="filter-category-label">Категория спорта</label>
+                        <label>
+                            <select multiple class="filter-category">
+                                <option value="">Выберите категорию</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="filter-type">
+                        <label class="filter-type-label">Вид спорта</label>
+                        <label>
+                            <select multiple class="filter-type">
+                                <option value="">Выберите вид спорта</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="calendar-container">
+                        <label class="filter-label">Выберите диапазон дат</label>
+                        <label>
+                            <input type="text" class="calendar-input" placeholder="Выберите даты..." />
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button class="apply-filters-btn">Применить фильтры</button>
+        </div>
+    </aside>
+</div>
+<div class="overlay" id="overlay"></div>
+<script src="../js/booking/main.js" type="module"></script>
+</body>
+</html>

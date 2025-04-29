@@ -17,6 +17,8 @@ import (
 )
 
 func Run() {
+	buildFrontend()
+
 	router := mux.NewRouter()
 
 	// API маршруты
@@ -67,35 +69,38 @@ func Run() {
 	{
 		// Детекция авторизации
 		router.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/index.html")
+			http.ServeFile(w, r, "dir/pages/index.html")
 		}))
 		router.HandleFunc("/web/forum", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/forum.html")
+			http.ServeFile(w, r, "dir/pages/forum.html")
 		}))
 		router.HandleFunc("/web/bar", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/bar.html")
+			http.ServeFile(w, r, "dir/pages/bar.html")
 		}))
 		router.HandleFunc("/web/bar/create_dish", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/create_dish.html")
+			http.ServeFile(w, r, "dir/pages/create_dish.html")
 		}))
 		router.HandleFunc("/account/{username}", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/userPage.html")
+			http.ServeFile(w, r, "dir/pages/userPage.html")
 		}))
 		router.HandleFunc("/news-list", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/news-list.html")
+			http.ServeFile(w, r, "dir/pages/news-list.html")
 		}))
 		router.HandleFunc("/editing_news", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/editing_news.html")
+			http.ServeFile(w, r, "dir/pages/editing_news.html")
+		}))
+		router.HandleFunc("/web/booking", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "dir/pages/booking.html")
 		}))
 
 		// Блокировка неавторизованных
 		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "web/pages/topic.html")
+			http.ServeFile(w, r, "dir/pages/topic.html")
 		}))
 	}
 
-	// Общий маршрут, поэтому в самом низу по порядку регистрации перехода
-	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("web"))))
+	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("dir/assets"))))
+	router.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("dir"))))
 
 	handler := services.EnableCORS(router)
 

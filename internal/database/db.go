@@ -16,13 +16,13 @@ func InitDB() error {
 	if err != nil {
 		return err
 	}
-	log.Println("Connected to database")
+	log.Println("Соединение с БД успешно")
 
 	err = RunMigrations(DB)
 	if err != nil {
 		return err
 	}
 
-	log.Println("Подключение к БД успешно!")
+	log.Println("Подключение к БД успешно")
 	return nil
 }

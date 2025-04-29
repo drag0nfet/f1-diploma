@@ -42,6 +42,6 @@ func RunMigrations(db *gorm.DB) error {
 		}
 	}
 
-	log.Println("Миграция БД успешно выполнена.")
+	log.Println("Миграция БД успешна")
 	return nil
 }

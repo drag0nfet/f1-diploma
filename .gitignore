@@ -1,0 +1,33 @@
+# === Backend: Go ===
+bin/
+*.exe
+*.test
+*.out
+*.tmp
+*.log
+
+# === Frontend: Node.js / Vite ===
+node_modules/
+.vite/
+/dir/
+dir/                # Каталог сборки (из Vite)
+dist/               # На случай, если где-то используется другой выходной путь
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Vite: собранные файлы, если не в dir/
+web/style.css
+web/style.css.map
+
+# === Общие временные и системные файлы ===
+*.swp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# === Env-файлы (если используешь) ===
+.env
+.env.*
