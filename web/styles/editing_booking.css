@@ -1,0 +1,257 @@
+/* Контейнер выбора зала */
+.hall-selection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.hall-label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.hall-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+.create-hall-btn {
+    background-color: #0969A2;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-hall-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Контейнер формы */
+.hall-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Колонки формы */
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Группа полей */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-input,
+.form-textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Предпросмотр альбома */
+.album-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.album-preview p {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.album-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 100px;
+    padding: 10px;
+    background: #f9f9f9;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.add-photo-btn {
+    background-color: #0969A2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.add-photo-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Сетка столов */
+.grid-label {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.table-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.table-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.table-grid {
+    border-collapse: collapse;
+    width: auto; /* Ширина определяется содержимым */
+    position: relative; /* Для позиционирования кнопок */
+}
+
+/* Стили ячеек */
+.table-grid td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    background: #fff;
+    width: 60px; /* Примерно 4-5 символов */
+    height: 30px; /* Высота для одной строки текста */
+    font-size: 14px;
+    box-sizing: border-box;
+    position: relative; /* Для определения наведения */
+}
+
+.table-grid td[contenteditable="true"]:focus {
+    outline: 2px solid #0969A2;
+    background: #f0f8ff;
+}
+
+/* Кнопки-плюсики */
+.grid-btn {
+    position: absolute;
+    background-color: #0969A2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0; /* Скрыты по умолчанию */
+    transition: opacity 0.2s ease;
+}
+
+.grid-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Показываем кнопку добавления столбца при наведении на крайний правый столбец */
+.table-grid tr td:last-child:hover ~ .add-column-btn,
+.table-grid tr td:last-child:hover .add-column-btn {
+    opacity: 1;
+}
+
+.add-column-btn {
+    top: 0;
+    right: -12px; /* Смещение за правую границу таблицы */
+    transform: translateY(-50%); /* Центрирование по вертикали */
+}
+
+/* Показываем кнопку добавления строки при наведении на крайнюю нижнюю строку */
+.table-grid tr:last-child td:hover ~ .add-row-btn,
+.table-grid tr:last-child td:hover .add-row-btn {
+    opacity: 1;
+}
+
+.add-row-btn {
+    bottom: -12px; /* Смещение ниже нижней границы */
+    left: 0;
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+}
+
+/* Кнопки удаления */
+.grid-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.grid-btn-controls {
+    background-color: #0969A2;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.grid-btn-controls:hover {
+    background-color: #3D9AD1;
+}
+
+/* Кнопка сохранения */
+.save-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.save-btn {
+    background-color: #0969A2;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Адаптивность */
+@media (max-width: 1250px) {
+    .hall-form {
+        grid-template-columns: 1fr; /* Один столбец на мобильных */
+    }
+
+    .table-grid {
+        max-width: 100%; /* Таблица на всю ширину */
+    }
+
+    .hall-select {
+        min-width: 100%; /* Выпадающее меню на всю ширину */
+    }
+}

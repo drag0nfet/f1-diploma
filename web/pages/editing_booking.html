@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование бронирования</title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/editing_booking.css">
+</head>
+<body>
+<div class="container">
+    <header class="header" id="main-head"></header>
+    <button class="menu-btn" id="menu-btn">☰</button>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="/booking" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <div id="moderator-content" style="display: block;">
+        <div class="hall-selection">
+            <label class="hall-label">Выберите зал:</label>
+            <label>
+                <select class="hall-select">
+                    <option value="">-- Выберите зал --</option>
+                </select>
+            </label>
+            <button class="create-hall-btn">Создать новый зал</button>
+        </div>
+        <div class="hall-form">
+            <div class="form-column left-column">
+                <div class="form-group">
+                    <label for="hall-name">Название зала</label>
+                    <input type="text" id="hall-name" class="form-input" placeholder="Введите название">
+                </div>
+                <div class="form-group">
+                    <label for="hall-description">Описание</label>
+                    <textarea id="hall-description" class="form-textarea" placeholder="Введите описание"></textarea>
+                </div>
+                <div class="album-preview">
+                    <p>Предпросмотр альбома:</p>
+                    <div class="album-container"></div>
+                </div>
+                <button class="add-photo-btn">Добавить фото в альбом</button>
+            </div>
+            <div class="form-column right-column">
+                <p class="grid-label">Задать сетку столов</p>
+                <div class="table-grid-container">
+                    <div class="table-wrapper">
+                        <table class="table-grid">
+                            <tbody>
+                            <tr>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button class="grid-btn add-column-btn">+</button>
+                        <button class="grid-btn add-row-btn">+</button>
+                        <div class="grid-controls">
+                            <button class="grid-btn-controls remove-row">Удалить строку</button>
+                            <button class="grid-btn-controls remove-column">Удалить столбец</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="save-container">
+            <button class="save-btn">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="../js/booking/editing_booking/main.js"></script>
+</body>
+</html>

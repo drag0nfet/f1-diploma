@@ -34,3 +34,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 });
+
+document.getElementById("moderator-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = `/editing_booking`;
+});

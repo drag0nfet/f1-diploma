@@ -71,13 +71,13 @@ func Run() {
 		router.HandleFunc("/", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/index.html")
 		}))
-		router.HandleFunc("/web/forum", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/forum", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/forum.html")
 		}))
-		router.HandleFunc("/web/bar", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/bar", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/bar.html")
 		}))
-		router.HandleFunc("/web/bar/create_dish", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/bar/create_dish", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/create_dish.html")
 		}))
 		router.HandleFunc("/account/{username}", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
@@ -89,8 +89,11 @@ func Run() {
 		router.HandleFunc("/editing_news", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/editing_news.html")
 		}))
-		router.HandleFunc("/web/booking", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/booking", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/booking.html")
+		}))
+		router.HandleFunc("/editing_booking", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "dir/pages/editing_booking.html")
 		}))
 
 		// Блокировка неавторизованных
