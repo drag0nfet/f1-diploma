@@ -12,5 +12,5 @@ func buildFrontend() {
 	if err != nil {
 		log.Fatalf("Ошибка сборки фронтенда: %v\n%s", err, output)
 	}
-	log.Println("Фронтенд собран успешно.")
+	log.Println("Фронтенд собран успешно")
 }

@@ -5,9 +5,13 @@
         "header header header"
         "left main right"
         "footer footer footer";
-    grid-template-columns: 200px 1fr 250px;
+    grid-template-columns: 200px minmax(0, 1fr) min-content;
     grid-template-rows: 60px 1fr auto;
     min-height: 100vh;
+    max-width: 100vw; /* Строго ограничиваем ширину экраном */
+    width: 100%; /* Контейнер на всю ширину */
+    box-sizing: border-box; /* Учитываем padding и border */
+    overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
 }
 
 .header {
@@ -26,23 +30,23 @@
     background: #ddd;
     padding: 15px;
     display: flex;
-    flex-direction: column; /* Гарантирует один столбец */
-    align-items: center; /* Центрирование по горизонтали */
-    height: auto; /* Адаптируется под содержимое */
-    width: 150px; /* Фиксированная ширина */
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 150px; /* Фиксированная ширина внутри 200px */
 }
 
 .sidebar-link {
     text-decoration: none;
     color: #333;
     padding: 10px;
-    width: 100%; /* Занимает всю ширину контейнера */
-    text-align: center; /* Центрирует текст внутри ссылки */
-    white-space: normal; /* Разрешает перенос текста, если он длинный */
+    width: 100%;
+    text-align: center;
+    white-space: normal;
 }
 
 .sidebar-link:hover {
-    background-color: #ccc; /* Эффект при наведении */
+    background-color: #ccc;
 }
 
 .main {
@@ -50,6 +54,9 @@
     background: white;
     padding: 15px;
     position: relative;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .right-sidebar {
@@ -83,7 +90,6 @@ button {
     cursor: pointer;
 }
 
-
 button:hover {
     background-color: #3D9AD1;
 }
@@ -93,25 +99,25 @@ button:hover {
 }
 
 .menu-btn {
-    display: none; /* Скрыта по умолчанию */
+    display: none;
 }
 
 /* Оверлей */
 .overlay {
-    display: none; /* Скрыт по умолчанию */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-    z-index: 999; /* Под сайдбаром, но над остальным контентом */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 /* На ПК (ширина > 1250px) */
 @media (min-width: 1251px) {
     .menu-btn {
-        display: none; /* Кнопка меню скрыта */
+        display: none;
     }
 }
 
@@ -131,7 +137,6 @@ button:hover {
         display: flex;
         flex-direction: column;
         align-items: center;
-        /*justify-content: center;*/
         width: 150px;
         position: fixed;
         top: 0;
@@ -145,15 +150,25 @@ button:hover {
     }
 
     .left-sidebar.active {
-        left: 0; /* Показываем сайдбар */
+        left: 0;
+    }
+
+    .main {
+        width: 100% !important; /* Полная ширина на мобильных */
+        min-width: 0 !important;
+    }
+
+    .right-sidebar {
+        width: 100% !important; /* Полная ширина на мобильных */
+        min-width: unset !important;
     }
 
     .menu-btn {
-        display: block; /* Кнопка меню видна */
+        display: block;
     }
 
     .overlay.active {
-        display: block; /* Показываем оверлей при открытом сайдбаре */
+        display: block;
     }
 
     #auth-form {
@@ -183,15 +198,15 @@ form button {
     background: #333;
     color: white;
     display: flex;
-    flex-direction: column; /* Элементы в столбец (3 строки) */
-    justify-content: center; /* Вертикальное центрирование */
-    align-items: center; /* Горизонтальное центрирование */
-    min-height: 70px; /* Минимальная высота */
-    padding: 10px; /* Добавляем отступы для текста */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70px;
+    padding: 10px;
 }
 
 .footer a {
-    margin: 2px 0; /* Небольшие отступы между строками */
+    margin: 2px 0;
     text-decoration: none;
     color: white;
 }

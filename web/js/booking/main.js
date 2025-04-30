@@ -15,6 +15,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         inline: true,
         showMonths: 1,
         enableTime: false,
-        allowInput: false
+        allowInput: true,
+        allowInvalidPreload: false,
+        onChange: function (selectedDates, dateStr, instance) {},
+        parseDate: (datestr, format) => {
+            const dateRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+            if (dateRegex.test(datestr)) {
+                const [, day, month, year] = datestr.match(dateRegex);
+                return new Date(year, month - 1, day);
+            }
+            return null;
+        },
+        formatDate: (date, format) => {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
     });
 });

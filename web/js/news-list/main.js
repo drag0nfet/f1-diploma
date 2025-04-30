@@ -37,12 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function renderDraftNews() {
     mainHeader.innerHTML = "Ваши черновики новостей";
-    loadNews("DRAFT", 1, 10);
+    loadNews("DRAFT", 1, 10, true);
 }
 
 function renderArchiveNews() {
     mainHeader.innerHTML = "Архив ваших новостей";
-    loadNews("ARCHIVE", 1, 10);
+    loadNews("ARCHIVE", 1, 10, true);
 }
 
 function renderDefaultNews() {

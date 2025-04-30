@@ -1,38 +1,84 @@
+/* Переопределяем правый сайдбар */
+.right-sidebar {
+    width: auto !important;
+    max-width: 320px !important;
+    min-width: 280px !important;
+    flex-shrink: 0;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    overflow: auto;
+    overflow-wrap: break-word;
+}
+
+/* Контейнер фильтров */
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Контейнер календаря */
 .calendar-container {
     margin-top: 10px;
-}
-
-.calendar-input {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: white;
-    cursor: pointer;
 }
 
+/* Поле ввода календаря */
+.calendar-input {
+    width: 100% !important;
+    padding: 8px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    background: white !important;
+    cursor: text !important; /* Курсор для текстового ввода */
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+/* Календарь Flatpickr */
 .flatpickr-calendar {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    width: 100% !important;
+    max-width: 280px !important;
 }
 
+/* Дни в календаре */
 .flatpickr-day {
-    border-radius: 5px;
+    border-radius: 5px !important;
 }
 
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
 .flatpickr-day.endRange {
-    background: #0969A2;
-    border-color: #0969A2;
-    color: white;
+    background: #0969A2 !important;
+    border-color: #0969A2 !important;
+    color: white !important;
 }
 
 .flatpickr-day.selected:hover,
 .flatpickr-day.startRange:hover,
 .flatpickr-day.endRange:hover {
-    background: #3D9AD1;
-    border-color: #3D9AD1;
+    background: #3D9AD1 !important;
+    border-color: #3D9AD1 !important;
+}
+
+.filter-group select,
+.filter-type select {
+    width: 280px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 1250px) {
+    .right-sidebar {
+        width: 100% !important; /* На мобильных сайдбар на всю ширину */
+        min-width: unset !important; /* Убираем минимальную ширину */
+        padding: 15px !important;
+    }
+
+    .flatpickr-calendar {
+        max-width: 100% !important; /* Календарь адаптируется под ширину сайдбара */
+    }
 }

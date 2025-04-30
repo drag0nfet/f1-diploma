@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     initRegister();
 
     // Модератор новостей - 3 бит = 8, есть гест-режим
-    await initAuthStatus(8, "user", "index");
+    let {isModerator, un} = await initAuthStatus(8, "user", "index");
 
-    loadNews("ACTIVE", 1, 10);
+    loadNews("ACTIVE", 1, 10, isModerator);
 });
 
 document.getElementById("create_news-btn").addEventListener("click", function(e) {

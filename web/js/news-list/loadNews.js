@@ -1,6 +1,6 @@
 const newsContainer = document.getElementById("news-container");
 
-export function loadNews(status, page, limit) {
+export function loadNews(status, page, limit, isModerator) {
     newsContainer.innerHTML = '<div class="spinner">Загрузка...</div>';
 
     const url = `/load-news-by-status?status=${encodeURIComponent(status)}&page=${page}&limit=${limit}`;
@@ -24,13 +24,18 @@ export function loadNews(status, page, limit) {
                 data.all_news.forEach(news => {
                     const newsElement = document.createElement("div");
                     newsElement.className = "news-item";
+
+                    const editButtonHtml = isModerator
+                        ? `<button class="edit-btn" data-news-id="${news.news_id}">Редактировать</button>`
+                        : '';
+
                     newsElement.innerHTML = `
                         <div class="news-content">
                             ${news.image ? `<img src="data:image/jpeg;base64,${news.image}" alt="${news.title}" class="news-image">` : '<div class="news-no-image">Нет изображения</div>'}
                             <div class="news-info">
                                 <h3 class="news-title">${news.title}</h3>
                                 <p class="news-description">${news.description || news.comment.slice(0, 253) + '...' || "Описание отсутствует"}</p>
-                                <button class="edit-btn" data-news-id="${news.news_id}">Редактировать</button>
+                                ${editButtonHtml}
                             </div>
                         </div>
                     `;

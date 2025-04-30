@@ -24,6 +24,10 @@
     font-size: 1rem;
 }
 
+.right-sidebar {
+    min-width: 200px !important;
+}
+
 .news-btn {
     background-color: #0969A2;
     color: white;

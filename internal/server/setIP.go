@@ -21,7 +21,7 @@ func SetIP() string {
 			for _, addr := range addrs {
 				if ipnet, ok := addr.(*net.IPNet); ok && ipnet.IP.To4() != nil {
 					ip := ipnet.IP.String()
-					log.Print("Попытка запуска сервера на адресе http://", ip, ":5051/")
+					log.Print("Сервер запущен на адресе http://", ip, ":5051/")
 					return ip
 				}
 			}
