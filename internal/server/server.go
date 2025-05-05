@@ -3,6 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/bar"
+	"diploma/internal/handlers/booking/editing_news"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
 	"diploma/internal/handlers/index/news"
@@ -63,6 +64,11 @@ func Run() {
 
 		// Страница добавления блюда
 		router.HandleFunc("/create-dish", bar.CreateDish)
+
+		// Страница редактирования мест и залов - модераторская
+		router.HandleFunc("/get-halls-list", editing_news.GetHallsList)
+		router.HandleFunc("/get-hall", editing_news.GetHall)
+		router.HandleFunc("/save-hall", editing_news.SaveHall)
 	}
 
 	// Страничные маршруты

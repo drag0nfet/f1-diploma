@@ -27,50 +27,32 @@
             </label>
             <button class="create-hall-btn">Создать новый зал</button>
         </div>
-        <div class="hall-form">
-            <div class="form-column left-column">
-                <div class="form-group">
-                    <label for="hall-name">Название зала</label>
-                    <input type="text" id="hall-name" class="form-input" placeholder="Введите название">
-                </div>
-                <div class="form-group">
-                    <label for="hall-description">Описание</label>
-                    <textarea id="hall-description" class="form-textarea" placeholder="Введите описание"></textarea>
-                </div>
-                <div class="album-preview">
-                    <p>Предпросмотр альбома:</p>
-                    <div class="album-container"></div>
-                </div>
-                <button class="add-photo-btn">Добавить фото в альбом</button>
-            </div>
-            <div class="form-column right-column">
-                <p class="grid-label">Задать сетку столов</p>
-                <div class="table-grid-container">
-                    <div class="table-wrapper">
-                        <table class="table-grid">
-                            <tbody>
-                            <tr>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                            </tr>
-                            <tr>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button class="grid-btn add-column-btn">+</button>
-                        <button class="grid-btn add-row-btn">+</button>
-                        <div class="grid-controls">
-                            <button class="grid-btn-controls remove-row">Удалить строку</button>
-                            <button class="grid-btn-controls remove-column">Удалить столбец</button>
-                        </div>
+        <div class="selected-hall" style="display: none;">
+            <div class="hall-form">
+                <div class="form-column left-column">
+                    <div class="form-group">
+                        <label for="hall-name">Название зала</label>
+                        <input type="text" id="hall-name" class="form-input" placeholder="Введите название">
+                    </div>
+                    <div class="form-group">
+                        <label for="hall-description">Описание</label>
+                        <textarea id="hall-description" class="form-textarea" placeholder="Введите описание"></textarea>
+                    </div>
+                    <div class="album-preview">
+                        <p>Предпросмотр альбома:</p>
+                        <div class="album-container"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Добавить фото в альбом</label>
+                        <input type="file" id="photo-input" multiple accept="image/*" style="display: none;">
+                        <button class="add-photo-btn" type="button" onclick="document.getElementById('photo-input').click();">Добавить фото</button>
+                        <ul id="photo-list" class="photo-list"></ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="save-container">
-            <button class="save-btn">Сохранить</button>
+            <div class="save-container">
+                <button class="save-btn">Сохранить</button>
+            </div>
         </div>
     </div>
 </div>

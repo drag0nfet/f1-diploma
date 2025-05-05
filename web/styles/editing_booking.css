@@ -1,3 +1,35 @@
+/* Предпросмотр альбома */
+.album-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.album-preview p {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.album-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 100px;
+    padding: 10px;
+    background: #f9f9f9;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Стили для изображений в предпросмотре */
+.album-image {
+    max-width: 150px; /* Ограничение ширины */
+    max-height: 100px; /* Ограничение высоты */
+    object-fit: cover; /* Сохранение пропорций с обрезкой */
+    border-radius: 5px; /* Опционально, для округления углов */
+}
+
 /* Контейнер выбора зала */
 .hall-selection {
     display: flex;
@@ -133,10 +165,8 @@
 .table-grid {
     border-collapse: collapse;
     width: auto; /* Ширина определяется содержимым */
-    position: relative; /* Для позиционирования кнопок */
 }
 
-/* Стили ячеек */
 .table-grid td {
     border: 1px solid #ccc;
     padding: 5px;
@@ -146,7 +176,6 @@
     height: 30px; /* Высота для одной строки текста */
     font-size: 14px;
     box-sizing: border-box;
-    position: relative; /* Для определения наведения */
 }
 
 .table-grid td[contenteditable="true"]:focus {
@@ -154,52 +183,7 @@
     background: #f0f8ff;
 }
 
-/* Кнопки-плюсики */
-.grid-btn {
-    position: absolute;
-    background-color: #0969A2;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 12px;
-    height: 12px;
-    font-size: 10px;
-    line-height: 12px;
-    text-align: center;
-    cursor: pointer;
-    opacity: 0; /* Скрыты по умолчанию */
-    transition: opacity 0.2s ease;
-}
-
-.grid-btn:hover {
-    background-color: #3D9AD1;
-}
-
-/* Показываем кнопку добавления столбца при наведении на крайний правый столбец */
-.table-grid tr td:last-child:hover ~ .add-column-btn,
-.table-grid tr td:last-child:hover .add-column-btn {
-    opacity: 1;
-}
-
-.add-column-btn {
-    top: 0;
-    right: -12px; /* Смещение за правую границу таблицы */
-    transform: translateY(-50%); /* Центрирование по вертикали */
-}
-
-/* Показываем кнопку добавления строки при наведении на крайнюю нижнюю строку */
-.table-grid tr:last-child td:hover ~ .add-row-btn,
-.table-grid tr:last-child td:hover .add-row-btn {
-    opacity: 1;
-}
-
-.add-row-btn {
-    bottom: -12px; /* Смещение ниже нижней границы */
-    left: 0;
-    transform: translateX(-50%); /* Центрирование по горизонтали */
-}
-
-/* Кнопки удаления */
+/* Кнопки управления сеткой */
 .grid-controls {
     display: flex;
     gap: 10px;
