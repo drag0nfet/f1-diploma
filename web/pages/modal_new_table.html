@@ -22,12 +22,8 @@
                 <div class="form-group">
                     <label>Количество спотов:</label>
                     <label for="modal-spot-count">
-                        <input type="text" id="modal-spot-count" class="form-input" readonly>
+                        <input type="number" id="modal-spot-count" class="form-input" required min="1" max="20">
                     </label>
-                </div>
-                <div class="modal-buttons">
-                    <button id="modal-add-spot-btn" class="modal-btn">Добавить спот</button>
-                    <button id="modal-remove-spot-btn" class="modal-btn">Удалить спот</button>
                 </div>
                 <div class="modal-actions">
                     <button id="modal-save-btn" class="modal-btn modal-save-btn">Сохранить</button>

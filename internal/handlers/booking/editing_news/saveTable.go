@@ -41,11 +41,12 @@ func SaveTable(w http.ResponseWriter, r *http.Request) {
 			Success: false,
 			Message: "Стол с таким номером уже существует в этом зале",
 		})
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	if req.TableID == -1 {
-		// Создание новой записи
+		// Создание нового стола
 		newTable := models.Table{
 			HallID:      req.HallID,
 			TableNamee:  req.TableNamee,
@@ -54,6 +55,22 @@ func SaveTable(w http.ResponseWriter, r *http.Request) {
 		}
 		if err := database.DB.Create(&newTable).Error; err != nil {
 			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не удалось создать стол:" + err.Error()})
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		// Создание новых спотов
+		var spots []models.Spot
+		for number := 1; number <= newTable.Seats; number++ {
+			spots = append(spots, models.Spot{
+				TableID:  newTable.TableID,
+				SpotName: number,
+			})
+		}
+
+		if err := database.DB.Create(&spots).Error; err != nil {
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не удалось создать споты: " + err.Error()})
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
@@ -81,7 +98,69 @@ func SaveTable(w http.ResponseWriter, r *http.Request) {
 	// Обновление существующего стола
 	if err := database.DB.First(&table, req.TableID).Error; err != nil {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Стол не найден"})
+		w.WriteHeader(http.StatusBadRequest)
 		return
+	}
+
+	deltaSeats := req.SpotCount - table.Seats
+
+	if deltaSeats > 0 {
+		// Находим список всех существующих мест для данного стола
+		var spotNames []int
+		if err := database.DB.
+			Model(&models.Spot{}).
+			Where("table_id = ?", table.TableID).
+			Pluck("spot_name", &spotNames).Error; err != nil {
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не найдены места у данного стола"})
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		// Создаём мапу для быстрого доступа к существующим местам
+		spotNamesMap := make(map[int]struct{})
+		for _, spot := range spotNames {
+			spotNamesMap[spot] = struct{}{}
+		}
+
+		// Создаём новые споты без совпадения имён
+		var spots []models.Spot
+		for number, deltaCount := 1, 0; deltaCount < deltaSeats; number++ {
+			if _, found := spotNamesMap[number]; !found {
+				deltaCount++
+				spots = append(spots, models.Spot{
+					TableID:  table.TableID,
+					SpotName: number,
+				})
+			}
+		}
+
+		// Добавляем споты в БД
+		if err := database.DB.Create(&spots).Error; err != nil {
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не удалось создать споты: " + err.Error()})
+			return
+		}
+	} else if deltaSeats < 0 {
+		var spotIDs []uint
+		if err := database.DB.
+			Model(&models.Spot{}).
+			Where("table_id = ?", table.TableID).
+			Order("spot_name DESC").
+			Limit(-deltaSeats).
+			Pluck("spot_id", &spotIDs).Error; err != nil {
+			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка при поиске мест для удаления"})
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if len(spotIDs) > 0 {
+			if err := database.DB.
+				Where("spot_id IN ?", spotIDs).
+				Delete(&models.Spot{}).Error; err != nil {
+				json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка при удалении мест"})
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+		}
 	}
 
 	table.PriceStatus = req.PriceStatus
