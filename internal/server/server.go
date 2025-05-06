@@ -69,6 +69,9 @@ func Run() {
 		router.HandleFunc("/get-halls-list", editing_news.GetHallsList)
 		router.HandleFunc("/get-hall", editing_news.GetHall)
 		router.HandleFunc("/save-hall", editing_news.SaveHall)
+		router.HandleFunc("/delete-table", editing_news.DeleteTable)
+		router.HandleFunc("/get-spot-count", editing_news.GetSpotCount)
+		router.HandleFunc("/save-table", editing_news.SaveTable)
 	}
 
 	// Страничные маршруты
@@ -100,6 +103,9 @@ func Run() {
 		}))
 		router.HandleFunc("/editing_booking", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/editing_booking.html")
+		}))
+		router.HandleFunc("/modal_new_table", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "dir/pages/modal_new_table.html")
 		}))
 
 		// Блокировка неавторизованных

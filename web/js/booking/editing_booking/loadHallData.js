@@ -1,7 +1,10 @@
+import {fillTables} from "./fillTables";
+
 export function loadHallData(hallId, photoState) {
     const nameInput = document.getElementById("hall-name");
     const descriptionInput = document.getElementById("hall-description");
     const albumContainer = document.querySelector(".album-container");
+    const tablesGrid = document.querySelector(".tables-grid");
 
     const selectedHall = document.querySelector(".selected-hall");
     selectedHall.style.display = "block";
@@ -51,6 +54,14 @@ export function loadHallData(hallId, photoState) {
                 } else {
                     albumContainer.innerHTML = "<p>Альбом пуст</p>";
                 }
+
+                // Отображение столов
+                if (Array.isArray(hall.tables) && hall.tables.length > 0) {
+                    fillTables(hall.tables, tablesGrid);
+                } else {
+                    tablesGrid.innerHTML = "<p>Столов нет</p>";
+                }
+
             } else {
                 console.error("Ошибка загрузки данных зала:", data.message);
             }

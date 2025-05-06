@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/modal2.css">
+</head>
+<body>
+    <div id="modal-table-overlay" class="modal-overlay">
+        <div id="modal-table-content" class="modal-content">
+            <h3 id="modal-title">Создание нового стола</h3>
+            <div class="modal-form">
+                <div class="form-group">
+                    <label for="modal-table-name">Номер стола:</label>
+                    <input type="number" id="modal-table-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-price-status">Статус цены:</label>
+                    <input type="text" id="modal-price-status" class="form-input" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label>Количество спотов:</label>
+                    <label for="modal-spot-count">
+                        <input type="text" id="modal-spot-count" class="form-input" readonly>
+                    </label>
+                </div>
+                <div class="modal-buttons">
+                    <button id="modal-add-spot-btn" class="modal-btn">Добавить спот</button>
+                    <button id="modal-remove-spot-btn" class="modal-btn">Удалить спот</button>
+                </div>
+                <div class="modal-actions">
+                    <button id="modal-save-btn" class="modal-btn modal-save-btn">Сохранить</button>
+                    <button id="modal-cancel-btn" class="modal-btn modal-cancel-btn">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,35 +1,3 @@
-/* Предпросмотр альбома */
-.album-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.album-preview p {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 0;
-}
-
-.album-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    min-height: 100px;
-    padding: 10px;
-    background: #f9f9f9;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* Стили для изображений в предпросмотре */
-.album-image {
-    max-width: 150px; /* Ограничение ширины */
-    max-height: 100px; /* Ограничение высоты */
-    object-fit: cover; /* Сохранение пропорций с обрезкой */
-    border-radius: 5px; /* Опционально, для округления углов */
-}
-
 /* Контейнер выбора зала */
 .hall-selection {
     display: flex;
@@ -106,19 +74,7 @@
     min-height: 100px;
 }
 
-/* Предпросмотр альбома */
-.album-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.album-preview p {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 0;
-}
-
+/* Контейнер для предпросмотра альбома */
 .album-container {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -128,6 +84,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+/* Стили для изображений в предпросмотре */
+.album-image {
+    max-width: 150px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .add-photo-btn {
@@ -144,64 +108,93 @@
     background-color: #3D9AD1;
 }
 
-/* Сетка столов */
-.grid-label {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 0 0 10px 0;
-}
-
-.table-grid-container {
+/* Контейнер для столов */
+.tables-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.table-wrapper {
-    position: relative;
-    display: inline-block;
+.tables-container h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
 }
 
-.table-grid {
-    border-collapse: collapse;
-    width: auto; /* Ширина определяется содержимым */
+.tables-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* Выравнивание по центру */
 }
 
-.table-grid td {
+/* Стили для плиток столов */
+.table-tile {
     border: 1px solid #ccc;
-    padding: 5px;
-    text-align: center;
-    background: #fff;
-    width: 60px; /* Примерно 4-5 символов */
-    height: 30px; /* Высота для одной строки текста */
-    font-size: 14px;
+    border-radius: 5px;
+    padding: 10px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
     box-sizing: border-box;
 }
 
-.table-grid td[contenteditable="true"]:focus {
-    outline: 2px solid #0969A2;
-    background: #f0f8ff;
+.table-tile h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* Кнопки управления сеткой */
-.grid-controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.table-tile p {
+    margin: 0;
+    font-size: 12px;
 }
 
-.grid-btn-controls {
+/* Крупные столы (10+ мест, 2 в строке) */
+.table-tile.large {
+    width: calc(50% - 5px); /* 50% ширины минус половина зазора */
+    min-width: 200px;
+}
+
+/* Средние столы (5-10 мест, 3 в строке) */
+.table-tile.medium {
+    width: calc(33.33% - 6.67px); /* 33.33% ширины минус 2/3 зазора */
+    min-width: 150px;
+}
+
+/* Маленькие столы (4 и меньше мест, 4 в строке) */
+.table-tile.small {
+    width: calc(25% - 7.5px); /* 25% ширины минус 3/4 зазора */
+    min-width: 120px;
+}
+
+/* Кнопки в плитке */
+.table-tile button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.table-tile .edit-table-btn {
     background-color: #0969A2;
     color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
 }
 
-.grid-btn-controls:hover {
+.table-tile .edit-table-btn:hover {
     background-color: #3D9AD1;
+}
+
+.table-tile .delete-table-btn {
+    background-color: #ff4444;
+    color: white;
+}
+
+.table-tile .delete-table-btn:hover {
+    background-color: #cc0000;
 }
 
 /* Кнопка сохранения */
@@ -228,14 +221,10 @@
 /* Адаптивность */
 @media (max-width: 1250px) {
     .hall-form {
-        grid-template-columns: 1fr; /* Один столбец на мобильных */
-    }
-
-    .table-grid {
-        max-width: 100%; /* Таблица на всю ширину */
+        grid-template-columns: 1fr;
     }
 
     .hall-select {
-        min-width: 100%; /* Выпадающее меню на всю ширину */
+        min-width: 100%;
     }
 }

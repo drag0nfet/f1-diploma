@@ -12,6 +12,12 @@ import (
 )
 
 func SaveHall(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("X-Requested-With") != "XMLHttpRequest" {
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Прямой доступ запрещён"})
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 		return
