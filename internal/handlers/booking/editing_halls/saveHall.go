@@ -1,4 +1,4 @@
-package editing_news
+package editing_halls
 
 import (
 	"diploma/internal/database"
@@ -25,7 +25,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 
 	// Парсинг формы с ограничением 32 МБ
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
-		log.Printf("Ошибка парсинга формы: %v", err)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Ошибка парсинга формы"})
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -39,7 +38,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 	// Валидация hall_id
 	hallId, err := strconv.Atoi(hallIdStr)
 	if err != nil {
-		log.Printf("Некорректный hall_id: %v", hallIdStr)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Некорректный hall_id"})
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -47,7 +45,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 
 	// Валидация обязательных полей
 	if name == "" || description == "" {
-		log.Printf("Отсутствуют обязательные поля: name=%s, description=%s", name, description)
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Название и описание обязательны"})
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -56,8 +53,7 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 	// Обработка удалённых фотографий
 	var deletedPhotoIds []int
 	if deletedRaw != "" {
-		if err := json.Unmarshal([]byte(deletedRaw), &deletedPhotoIds); err != nil {
-			log.Printf("Ошибка парсинга deleted_photo_ids: %v", err)
+		if err = json.Unmarshal([]byte(deletedRaw), &deletedPhotoIds); err != nil {
 			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Некорректный формат deleted_photo_ids"})
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -72,7 +68,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 	for _, fileHeader := range files {
 		// Валидация размера файла (макс. 5 МБ)
 		if fileHeader.Size > 5<<20 {
-			log.Printf("Файл %s слишком большой: %d байт", fileHeader.Filename, fileHeader.Size)
 			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Файл слишком большой (макс. 5 МБ)"})
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -80,7 +75,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 
 		file, err := fileHeader.Open()
 		if err != nil {
-			log.Printf("Ошибка открытия файла %s: %v", fileHeader.Filename, err)
 			continue
 		}
 		defer file.Close()
@@ -89,12 +83,10 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 		buffer := make([]byte, 512)
 		n, err := file.Read(buffer)
 		if err != nil && err != io.EOF {
-			log.Printf("Ошибка чтения файла %s: %v", fileHeader.Filename, err)
 			continue
 		}
 		mimeType := http.DetectContentType(buffer[:n])
 		if mimeType != "image/jpeg" && mimeType != "image/png" && mimeType != "image/bmp" && mimeType != "image/jpg" && mimeType != "image/webp" {
-			log.Printf("Неподдерживаемый формат файла %s: %s", fileHeader.Filename, mimeType)
 			json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Поддерживаются только JPEG, JPG, BMP, WEBP и PNG"})
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -150,7 +142,6 @@ func SaveHall(w http.ResponseWriter, r *http.Request) {
 			Where("hall_id = ?", newHall.HallID).
 			Order("created_at ASC").
 			Find(&photos).Error; err != nil {
-			log.Printf("Ошибка загрузки фотографий для зала %d: %v", newHall.HallID, err)
 		}
 
 		json.NewEncoder(w).Encode(map[string]any{

@@ -1,4 +1,5 @@
 import {loadHallData} from "./loadHallData";
+import {initDeleteBtn} from "./initDeleteBtn";
 
 export function get_halls_list(photoState) {
     fetch('/get-halls-list', {
@@ -36,7 +37,8 @@ export function get_halls_list(photoState) {
                     const selectedValue = this.value;
                     if (selectedValue) {
                         document.querySelector(".selected-hall").style.display = "block";
-                        loadHallData(selectedValue, photoState); // Передаём photoState
+                        loadHallData(selectedValue, photoState);
+                        initDeleteBtn(sessionStorage.getItem("hall_id"));
                     } else {
                         document.querySelector(".selected-hall").style.display = "none";
                         document.getElementById("hall-name").value = "";

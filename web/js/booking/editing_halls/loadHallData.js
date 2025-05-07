@@ -12,6 +12,7 @@ export function loadHallData(hallId, photoState) {
     sessionStorage.setItem("hall_id", hallId);
 
     if (hallId === -1) {
+        document.querySelector(".tables-grid").innerHTML = "";
         nameInput.value = "";
         descriptionInput.value = "";
         albumContainer.innerHTML = "<p>Альбом пуст</p>";

@@ -1,4 +1,4 @@
-package editing_news
+package editing_halls
 
 import (
 	"diploma/internal/database"

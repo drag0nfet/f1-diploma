@@ -35,7 +35,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-document.getElementById("moderator-btn").addEventListener("click", function(e) {
+document.getElementById("halls-btn").addEventListener("click", function(e) {
     e.preventDefault();
-    window.location.href = `/editing_booking`;
+    window.location.href = `/editing_halls`;
+});
+
+document.getElementById("events-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = `/editing_events`;
 });

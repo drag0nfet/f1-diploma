@@ -22,12 +22,17 @@ export async function saveHall(photoState) {
     try {
         const response = await fetch('/save-hall', {
             method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
             body: formData
         });
 
         const result = await response.json();
         if (result.success) {
             alert('Зал успешно сохранён!');
+            // Задаём новый сессионный id зала
+            sessionStorage.setItem("hall_id", result.hall.hall_id);
             // Обновляем photoState
             photoState.new = [];
             photoState.existing = result.hall.album.map(photo => ({

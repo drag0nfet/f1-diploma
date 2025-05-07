@@ -1,0 +1,151 @@
+/* Контейнер выбора ивента */
+.event-selection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.event-label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.event-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+/* Кнопка создания ивента */
+.create-event-btn {
+    background-color: #0969A2;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-event-btn:hover {
+    background-color: #3D9AD1;
+}
+
+/* Контейнер формы ивента */
+.event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Секция строки формы */
+.form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Группа полей */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-input,
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Предпросмотр Markdown */
+.markdown-preview {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: #f9f9f9;
+    min-height: 100px;
+}
+
+.markdown-preview h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#markdown-preview-content {
+    word-wrap: break-word;
+}
+
+/* Выпадающие списки */
+select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+/* Действия формы */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.save-event-btn,
+.cancel-event-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-event-btn {
+    background-color: #0969A2;
+    color: white;
+}
+
+.save-event-btn:hover {
+    background-color: #3D9AD1;
+}
+
+.delete-event-btn {
+    background-color: #ccc;
+    color: black;
+}
+
+.delete-event-btn:hover {
+    background-color: #bbb;
+}
+
+/* Адаптивность (опционально, для ПК) */
+@media (max-width: 1250px) {
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .markdown-preview {
+        margin-top: 10px;
+    }
+}

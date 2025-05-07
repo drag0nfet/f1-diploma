@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование ивентов</title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/editing_events.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header class="header" id="main-head"></header>
+    <button class="menu-btn" id="menu-btn">☰</button>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="/booking" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <div id="moderator-content" style="display: block;">
+        <div class="event-selection">
+            <label class="event-label">Выберите ивент:</label>
+            <label>
+                <select class="event-select">
+                    <option value="">-- Выберите ивент --</option>
+                </select>
+            </label>
+            <button class="create-event-btn">Создать новый ивент</button>
+        </div>
+        <div class="selected-event" style="display: none;">
+            <div class="event-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-description">Описание:</label>
+                        <textarea id="event-description" placeholder="Введите описание в формате Markdown" rows="6" oninput="updateMarkdownPreview()"></textarea>
+                    </div>
+                    <div class="markdown-preview">
+                        <h3>Предпросмотр описания:</h3>
+                        <div id="markdown-preview-content"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-time-start">Дата и время начала:</label>
+                        <input type="text" id="event-time-start" class="calendar-input" placeholder="Выберите дату и время">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-duration">Продолжительность (мин):</label>
+                        <input type="number" id="event-duration" class="form-input" value="90" min="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-sport-category">Категория спорта:</label>
+                        <select id="event-sport-category" class="form-input">
+                            <option value="">-- Выберите категорию --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-sport-type">Тип спорта:</label>
+                        <select id="event-sport-type" class="form-input" disabled>
+                            <option value="">-- Выберите тип --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="event-price-status">Статус цены:</label>
+                    <input type="text" id="event-price-status" class="form-input" maxlength="20">
+                </div>
+                <div class="form-actions">
+                    <button class="save-event-btn">Сохранить</button>
+                    <button class="delete-event-btn">Удалить событие</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="../js/booking/editing_events/main.js"></script>
+<script>
+    function updateMarkdownPreview() {
+        const commentInput = document.getElementById("event-description").value;
+        const previewDiv = document.getElementById("markdown-preview-content");
+        previewDiv.innerHTML = marked.parse(commentInput);
+    }
+</script>
+</body>
+</html>

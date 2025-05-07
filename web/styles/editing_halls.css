@@ -214,6 +214,14 @@
     font-size: 16px;
 }
 
+.delete-btn {
+    background-color: #dc3545; /* Красный */
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
 .save-btn:hover {
     background-color: #3D9AD1;
 }

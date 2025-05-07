@@ -15,6 +15,10 @@ export async function initListeners(modalOverlay, tableId) {
             alert("Заполните все необходимые поля!")
             return;
         }
+        if (hallId === "-1") {
+            alert("Невозможно добавить стол к несохранённому залу. Сохраните зал!")
+            return;
+        }
         const tableData = {
             hall_id: Number(hallId),
             table_id: tableId,
