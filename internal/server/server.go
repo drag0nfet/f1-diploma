@@ -3,6 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/bar"
+	"diploma/internal/handlers/booking/editing_events"
 	"diploma/internal/handlers/booking/editing_halls"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
@@ -69,10 +70,15 @@ func Run() {
 		router.HandleFunc("/get-halls-list", editing_halls.GetHallsList)
 		router.HandleFunc("/get-hall", editing_halls.GetHall)
 		router.HandleFunc("/save-hall", editing_halls.SaveHall)
-		router.HandleFunc("/delete-table", editing_halls.DeleteTable)
+		router.HandleFunc("/delete-hall", editing_halls.DeleteHall)
 		router.HandleFunc("/get-spot-count", editing_halls.GetSpotCount)
 		router.HandleFunc("/save-table", editing_halls.SaveTable)
-		router.HandleFunc("/delete-hall", editing_halls.DeleteHall)
+		router.HandleFunc("/delete-table", editing_halls.DeleteTable)
+
+		// Страница редактирования ивентов - модераторская
+		router.HandleFunc("/get-events-list", editing_events.GetEventsList)
+		router.HandleFunc("/get-event", editing_events.GetEvent)
+		router.HandleFunc("/save-event", editing_events.SaveEvent)
 	}
 
 	// Страничные маршруты

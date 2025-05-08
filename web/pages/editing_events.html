@@ -5,7 +5,10 @@
     <title>Редактирование ивентов</title>
     <link rel="stylesheet" href="../styles/general.css">
     <link rel="stylesheet" href="../styles/editing_events.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 </head>
 <body>
 <div class="container">
@@ -33,7 +36,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event-description">Описание:</label>
-                        <textarea id="event-description" placeholder="Введите описание в формате Markdown" rows="6" oninput="updateMarkdownPreview()"></textarea>
+                        <textarea id="event-description" placeholder="Введите описание в формате Markdown"
+                                  rows="6"></textarea>
                     </div>
                     <div class="markdown-preview">
                         <h3>Предпросмотр описания:</h3>
@@ -43,7 +47,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event-time-start">Дата и время начала:</label>
-                        <input type="text" id="event-time-start" class="calendar-input" placeholder="Выберите дату и время">
+                        <input type="text" id="event-time-start" class="calendar-input"
+                               placeholder="Выберите дату и время">
                     </div>
                     <div class="form-group">
                         <label for="event-duration">Продолжительность (мин):</label>
@@ -55,13 +60,21 @@
                         <label for="event-sport-category">Категория спорта:</label>
                         <select id="event-sport-category" class="form-input">
                             <option value="">-- Выберите категорию --</option>
+                            <option value="f1">Формула-1</option>
+                            <option value="f2">Формула-2</option>
+                            <option value="fe">Формула-Е</option>
+                            <option value="wf">Ф-1 Академия</option>
+                            <option value="nascar">Наскар</option>
+                            <option value="autosport">Прочий автоспорт</option>
+                            <option value="football">Футбол</option>
+                            <option value="hockey">Хоккей</option>
+                            <option value="another">Прочее</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="event-sport-type">Тип спорта:</label>
-                        <select id="event-sport-type" class="form-input" disabled>
-                            <option value="">-- Выберите тип --</option>
-                        </select>
+                        <label for="event-sport-type">Вид спорта:</label>
+                        <input type="text" id="event-sport-type" class="form-input"
+                               placeholder="Введите вид спорта" maxlength="32" disabled>
                     </div>
                 </div>
                 <div class="form-group">
@@ -69,8 +82,8 @@
                     <input type="text" id="event-price-status" class="form-input" maxlength="20">
                 </div>
                 <div class="form-actions">
-                    <button class="save-event-btn">Сохранить</button>
-                    <button class="delete-event-btn">Удалить событие</button>
+                    <button class="save-btn">Сохранить</button>
+                    <button class="delete-btn">Удалить событие</button>
                 </div>
             </div>
         </div>
@@ -78,12 +91,5 @@
 </div>
 <div class="overlay" id="overlay"></div>
 <script type="module" src="../js/booking/editing_events/main.js"></script>
-<script>
-    function updateMarkdownPreview() {
-        const commentInput = document.getElementById("event-description").value;
-        const previewDiv = document.getElementById("markdown-preview-content");
-        previewDiv.innerHTML = marked.parse(commentInput);
-    }
-</script>
 </body>
 </html>

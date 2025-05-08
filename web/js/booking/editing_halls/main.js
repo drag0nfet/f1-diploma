@@ -2,7 +2,7 @@ import {initAuthStatus} from "../../checkAuth";
 import {initMenu} from "../../menu";
 import {loadHallData} from "./loadHallData";
 import {saveHall} from "./saveHall";
-import {get_halls_list} from "./getHallsList";
+import {getHallsList} from "./getHallsList";
 import {initPhotoProcess} from "./photoProcess";
 import {initTableActions} from "./tableActions";
 import {modalTable} from "./editTable";
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const photoState = initPhotoProcess();
     window.photoState = photoState;
-    get_halls_list(photoState);
+    getHallsList(photoState);
 
     document.querySelector(".create-hall-btn").addEventListener("click", function(e) {
         e.preventDefault();

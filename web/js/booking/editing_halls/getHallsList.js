@@ -1,7 +1,7 @@
 import {loadHallData} from "./loadHallData";
 import {initDeleteBtn} from "./initDeleteBtn";
 
-export function get_halls_list(photoState) {
+export function getHallsList(photoState) {
     fetch('/get-halls-list', {
         method: 'GET',
         headers: {

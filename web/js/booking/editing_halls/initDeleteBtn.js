@@ -8,7 +8,8 @@ export function initDeleteBtn(hall_id) {
         const confirmed = window.confirm("Вы уверены, что хотите удалить зал? Отменить это действие будет невозможно");
 
         if (confirmed) {
-            fetch(`/delete-hall?hall_id=${encodeURIComponent(hall_id)}`, {                method: "DELETE",
+            fetch(`/delete-hall?hall_id=${encodeURIComponent(hall_id)}`, {
+                method: "DELETE",
                 credentials: "include",
                 headers: {
                     "X-Requested-With": "XMLHttpRequest",
