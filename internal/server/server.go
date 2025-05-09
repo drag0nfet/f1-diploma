@@ -79,6 +79,7 @@ func Run() {
 		router.HandleFunc("/get-events-list", editing_events.GetEventsList)
 		router.HandleFunc("/get-event", editing_events.GetEvent)
 		router.HandleFunc("/save-event", editing_events.SaveEvent)
+		router.HandleFunc("/delete-event", editing_events.DeleteEvent)
 	}
 
 	// Страничные маршруты
