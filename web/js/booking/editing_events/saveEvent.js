@@ -26,7 +26,7 @@ export function saveEvent() {
     }
 
     const eventData = {
-        event_id: eventId === "-1" ? null : parseInt(eventId),
+        event_id: parseInt(eventId),
         description: description,
         time_start: parsedDate.toISOString(),
         duration: parseInt(duration),
@@ -47,7 +47,7 @@ export function saveEvent() {
         .then(data => {
             if (data.success) {
                 alert("Ивент успешно сохранён!");
-                sessionStorage.setItem("event_id", data.event_id || eventId);
+                sessionStorage.setItem("event_id", data.event_id);
                 window.location.href = "/editing_events";
             } else {
                 alert("Ошибка сохранения ивента: " + (data.message || "Неизвестная ошибка"));

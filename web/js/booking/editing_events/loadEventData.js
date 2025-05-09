@@ -1,3 +1,5 @@
+import {updateMarkdownPreview} from "./main";
+
 export function loadEventData(eventId) {
     const descriptionInput = document.getElementById("event-description");
     const timeStartInput = document.getElementById("event-time-start");
@@ -19,6 +21,7 @@ export function loadEventData(eventId) {
         sportTypeInput.value = "";
         sportTypeInput.disabled = true;
         priceStatusInput.value = "";
+        updateMarkdownPreview();
         return;
     }
 
@@ -34,13 +37,24 @@ export function loadEventData(eventId) {
                 const event = data.event;
 
                 descriptionInput.value = event.description || "";
-                timeStartInput.value = event.time_start ? new Date(event.time_start).toISOString().slice(0, 16) : ""; // Формат для input[type="datetime-local"]
+                // Преобразуем time_start из ISO в формат дд.мм.гггг чч:мм
+                if (event.time_start) {
+                    const date = new Date(event.time_start);
+                    const day = String(date.getDate()).padStart(2, "0");
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
+                    const year = date.getFullYear();
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                    timeStartInput.value = `${day}.${month}.${year} ${hours}:${minutes}`;
+                } else {
+                    timeStartInput.value = "";
+                }
                 durationInput.value = event.duration || "90";
                 sportCategorySelect.value = event.sport_category || "";
                 sportTypeInput.value = event.sport_type || "";
-                sportTypeInput.disabled = !event.sport_category; // Включаем, если категория выбрана
+                sportTypeInput.disabled = !event.sport_category;
                 priceStatusInput.value = event.price_status || "";
-
+                updateMarkdownPreview();
             } else {
                 console.error("Ошибка загрузки данных ивента:", data.message);
             }

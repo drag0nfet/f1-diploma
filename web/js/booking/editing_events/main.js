@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-function updateMarkdownPreview() {
+export function updateMarkdownPreview() {
     const commentInput = document.getElementById("event-description").value;
     const previewDiv = document.getElementById("markdown-preview-content");
     previewDiv.innerHTML = marked.parse(commentInput);
