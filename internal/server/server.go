@@ -16,9 +16,11 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"time"
 )
 
 func Run() {
+	start := time.Now()
 	buildFrontend()
 
 	router := mux.NewRouter()
@@ -130,6 +132,7 @@ func Run() {
 
 	handler := services.EnableCORS(router)
 
+	log.Println("Сервер запущен за ", time.Since(start))
 	err := http.ListenAndServe(SetIP()+":5051", handler)
 	if err != nil {
 		log.Fatal("ListenAndServe error: ", err)
