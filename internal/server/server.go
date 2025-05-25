@@ -68,6 +68,9 @@ func Run() {
 		// Страница добавления блюда
 		router.HandleFunc("/create-dish", bar.CreateDish)
 
+		// Страница бронирования спотов
+		// router.HandleFunc("/get-events-list", editing_events.GetEventsList) - тот же функционал
+
 		// Страница редактирования мест и залов - модераторская
 		router.HandleFunc("/get-halls-list", editing_halls.GetHallsList)
 		router.HandleFunc("/get-hall", editing_halls.GetHall)

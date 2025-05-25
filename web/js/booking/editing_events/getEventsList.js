@@ -1,5 +1,5 @@
 import {initDeleteBtn} from "./initDeleteBtn";
-import {getEventName} from "./getEventName";
+import {getUnMdText} from "../getUnMdText";
 import {loadEventData} from "./loadEventData";
 
 export function getEventsList() {
@@ -21,7 +21,7 @@ export function getEventsList() {
                 data.events.forEach(event => {
                     const option = document.createElement("option");
                     option.value = event.event_id;
-                    option.textContent = getEventName(event.description);
+                    option.textContent = getUnMdText(event.description);
                     eventsContainer.appendChild(option);
                 });
 

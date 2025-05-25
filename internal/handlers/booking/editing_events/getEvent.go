@@ -48,15 +48,7 @@ func GetEvent(w http.ResponseWriter, r *http.Request) {
 	// Формируем ответ
 	response := map[string]any{
 		"success": true,
-		"event": map[string]any{
-			"event_id":       event.EventID,
-			"description":    event.Description,
-			"time_start":     event.TimeStart,
-			"sport_category": event.SportCategory,
-			"sport_type":     event.SportType,
-			"price_status":   event.PriceStatus,
-			"duration":       event.Duration,
-		},
+		"event":   event,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

@@ -38,18 +38,16 @@
                     <div class="filter-group">
                         <label>
                             <select multiple class="filter-category">
-                                <option value="" selected>Пример категории 1</option>
-                                <option value="">Пример категории 2</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <label class="filter-type-label">Вид спорта</label>
-                    <div class="filter-type">
-                        <label>
-                            <select multiple class="filter-type">
-                                <option value="" selected>Пример вида 1</option>
-                                <option value="">Пример вида 2</option>
+                                <option value="f1">Формула-1</option>
+                                <option value="f2">Формула-2</option>
+                                <option value="fe">Формула-Е</option>
+                                <option value="wf">Ф-1 Академия</option>
+                                <option value="nascar">Наскар</option>
+                                <option value="wec">Гонки на выносливость</option>
+                                <option value="autosport">Прочий автоспорт</option>
+                                <option value="football">Футбол</option>
+                                <option value="hockey">Хоккей</option>
+                                <option value="another">Прочее</option>
                             </select>
                         </label>
                     </div>
@@ -62,7 +60,8 @@
                     </div>
                 </div>
             </div>
-            <button class="apply-filters-btn">Применить фильтры</button>
+            <button class="apply-filters-btn" id="apply-filters-btn">Применить фильтры</button>
+            <button class="reset-filters-btn" id="reset-filters-btn">Сбросить фильтры</button>
         </div>
     </aside>
 </div>
