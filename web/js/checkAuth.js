@@ -16,6 +16,7 @@ export async function initAuthStatus(bit, user, page) {
     let isModerator = false;
     let data;
 
+
     try {
         const response = await fetch('/check-auth', {
             method: 'GET',
@@ -27,6 +28,9 @@ export async function initAuthStatus(bit, user, page) {
         data = await response.json();
 
         if (data.success && data.username) {
+
+            sessionStorage.setItem("user_id", data.id);
+
             const rights = data.rights || 0;
 
             if (guestContent) {

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование ивента</title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/booking.css">
+    <link rel="stylesheet" href="../styles/booking2.css">
+</head>
+<body>
+<div class="container">
+    <header class="header" id="main-head">Бронирование ивента</header>
+    <button class="menu-btn" id="menu-btn">☰</button>
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="#" class="sidebar-link" data-code="goods">Товары</a>
+        <a href="/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="/booking" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+    <main class="main">
+        <div class="hall-selection">
+            <label class="hall-label">Выберите зал:</label>
+            <label>
+                <select class="hall-select" id="hall-select">
+                    <option value="">-- Выберите зал --</option>
+                </select>
+            </label>
+        </div>
+        <div class="selected-hall" id="selected-hall" style="display: none;">
+            <div class="hall-info">
+                <h2 id="hall-name"></h2>
+                <p id="hall-description"></p>
+            </div>
+            <div class="photo-carousel" id="photo-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-images" id="carousel-images"></div>
+                    <button class="carousel-btn prev" id="carousel-prev">←</button>
+                    <button class="carousel-btn next" id="carousel-next">→</button>
+                </div>
+            </div>
+            <div class="tables-container">
+                <h3>Столы в зале</h3>
+                <div class="tables-grid" id="tables-grid"></div>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="../js/booking/booking_events/main.js"></script>
+</body>
+</html>

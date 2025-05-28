@@ -3,6 +3,7 @@ package server
 import (
 	"diploma/internal/handlers"
 	"diploma/internal/handlers/bar"
+	"diploma/internal/handlers/booking"
 	"diploma/internal/handlers/booking/editing_events"
 	"diploma/internal/handlers/booking/editing_halls"
 	"diploma/internal/handlers/forum"
@@ -70,6 +71,8 @@ func Run() {
 
 		// Страница бронирования спотов
 		// router.HandleFunc("/get-events-list", editing_events.GetEventsList) - тот же функционал
+		router.HandleFunc("/booking/hall/{hallId}/tables", booking.GetTablesList)
+		router.HandleFunc("/booking/hall/{hallId}", booking.GetHallDetails)
 
 		// Страница редактирования мест и залов - модераторская
 		router.HandleFunc("/get-halls-list", editing_halls.GetHallsList)
@@ -127,6 +130,9 @@ func Run() {
 		// Блокировка неавторизованных
 		router.HandleFunc("/forum/{topicId}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/topic.html")
+		}))
+		router.HandleFunc("/booking/event/{event_id}", StrictAuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "dir/pages/booking_event.html")
 		}))
 	}
 
