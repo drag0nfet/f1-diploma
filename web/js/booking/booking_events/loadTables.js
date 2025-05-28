@@ -70,14 +70,22 @@ export async function loadTables(hallId) {
                 (table.spots || []).forEach(spot => {
                     const booking = (Array.isArray(spot.bookings) &&
                         spot.bookings.length > 0 ? spot.bookings[0] : {});
-                    const isBookedByMe = booking.user_id === currentUserId();
+                    const isBookedByMe = booking.user_id === currentUserId() && booking.status === "ACTIVE";
                     const isBookedByOther = booking.user_id !== null &&
                         booking.user_id !== currentUserId() && booking.status === "ACTIVE";
+
+                    let spotText = `Место ${spot.spot_name}`
+                    if (isBookedByMe) {
+                        spotText = spotText + " - ваше"
+                    }
+                    if (isBookedByOther) {
+                        spotText = spotText + " - занято"
+                    }
 
                     const spotButton = document.createElement("button");
                     spotButton.className = `spot-btn ${isBookedByMe ? "booked-by-me" : isBookedByOther 
                         ? "booked-by-other" : "free"}`;
-                    spotButton.textContent = `Место ${spot.spot_name}`;
+                    spotButton.textContent = spotText;
                     spotButton.dataset.tableId = table.table_id;
                     spotButton.dataset.spotId = spot.spot_id;
                     if (isBookedByOther) {
@@ -125,6 +133,6 @@ export async function loadTables(hallId) {
     });
 
     function currentUserId() {
-        return localStorage.getItem("user_id");
+        return parseInt(sessionStorage.getItem("user_id"), 10);
     }
 }
