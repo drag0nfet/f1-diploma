@@ -52,6 +52,7 @@ func Run() {
 		router.HandleFunc("/reject/{request_id}", moderatorBlocks.Reject)
 		router.HandleFunc("/get-bookings", userPage.GetBookings)
 		router.HandleFunc("/cancel-booking", userPage.CancelBooking)
+		router.HandleFunc("/get-booking-pass", userPage.GetBookingPass)
 
 		// Страница форума
 		router.HandleFunc("/create-topic", forum.CreateTopic)

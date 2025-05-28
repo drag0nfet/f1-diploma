@@ -214,3 +214,21 @@
 .cancel-booking-btn:hover {
     background-color: #c82333; /* Тёмный красный при наведении */
 }
+
+.booking-pass-img {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.save-pass-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-pass-btn:hover {
+    background-color: #45a049;
+}

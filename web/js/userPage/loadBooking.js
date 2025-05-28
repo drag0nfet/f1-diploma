@@ -77,6 +77,57 @@ export async function loadBooking() {
         // Показываем блок бронирований
         bookingBlock.style.display = "block";
 
+        // Получаем контейнер для кода билета
+        const bookingCodeContainer = document.getElementById("booking-code");
+
+        // Загружаем изображение с билетом
+        try {
+            const passResponse = await fetch("/get-booking-pass", {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+
+            if (!passResponse.ok) {
+                throw new Error("Не удалось загрузить билет");
+            }
+
+            const blob = await passResponse.blob();
+            const imageUrl = URL.createObjectURL(blob);
+
+            // Очищаем контейнер
+            bookingCodeContainer.innerHTML = "";
+
+            // Создаём элемент изображения
+            const img = document.createElement("img");
+            img.src = imageUrl;
+            img.alt = "Билет";
+            img.classList.add("booking-pass-img");
+            img.style.maxWidth = "100%";
+            img.style.marginTop = "20px";
+
+            // Кнопка для сохранения
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = "Сохранить билет";
+            saveBtn.classList.add("save-pass-btn");
+            saveBtn.style.display = "block";
+            saveBtn.style.marginTop = "10px";
+
+            // Обработчик сохранения
+            saveBtn.addEventListener("click", () => {
+                const a = document.createElement("a");
+                a.href = imageUrl;
+                a.download = "booking_pass.png"; // имя файла
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+
+            bookingCodeContainer.appendChild(img);
+            bookingCodeContainer.appendChild(saveBtn);
+        } catch (e) {
+            console.error("Ошибка при загрузке билета:", e);
+            bookingCodeContainer.innerHTML = "<p>Не удалось загрузить билет.</p>";
+        }
+
         // Обработчик для кнопок отмены
         document.querySelectorAll(".cancel-booking-btn").forEach(button => {
             button.addEventListener("click", async (e) => {
