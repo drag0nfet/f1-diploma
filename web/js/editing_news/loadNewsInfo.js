@@ -1,3 +1,5 @@
+import {showNotification} from "../notification";
+
 export function loadNewsInfo(news_id) {
     if (news_id < 0) {
         document.getElementById("news-title").value = "";
@@ -16,12 +18,18 @@ export function loadNewsInfo(news_id) {
     })
         .then(response => {
             if (response.status === 403) {
-                alert("У вас недостаточно прав для редактирования этой новости.");
+                showNotification(
+                    "error",
+                    `Недостаточно прав`
+                )
                 window.location.href = '/';
                 throw new Error('Forbidden');
             }
             if (response.status === 404) {
-                alert("Новость не найдена.");
+                showNotification(
+                    "error",
+                    `Новость не найдена`
+                )
                 window.location.href = '/';
                 throw new Error('Not Found');
             }
@@ -43,14 +51,20 @@ export function loadNewsInfo(news_id) {
                     previewImage.style.display = "none";
                 }
             } else {
-                alert("Ошибка загрузки новости: " + data.message);
+                showNotification(
+                    "error",
+                    `Ошибка загрузки новости: ${data.message}`
+                )
                 window.location.href = '/';
             }
         })
         .catch(error => {
             if (error.message !== 'Forbidden' && error.message !== 'Not Found') {
                 console.error("Ошибка загрузки новости:", error);
-                alert("Произошла ошибка при загрузке новости.");
+                showNotification(
+                    "error",
+                    `Ошибка загрузки новости: ${error}`
+                )
                 window.location.href = '/';
             }
         });

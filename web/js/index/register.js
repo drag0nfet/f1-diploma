@@ -1,3 +1,5 @@
+import {showNotification} from "../notification";
+
 export function initRegister() {
     const registerBtn = document.getElementById("register-btn");
     const usernameInput = document.getElementById("username");
@@ -9,7 +11,10 @@ export function initRegister() {
         const password = passwordInput.value.trim();
 
         if (!username || !password) {
-            alert("Пожалуйста, заполните все поля.");
+            showNotification(
+                "error",
+                `Заполните все поля`
+            )
             return;
         }
 
@@ -32,12 +37,18 @@ export function initRegister() {
                     usernameInput.value = '';
                     passwordInput.value = '';
                 } else {
-                    alert(data.message || "Ошибка регистрации.");
+                    showNotification(
+                        "error",
+                        `${data.message || "Ошибка регистрации"}`
+                    )
                 }
             })
             .catch(error => {
                 console.error("Register error:", error);
-                alert("Ошибка при регистрации: " + error.message);
+                showNotification(
+                    "error",
+                    `Ошибка: ${error.message}`
+                )
             });
     });
 }

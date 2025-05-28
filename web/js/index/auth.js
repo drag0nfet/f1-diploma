@@ -1,4 +1,5 @@
 import {initAuthStatus} from "../checkAuth.js";
+import {showNotification} from "../notification";
 
 export function initAuth() {
     const loginBtn = document.getElementById("login-btn");
@@ -60,7 +61,10 @@ export function initAuth() {
         const password = passwordInput.value.trim();
 
         if (!username || !password) {
-            alert("Пожалуйста, заполните все поля.");
+            showNotification(
+                "error",
+                `Заполните все поля!`
+            )
             return;
         }
 
@@ -84,12 +88,20 @@ export function initAuth() {
                     checkAuthStatus();
                     initAuthStatus(8, "guest", "index");
                 } else {
-                    alert(data.message || "Ошибка авторизации.");
+                    showNotification(
+                        "error",
+                        `${data.message || "Ошибка авторизации"}`
+                    )
+
                 }
             })
             .catch(error => {
                 console.error("Login error:", error);
-                alert("Ошибка при авторизации: " + error.message);
+                showNotification(
+                    "error",
+                    `Ошибка при авторизации: ${error}`
+                )
+
             });
     });
 }

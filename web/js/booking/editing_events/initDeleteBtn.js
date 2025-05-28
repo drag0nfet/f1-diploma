@@ -1,3 +1,5 @@
+import {showNotification} from "../../notification";
+
 export function initDeleteBtn(event_id) {
     const delete_btn = document.querySelector(".delete-btn");
 
@@ -20,13 +22,19 @@ export function initDeleteBtn(event_id) {
                         if (!response.ok) {
                             throw new Error(data.message || "Неизвестная ошибка");
                         }
-                        alert("Ивент удалён!");
+                        showNotification(
+                            "success",
+                            "Ивент удалён!"
+                        )
                         window.location.href = `/editing_events`;
                     });
                 })
                 .catch(error => {
                     console.error("Ошибка:", error);
-                    alert("Не удалось удалить ивент: " + error.message);
+                    showNotification(
+                        "error",
+                        "Не удалось удалить ивент"
+                    )
                 });
         }
     });

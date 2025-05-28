@@ -1,4 +1,5 @@
-import {loadTables} from "./loadTables";
+import { loadTables } from "./loadTables";
+import {showNotification} from "../../notification";
 
 export async function handleBooking(tableId, spotId, isBookedByMe) {
     const hallSelect = document.getElementById("hall-select");
@@ -21,13 +22,20 @@ export async function handleBooking(tableId, spotId, isBookedByMe) {
         const data = await response.json();
         if (data.success) {
             await loadTables(hallSelect.value);
+            // Показываем уведомление в зависимости от действия
+            showNotification(
+                "success",
+                action === "book"
+                    ? "Вы успешно забронировали место, можете найти пропуск на странице в личном кабинете"
+                    : "Бронь места отменена"
+            );
         } else {
-            alert(data.message || "Ошибка бронирования");
+            showNotification(data.message || "Ошибка бронирования");
             console.error("Ошибка:", data.message);
         }
     } catch (error) {
         console.error("Ошибка при бронировании/отмене:", error);
-        alert("Произошла ошибка при выполнении действия");
+        showNotification("Произошла ошибка при выполнении действия");
     }
 }
 

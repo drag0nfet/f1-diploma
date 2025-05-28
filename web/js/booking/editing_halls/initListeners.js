@@ -1,4 +1,5 @@
 import {fillTables} from "./fillTables";
+import {showNotification} from "../../notification";
 
 export async function initListeners(modalOverlay, tableId) {
     const hallId = sessionStorage.getItem("hall_id");
@@ -12,11 +13,17 @@ export async function initListeners(modalOverlay, tableId) {
     // Обработчики кнопок
     saveBtn.addEventListener('click', async () => {
         if (tableNameInput.value === "" || priceStatusInput.value === "") {
-            alert("Заполните все необходимые поля!")
+            showNotification(
+                "error",
+                `Заполните все необходимые поля!`
+            )
             return;
         }
         if (hallId === "-1") {
-            alert("Невозможно добавить стол к несохранённому залу. Сохраните зал!")
+            showNotification(
+                "error",
+                `Невозможно добавить стол к несохранённому залу. Сохраните зал!`
+            )
             return;
         }
         const tableData = {
@@ -36,12 +43,19 @@ export async function initListeners(modalOverlay, tableId) {
         });
         const data = await response.json();
         if (data.success) {
-            alert("Стол успешно сохранён!");
+            showNotification(
+                "success",
+                `Стол успешно сохранён`
+            )
             const tablesGrid = document.querySelector(".tables-grid");
             fillTables(data.tables, tablesGrid);
             modalOverlay.remove();
         } else {
-            alert("Ошибка: " + data.message);
+            showNotification(
+            "error",
+            `Ошибка: ${data.message}`
+            )
+
         }
     });
 

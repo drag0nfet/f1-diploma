@@ -1,3 +1,5 @@
+import {showNotification} from "./notification";
+
 export function initDeleteBtns() {
     const deleteButtons = document.getElementsByClassName("delete-btn");
     for (let i = 0; i < deleteButtons.length; i++) {
@@ -30,6 +32,10 @@ export function deleteMessage(elem, messageId) {
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            alert('Не удалось удалить сообщение. Попробуйте еще раз.');
+            showNotification(
+                "error",
+                `Не удалось удалить сообщение. Попробуйте ещё раз`
+            )
+
         });
 }

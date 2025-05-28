@@ -210,3 +210,97 @@ form button {
     text-decoration: none;
     color: white;
 }
+
+/* Контейнер для уведомлений */
+.notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+}
+
+/* Переменные для кастомизации */
+:root {
+    --notification-bg-success: rgba(11, 232, 77, 0.7); /* Зелёный фон для success */
+    --notification-bg-error: rgba(220, 53, 69, 0.7);   /* Красный фон для error */
+    --notification-text-color: white;
+    --notification-padding: 15px;
+    --notification-border-radius: 5px;
+    --notification-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --notification-font-size: 0.9rem;
+    --notification-max-width: 300px;
+    --notification-icon-size: 20px;
+    --notification-animation-duration: 0.3s;
+}
+
+/* Контейнер для уведомлений */
+.notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: var(--notification-max-width);
+}
+
+/* Общие стили для уведомлений */
+.notification {
+    padding: var(--notification-padding);
+    border-radius: var(--notification-border-radius);
+    box-shadow: var(--notification-shadow);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity var(--notification-animation-duration) ease, transform var(--notification-animation-duration) ease;
+    font-size: var(--notification-font-size);
+    max-width: var(--notification-max-width);
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--notification-text-color);
+}
+
+/* Состояние для отображения */
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Уведомление типа success */
+.notification.success {
+    background-color: var(--notification-bg-success);
+}
+
+/* Уведомление типа error */
+.notification.error {
+    background-color: var(--notification-bg-error);
+}
+
+/* Иконка для success */
+.notification.success::before {
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 25px;
+    min-height: 25px;
+    background-image: url('https://static.tildacdn.com/tild3639-6263-4664-b032-336136643136/checkmark-svg-cheque.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Ограничение на максимум 3 уведомления */
+.notifications > :nth-child(n+4) {
+    display: none;
+}

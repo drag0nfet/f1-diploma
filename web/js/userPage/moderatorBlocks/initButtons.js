@@ -1,4 +1,5 @@
 import {loadRequests} from "./loadRequests.js";
+import {showNotification} from "../../notification";
 
 export function initButtons() {
     const approveButtons = document.getElementsByClassName("approve-btn");
@@ -44,9 +45,15 @@ function approve(user_id, message_id, request_id) {
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
-                alert("Блокировка успешно снята!")
+                showNotification(
+                    "success",
+                    `Блокировка успешно снята`
+                )
             } else {
-                alert("Ошибка при снятии блокировки")
+                showNotification(
+                    "error",
+                    `Ошибка при снятии блокировки`
+                )
                 console.error("Ошибка снятия блокировки, бэк:", data.message);
             }
         }).then(_ => {
@@ -54,7 +61,10 @@ function approve(user_id, message_id, request_id) {
     })
         .catch((error) => {
             console.error("Ошибка снятия блокировки, фронт:", error);
-            alert("Ошибка при снятии блокировки")
+            showNotification(
+                "error",
+                `Ошибка при снятии блокировки`
+            )
         });
 }
 
@@ -74,9 +84,16 @@ function reject(user_id, message_id, request_id) {
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
-                alert("Запрос на разблокировку успешно отклонён!")
+                showNotification(
+                    "success",
+                    `Запрос на разблокировку отклонён`
+                )
             } else {
-                alert("Ошибка при отклонении запроса на разблокировку")
+                showNotification(
+                    "error",
+                    `Ошибка при отклонении запроса на разблокировку`
+                )
+
                 console.error("Ошибка при отклонении запроса на разблокировку, бэк:", data.message);
             }
         }).then(_ => {
@@ -84,6 +101,9 @@ function reject(user_id, message_id, request_id) {
     })
         .catch((error) => {
             console.error("Ошибка при отклонении запроса на разблокировку, фронт:", error);
-            alert("Ошибка при отклонении запроса на разблокировку")
+            showNotification(
+                "error",
+                `Ошибка при отклонении запроса на разблокировку`
+            )
         });
 }

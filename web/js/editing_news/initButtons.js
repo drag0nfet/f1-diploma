@@ -1,3 +1,5 @@
+import {showNotification} from "../notification";
+
 let news_id = 0;
 
 function loadData(formData, btn) {
@@ -22,12 +24,18 @@ function validateRequiredFields(is_com) {
     const commentInput = document.getElementById("news-comment");
 
     if (!titleInput.value.trim()) {
-        alert("Пожалуйста, заполните название новости.");
+        showNotification(
+            "error",
+            `Заполните название новости`
+        )
         return false;
     }
 
     if (is_com && !commentInput.value.trim()) {
-        alert("Пожалуйста, заполните содержание новости.");
+        showNotification(
+            "error",
+            `заполните содержание новости`
+        )
         return false;
     }
 
@@ -58,16 +66,21 @@ async function handleNewsAction(statusMessage, redirectStatus) {
 
         if (data.success) {
             new_id = data.id;
-            alert(statusMessage);
             if (redirectStatus === 'ACTIVE')
                 window.location.href = `/`;
             return new_id
         } else {
-            alert("Ошибка: " + data.message);
+            showNotification(
+                "error",
+                `Ошибка: ${data.message}`
+            )
         }
     } catch (error) {
         console.error("Ошибка:", error);
-        alert("Произошла ошибка при обработке новости.");
+        showNotification(
+            "error",
+            `Произошла ошибка при сохранении новости: ${error}`
+        )
     }
 }
 
@@ -114,13 +127,19 @@ export function initButtons(newsID) {
                             if (!response.ok) {
                                 throw new Error(data.message || "Неизвестная ошибка");
                             }
-                            alert("Новость удалена!");
+                            showNotification(
+                                "success",
+                                `Новость удалена!`
+                            )
                             window.location.href = `/`;
                         });
                     })
                     .catch(error => {
                         console.error("Ошибка:", error);
-                        alert("Не удалось удалить новость: " + error.message);
+                        showNotification(
+                            "error",
+                            `Не удалось удалить новость: ${error.message}`
+                        )
                     });
             }
         });

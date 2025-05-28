@@ -1,4 +1,5 @@
 import {loadBarData} from "./loadBarData.js";
+import {showNotification} from "../notification";
 
 export function deleteDish(event) {
     const dishId = event.target.getAttribute("data-dish-id");
@@ -22,11 +23,16 @@ export function deleteDish(event) {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                alert("Блюдо удалено!");
+            if (data.success) {showNotification(
+                "success",
+                "Блюдо удалено!"
+            )
                 loadBarData(true);
             } else {
-                alert("Ошибка: " + data.message);
+                showNotification(
+                    "error",
+                    `Ошибка ${data.message}`
+                )
             }
         })
         .catch(error => console.error("Ошибка удаления блюда:", error));

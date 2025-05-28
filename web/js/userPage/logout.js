@@ -1,3 +1,5 @@
+import {showNotification} from "../notification";
+
 export function initLogout(){
     const logoutBtn = document.getElementById("logout-btn");
 
@@ -14,12 +16,19 @@ export function initLogout(){
                     // Успешный разлогин, перенаправляем на главную
                     window.location.href = "/";
                 } else {
-                    alert(data.message || "Ошибка при выходе из системы.");
+                    showNotification(
+                        "error",
+                        `${data.message || "Ошибка при выходе из системы"}`
+                    )
                 }
             })
             .catch(error => {
                 console.error("Logout error:", error);
-                alert("Ошибка при выходе из системы: " + error.message);
+                showNotification(
+                    "error",
+                    `Ошибка: ${error.message}`
+                )
+
             });
     });
 }

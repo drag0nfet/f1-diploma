@@ -1,6 +1,7 @@
 import { loadMessage } from "./loadMessage.js";
 import { currentReplyId, resetReplyId } from "./reply.js";
 import { initReplyBtn } from "./reply.js";
+import {showNotification} from "../notification";
 
 export function initSendMessage(topicId, rights) {
     const sendBtn = document.getElementById("send-message-btn");
@@ -9,7 +10,10 @@ export function initSendMessage(topicId, rights) {
     sendBtn.addEventListener("click", function (event) {
         event.preventDefault();
         if (rights % 4 / 2 === 0) {
-            alert("Вы заблокированы за нарушение правил. Обратитесь к администратору")
+            showNotification(
+                "error",
+                `Вы заблокированы за нарушение правил. Обратитесь к администратору`
+            )
             return;
         }
         const content = messageInput.value.trim();
@@ -44,12 +48,19 @@ export function initSendMessage(topicId, rights) {
                     }
                     initReplyBtn();
                 } else {
-                    alert(data.message || "Ошибка при отправке сообщения");
+                    showNotification(
+                        "error",
+                        `Ошибка: ${data.message}`
+                    )
+
                 }
             })
             .catch(error => {
                 console.error("Message sending error: ", error);
-                alert("Ошибка при отправке сообщения: " + error.message);
+                showNotification(
+                    "error",
+                    `Ошибка: ${error.message}`
+                )
             });
     });
 }

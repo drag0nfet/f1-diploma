@@ -1,4 +1,5 @@
 import {loadForumData} from "./loadForumData.js";
+import {showNotification} from "../notification";
 
 export function deleteTopic(event) {
     const chatId = event.target.getAttribute("data-chat-id");
@@ -22,11 +23,19 @@ export function deleteTopic(event) {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if (data.success) {
-                alert("Тема удалена!");
+                showNotification(
+                    "success",
+                    `Тема удалена!`
+                )
                 loadForumData(true); // Перезагружаем список тем
             } else {
-                alert("Ошибка: " + data.message);
+                showNotification(
+                "error",
+                `Ошибка: ${data.message}`
+                )
+
             }
         })
         .catch(error => console.error("Ошибка удаления темы:", error));

@@ -1,3 +1,5 @@
+import {showNotification} from "../../notification";
+
 export async function saveHall(photoState) {
     const hallId = parseInt(sessionStorage.getItem("hall_id"));
     const name = document.getElementById('hall-name').value.trim();
@@ -30,7 +32,11 @@ export async function saveHall(photoState) {
 
         const result = await response.json();
         if (result.success) {
-            alert('Зал успешно сохранён!');
+            showNotification(
+            "success",
+            `Зал успешно сохранён`
+            )
+
             // Задаём новый сессионный id зала
             sessionStorage.setItem("hall_id", result.hall.hall_id);
             // Обновляем photoState
@@ -46,10 +52,17 @@ export async function saveHall(photoState) {
                 ? result.hall.album.map(photo => `<img src="data:${photo.mime_type};base64,${photo.content}" alt="Фото ${photo.id}" class="album-image">`).join('')
                 : "<p>Альбом пуст</p>";
         } else {
-            alert('Ошибка: ' + result.message);
+            showNotification(
+                "error",
+                `Ошибка: ${result.message}`
+            )
         }
     } catch (err) {
         console.error('Ошибка при сохранении зала:', err);
-        alert('Ошибка при сохранении зала');
+        showNotification(
+            "error",
+            `Ошибка при сохранении зала: ${err}`
+        )
+
     }
 }

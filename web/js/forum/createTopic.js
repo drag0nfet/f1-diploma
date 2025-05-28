@@ -1,9 +1,14 @@
 import {loadTopic} from "./loadTopic.js";
+import {showNotification} from "../notification";
 
 export function initCreateTheme() {
     const title = document.getElementById("topic_title").value.trim();
     if (!title) {
-        alert("Введите название темы!");
+        showNotification(
+            "error",
+            `Введите название темы`
+        )
+
         return;
     }
 
@@ -18,12 +23,18 @@ export function initCreateTheme() {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                alert("Тема создана!");
+            if (data.success) {showNotification(
+                "success",
+                `Тема создана!`
+            )
+
                 document.getElementById("topic_title").value = ""; // Очистка поля
                 loadTopic(data.topicId, title, true, true); // Добавляем новую тему
-            } else {
-                alert("Ошибка: " + data.message);
+            } else {showNotification(
+                "error",
+                `Ошибка: ${data.message}`
+            )
+
             }
         })
         .catch(error => console.error("Ошибка создания темы:", error));

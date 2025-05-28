@@ -1,4 +1,5 @@
 import {modalTable} from "./editTable";
+import {showNotification} from "../../notification";
 
 export function initTableActions() {
     const tablesGrid = document.querySelector(".tables-grid");
@@ -26,13 +27,19 @@ export function initTableActions() {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert("Стол успешно удалён!");
+                            showNotification(
+                                "success",
+                                `Стол успешно удалён`
+                            )
                             const hallId = sessionStorage.getItem("hall_id");
                             import("./loadHallData.js").then(module => {
                                 module.loadHallData(hallId, window.photoState);
                             });
                         } else {
-                            alert("Ошибка: " + data.message);
+                            showNotification(
+                                "error",
+                                `Ошибка: ${data.message}`
+                            )
                         }
                     })
                     .catch(error => console.error("Ошибка удаления стола:", error));

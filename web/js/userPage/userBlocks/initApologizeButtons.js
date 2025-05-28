@@ -1,4 +1,5 @@
 import { loadBlocks } from "./loadBlocks.js";
+import {showNotification} from "../../notification";
 
 export function initApologizeButtons() {
     const apologizeButtons = document.getElementsByClassName("apologize-btn");
@@ -69,7 +70,10 @@ function initApologize(user_id, message_id) {
     submitBtn.addEventListener("click", async () => {
         const comment = textarea.value.trim();
         if (!comment) {
-            alert("Пожалуйста, введите оправдательную речь.");
+            showNotification(
+                "error",
+                `Пожалуйста введите оправдательную речь`
+            )
             return;
         }
 
@@ -86,18 +90,28 @@ function initApologize(user_id, message_id) {
             const data = await response.json();
 
             if (data.success) {
-                // Сначала показываем alert
-                alert("Запрос на разблокировку отправлен!");
+                // Сначала показываем notification
+                showNotification(
+                    "success",
+                    `Запрос на разблокировку отправлен`
+                )
+
                 // Затем обновляем блокировки
                 await loadBlocks(window.location.pathname.split('/').pop());
                 // Закрываем модальное окно после обновления
                 modal.remove();
             } else {
-                alert("Ошибка: " + data.message);
+                showNotification(
+                    "error",
+                    `Ошибка: ${data.message}`
+                )
             }
         } catch (error) {
             console.error("Ошибка отправки запроса:", error);
-            alert("Ошибка отправки запроса.");
+            showNotification(
+                "error",
+                `Ошибка отправки запроса`
+            )
         }
     });
 

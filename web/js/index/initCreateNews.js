@@ -1,7 +1,13 @@
+import {showNotification} from "../notification";
+
 export function initCreateNews() {
     const title = document.getElementById("news_title").value.trim();
     if (!title) {
-        alert("Введите название новости!");
+        showNotification(
+            "error",
+            `Введите название новости!`
+        )
+
         return;
     }
 
@@ -16,12 +22,18 @@ export function initCreateNews() {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                alert("Новость создана!");
+            if (data.success) {showNotification(
+                "success",
+                `Новость создана!`
+            )
+
                 document.getElementById("news_title").value = "";
                 return data.news.news_id
             } else {
-                alert("Ошибка: " + data.message);
+                showNotification(
+                    "error",
+                    `Ошибка: ${data.message}`
+                )
                 console.error(data.message);
             }
         }).then(news_id => {

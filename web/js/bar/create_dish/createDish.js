@@ -1,3 +1,5 @@
+import {showNotification} from "../../notification";
+
 export function createDish() {
     const form = document.getElementById("dish-form");
     if (!form) {
@@ -19,12 +21,18 @@ export function createDish() {
                 if (!response.ok) {
                     throw new Error(data.message || "Ошибка при добавлении блюда");
                 }
-                alert("Блюдо успешно добавлено!\nПереадресация на страницу бара...");
+                showNotification(
+                    "success",
+                    "Блюдо успешно добавлено!\nПереадресация на страницу бара..."
+                    )
                 window.location.href = "web/pages/bar";
             });
         })
         .catch(error => {
             console.error("Ошибка:", error);
-            alert(`Не удалось добавить блюдо: ${error.message}`);
+            showNotification(
+                "error",
+                `Не удалось добавить блюдо: ${error.message}`
+            )
         });
 }

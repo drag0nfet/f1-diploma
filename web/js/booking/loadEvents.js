@@ -101,7 +101,6 @@ export function loadEvents(isFiltered) {
                             })
                             .catch(error => {
                                 console.error("Ошибка перехода:", error);
-                                alert(error.message);
                             });
                     });
 

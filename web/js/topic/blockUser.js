@@ -1,4 +1,5 @@
 import {deleteMessage} from "../deleteMessage.js";
+import {showNotification} from "../notification";
 
 export function initBlockButtons() {
     const blockButtons = document.getElementsByClassName("ban-btn");
@@ -34,11 +35,17 @@ function blockUser(messageId, messageItem) {
             });
         })
         .then(_ => {
-            alert('Вы успешно заблокировали пользователя');
+            showNotification(
+                "success",
+                `Пользователь заблокирован`
+            )
             deleteMessage(messageItem, messageId);
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            alert('Не удалось заблокировать пользователя: ' + error.message);
+            showNotification(
+                "error",
+                `Не удалось заблокировать пользователя: ${error.message}`
+            )
         });
 }

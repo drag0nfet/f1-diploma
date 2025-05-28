@@ -1,3 +1,5 @@
+import {showNotification} from "../../notification";
+
 export function initDeleteBtn(hall_id) {
     const delete_btn = document.querySelector(".delete-btn");
 
@@ -20,13 +22,21 @@ export function initDeleteBtn(hall_id) {
                         if (!response.ok) {
                             throw new Error(data.message || "Неизвестная ошибка");
                         }
-                        alert("Зал удалён!");
+                        showNotification(
+                            "success",
+                            `Зал удалён!`
+                        )
+
                         window.location.href = `/editing_halls`;
                     });
                 })
                 .catch(error => {
                     console.error("Ошибка:", error);
-                    alert("Не удалось удалить зал: " + error.message);
+                    showNotification(
+                        "error",
+                        `Не удалось удалить зал: ${error.message}`
+                    )
+
                 });
         }
     });
