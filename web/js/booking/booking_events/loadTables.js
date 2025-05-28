@@ -47,7 +47,8 @@ export async function loadTables(hallId) {
         }
 
         // Запрос столов
-        const tablesResponse = await fetch(`/booking/hall/${hallId}/tables?event_id=${getEventIdFromUrl()}`, {
+        const url = `/booking/hall/${hallId}/tables?event_id=${getEventIdFromUrl()}`
+        const tablesResponse = await fetch(url, {
             method: "GET",
             headers: {
                 "X-Requested-With": "XMLHttpRequest"
@@ -67,19 +68,23 @@ export async function loadTables(hallId) {
 
                 // Отображаем все места
                 (table.spots || []).forEach(spot => {
-                    const booking = Array.isArray(spot.bookings) && spot.bookings.length > 0 ? spot.bookings[0] : {};
+                    const booking = (Array.isArray(spot.bookings) &&
+                        spot.bookings.length > 0 ? spot.bookings[0] : {});
                     const isBookedByMe = booking.user_id === currentUserId();
-                    const isBookedByOther = booking.user_id !== null && booking.user_id !== currentUserId() && booking.status === "ACTIVE";
+                    const isBookedByOther = booking.user_id !== null &&
+                        booking.user_id !== currentUserId() && booking.status === "ACTIVE";
 
                     const spotButton = document.createElement("button");
-                    spotButton.className = `spot-btn ${isBookedByMe ? "booked-by-me" : isBookedByOther ? "booked-by-other" : "free"}`;
+                    spotButton.className = `spot-btn ${isBookedByMe ? "booked-by-me" : isBookedByOther 
+                        ? "booked-by-other" : "free"}`;
                     spotButton.textContent = `Место ${spot.spot_name}`;
                     spotButton.dataset.tableId = table.table_id;
                     spotButton.dataset.spotId = spot.spot_id;
                     if (isBookedByOther) {
                         spotButton.disabled = true;
                     } else {
-                        spotButton.addEventListener("click", () => handleBooking(table.table_id, spot.spot_id, isBookedByMe));
+                        spotButton.addEventListener("click", () =>
+                            handleBooking(table.table_id, spot.spot_id, isBookedByMe));
                     }
                     spotsContainer.appendChild(spotButton);
                 });
