@@ -33,5 +33,5 @@ export async function handleBooking(tableId, spotId, isBookedByMe) {
 
 export function getEventIdFromUrl() {
     const pathParts = window.location.pathname.split("/");
-    return pathParts[pathParts.length - 1];
+    return parseInt(pathParts[pathParts.length - 1], 10);
 }

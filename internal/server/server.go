@@ -73,6 +73,7 @@ func Run() {
 		// router.HandleFunc("/get-events-list", editing_events.GetEventsList) - тот же функционал
 		router.HandleFunc("/booking/hall/{hallId}/tables", booking.GetTablesList)
 		router.HandleFunc("/booking/hall/{hallId}", booking.GetHallDetails)
+		router.HandleFunc("/book-spot", booking.BookSpot)
 
 		// Страница редактирования мест и залов - модераторская
 		router.HandleFunc("/get-halls-list", editing_halls.GetHallsList)
