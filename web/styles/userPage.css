@@ -127,3 +127,90 @@
         font-size: 0.8rem;
     }
 }
+
+/* Стили для блока бронирований */
+.booking-block {
+    border: 2px solid #60a5fa; /* Голубая обводка */
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff; /* Белый фон */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+/* Стили для заголовка блока бронирований */
+.booking-title {
+    margin: 0 0 15px 0; /* Отступ снизу */
+    font-size: 1.3rem;
+    color: #333; /* Тёмный цвет текста */
+    font-weight: 600; /* Полужирный шрифт */
+}
+
+/* Стили для контейнера бронирований */
+#booking-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Отступы между плитками */
+}
+
+/* Стили для плитки бронирования */
+.booking-tile {
+    background: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Стили для заголовка ивента */
+.booking-event-title {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Стили для даты ивента */
+.booking-event-date {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Стили для названия зала */
+.booking-hall-name {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Стили для списка мест */
+.booking-spots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Стили для элемента места */
+.booking-spot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+}
+
+/* Стили для кнопки отмены бронирования */
+.cancel-booking-btn {
+    background-color: #dc3545; /* Красный цвет */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.cancel-booking-btn:hover {
+    background-color: #c82333; /* Тёмный красный при наведении */
+}

@@ -3,6 +3,7 @@ import {initMenu}     from '../menu.js';
 import {initAuthStatus} from "../checkAuth.js";
 import {loadBlocks} from "./userBlocks/loadBlocks.js";
 import {loadRequests} from "./moderatorBlocks/loadRequests.js";
+import {loadBooking} from "./loadBooking";
 
 const guestContent = document.getElementById("guest-content");
 const hostContent = document.getElementById("host-content");
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (isModerator) {
             loadRequests()
         }
+        await loadBooking();
         initLogout()
         hostContent.style.display = "block";
     } else {

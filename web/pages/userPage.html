@@ -12,17 +12,26 @@
 <div class="container">
     <div class="notifications" id="notifications"></div>
     <header class="header" id="header">Страница пользователя&nbsp;<span id="user-name"></span></header>
+
     <aside class="left-sidebar" id="left-sidebar">
         <a href="/" class="sidebar-link" data-code="home">Главная</a>
         <a href="/forum" class="sidebar-link" data-code="forum">Форум</a>
         <a href="/bar" class="sidebar-link" data-code="bar">Бар</a>
         <a href="/booking" class="sidebar-link" data-code="booking">Бронь столиков</a>
     </aside>
+
     <main class="main">
         <button class="menu-btn" id="menu-btn">☰</button>
 
         <div id="host-content" style="display: none">
             <h1>Добро пожаловать в ваш личный кабинет!</h1>
+
+            <div class="booking-block" style="display: none">
+                <h2 class="booking-title">Ваши активные брони на мероприятия:</h2>
+                <div id="booking-container"></div>
+                <div id="booking-code"></div>
+            </div>
+
             <div class="restriction-block" style="display: none">
                 <h2 class="restrictions-title">У вас имеются активные блокировки на форуме!</h2>
                 <div id="restrictions-container"></div>
