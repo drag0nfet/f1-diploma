@@ -125,7 +125,7 @@ export async function loadBooking() {
             bookingCodeContainer.appendChild(saveBtn);
         } catch (e) {
             console.error("Ошибка при загрузке билета:", e);
-            bookingCodeContainer.innerHTML = "<p>Не удалось загрузить билет.</p>";
+            //bookingCodeContainer.innerHTML = "<p>Не удалось загрузить билет.</p>";
         }
 
         // Обработчик для кнопок отмены

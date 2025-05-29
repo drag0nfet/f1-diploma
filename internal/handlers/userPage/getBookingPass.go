@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -39,6 +40,11 @@ func GetBookingPass(w http.ResponseWriter, r *http.Request) {
 
 	ans := createPassQR(bookings, userId)
 
+	if ans == nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Невозможно загрузить билет"})
+		return
+	}
 	// Формируем ответ
 	w.Header().Set("Content-Type", "image/png")
 	w.WriteHeader(http.StatusOK)
@@ -64,7 +70,8 @@ func createPassQR(bookings []BookingResponse, userId int) []byte {
 	url := "https://api.qrserver.com/v1/create-qr-code/?data=" + codeHash + "&size=200x200"
 
 	resp, err := http.Get(url)
-	if err != nil {
+	log.Println(resp)
+	if err != nil || resp == nil {
 		return nil
 	}
 	defer resp.Body.Close()
