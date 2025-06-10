@@ -1,5 +1,7 @@
 import {initAuthStatus} from "../checkAuth.js";
 import {showNotification} from "../notification";
+import {initEdit} from "../news-list/initEdit";
+import {loadNews} from "../news-list/loadNews";
 
 export function initAuth() {
     const loginBtn = document.getElementById("login-btn");
@@ -67,6 +69,7 @@ export function initAuth() {
             )
             return;
         }
+        let isModerator, _
 
         fetch('/login', {
             method: 'POST',
@@ -86,7 +89,8 @@ export function initAuth() {
                 if (data.success) {
                     // Обновляем статус после логина
                     checkAuthStatus();
-                    initAuthStatus(8, "guest", "index");
+                    let {isModerator1, _} = initAuthStatus(8, "guest", "index");
+                    isModerator = isModerator1
                 } else {
                     showNotification(
                         "error",
@@ -94,7 +98,12 @@ export function initAuth() {
                     )
 
                 }
-            })
+            }).then(er => {
+                console.log(isModerator)
+            loadNews("ACTIVE", 1, 10, isModerator)
+        }).then(er => {
+            initEdit()
+        })
             .catch(error => {
                 console.error("Login error:", error);
                 showNotification(

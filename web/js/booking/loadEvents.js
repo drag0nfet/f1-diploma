@@ -1,4 +1,5 @@
 import {getUnMdText} from "./getUnMdText";
+import {showNotification} from "../notification";
 
 const eventsContainer = document.getElementById("events-container");
 
@@ -96,6 +97,10 @@ export function loadEvents(isFiltered) {
                                 if (response.ok) {
                                     window.location.href = `/booking/event/${event.event_id}`;
                                 } else {
+                                    showNotification(
+                                        "error",
+                                        "Для доступа к бронированию события необходимо авторизоваться!"
+                                    )
                                     throw new Error("Ошибка доступа к странице ивента");
                                 }
                             })

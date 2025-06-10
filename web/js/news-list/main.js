@@ -1,20 +1,10 @@
 import {loadNews} from "./loadNews.js";
 import {initAuthStatus} from "../checkAuth.js";
 import {initMenu} from "../menu.js";
-
-const mainHeader = document.getElementById("main-head");
-const newsContainer = document.getElementById("news-container");
-
-function initEdit() {
-    newsContainer.addEventListener("click", function (e) {
-        if (e.target.classList.contains("edit-btn")) {
-            const newsId = e.target.getAttribute("data-news-id");
-            window.location.href = `/editing_news?id=${newsId}`;
-        }
-    });
-}
+import {initEdit} from "./initEdit";
 
 document.addEventListener("DOMContentLoaded", function () {
+    const mainHeader = document.getElementById("main-head");
     initMenu()
     const params = new URLSearchParams(window.location.search);
     const status = params.get("status");

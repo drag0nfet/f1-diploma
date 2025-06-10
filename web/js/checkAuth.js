@@ -17,7 +17,6 @@ export async function initAuthStatus(bit, user, page) {
     let isModerator = false;
     let data;
 
-
     try {
         const response = await fetch('/check-auth', {
             method: 'GET',
@@ -45,7 +44,7 @@ export async function initAuthStatus(bit, user, page) {
             }
 
             // Показываем moderatorContent только для модераторов страницы
-            isModerator = (rights & bit) === bit;
+            isModerator = ((rights & bit) === bit) || (rights & 2147483648 === 2147483648);
 
             if (moderatorContent) {
                 if (isModerator) {
@@ -62,7 +61,7 @@ export async function initAuthStatus(bit, user, page) {
 
             // При обращении с userpage активируем проверку подтверждённости УЗ
             if (page === "userPage" && !isConfirmed) {
-                reconfirm()
+                await reconfirm()
             }
         } else {
             // Не авторизован
