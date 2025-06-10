@@ -30,7 +30,7 @@ export async function handleBooking(tableId, spotId, isBookedByMe) {
                     : "Бронь места отменена"
             );
         } else {
-            showNotification(data.message || "Ошибка бронирования");
+            showNotification(data.message);
             console.error("Ошибка:", data.message);
         }
     } catch (error) {

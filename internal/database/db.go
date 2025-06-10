@@ -1,15 +1,19 @@
 package database
 
 import (
+	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 var DB *gorm.DB
 
 func InitDB() error {
-	dsn := "host=localhost user=postgres password=njseL]:u%!ZUc;2Y dbname=f1-diploma port=5432 sslmode=disable"
+
+	dbpass := os.Getenv("DB_PASS")
+	dsn := fmt.Sprintf("host=localhost user=postgres password=%s dbname=f1-diploma port=5432 sslmode=disable", dbpass)
 	var err error
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})

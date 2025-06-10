@@ -1,5 +1,6 @@
 import { loadForumData } from "./forum/loadForumData.js";
 import { loadBarData } from "./bar/loadBarData.js";
+import {reconfirm} from "./userPage/reconfirm";
 
 const guestContent = document.getElementById("guest-content");
 const userContent = document.getElementById("user-content");
@@ -32,6 +33,7 @@ export async function initAuthStatus(bit, user, page) {
             sessionStorage.setItem("user_id", data.id);
 
             const rights = data.rights || 0;
+            const isConfirmed = data.is_confirmed
 
             if (guestContent) {
                 guestContent.style.display = "none";
@@ -56,6 +58,11 @@ export async function initAuthStatus(bit, user, page) {
             // При обращении с форума подгружаем топики форума - только для авторизованных
             if (page === "forum") {
                 loadForumData(isModerator);
+            }
+
+            // При обращении с userpage активируем проверку подтверждённости УЗ
+            if (page === "userPage" && !isConfirmed) {
+                reconfirm()
             }
         } else {
             // Не авторизован

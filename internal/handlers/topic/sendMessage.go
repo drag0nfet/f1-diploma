@@ -2,6 +2,7 @@ package topic
 
 import (
 	"diploma/internal/database"
+	"diploma/internal/handlers"
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
@@ -31,6 +32,20 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	if !response.Success {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	isConfirmed, err := handlers.GetConfirmation(userId)
+	if err != nil {
+		response = services.Response{Success: false, Message: "Ошибка при определении подтверждённости учётной записи"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if !isConfirmed {
+		response = services.Response{Success: false, Message: "Учётная запись не подтверждена"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 

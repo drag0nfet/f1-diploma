@@ -5,13 +5,14 @@ import (
 	"diploma/internal/models"
 	"diploma/internal/services"
 	"encoding/json"
-	"log"
 	"net/http"
+	"time"
 )
 
 type RegisterRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Email    string `json:"email"`
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -41,23 +42,43 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := database.DB.Where("email = ?", req.Email).First(&existingUser).Error; err == nil {
+		response := services.Response{Success: false, Message: "Пользователь с такой почтой уже существует!"}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusConflict)
+		return
+	}
+
 	passHash, err := services.GetHash(req.Password)
 	if err != nil {
-		response := services.Response{Success: false, Message: "Ошибка при создании пароля"}
+		response := services.Response{Success: false, Message: "Ошибка при хешировании пароля"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	user := models.User{Login: req.Username, Password: passHash}
-	if err := database.DB.Create(&user).Error; err != nil {
+	confToken, err := services.SendConfirmation(req.Email)
+	if err != nil {
+		response := services.Response{Success: false, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	user := models.User{
+		Login:             req.Username,
+		Password:          passHash,
+		Email:             req.Email,
+		ConfirmationToken: confToken,
+		LastSent:          time.Now(),
+	}
+	if err = database.DB.Create(&user).Error; err != nil {
 		response := services.Response{Success: false, Message: "Ошибка при регистрации"}
 		json.NewEncoder(w).Encode(response)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	log.Println("Успешная регистрация пользователя", req.Username)
 	response := services.Response{Success: true}
 	json.NewEncoder(w).Encode(response)
 	w.WriteHeader(http.StatusOK)

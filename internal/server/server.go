@@ -17,8 +17,11 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
+
+var Ip string
 
 func Run() {
 	start := time.Now()
@@ -35,6 +38,7 @@ func Run() {
 		// Страница домашняя
 		router.HandleFunc("/register", index.Register)
 		router.HandleFunc("/login", index.Login)
+		router.HandleFunc("/confirm", index.Confirm)
 
 		// Создание и редактирование новости
 		router.HandleFunc("/update-news", news.UpdateNews)
@@ -53,6 +57,7 @@ func Run() {
 		router.HandleFunc("/get-bookings", userPage.GetBookings)
 		router.HandleFunc("/cancel-booking", userPage.CancelBooking)
 		router.HandleFunc("/get-booking-pass", userPage.GetBookingPass)
+		router.HandleFunc("/reconfirmation", userPage.Reconfirmation)
 
 		// Страница форума
 		router.HandleFunc("/create-topic", forum.CreateTopic)
@@ -145,8 +150,14 @@ func Run() {
 
 	handler := services.EnableCORS(router)
 
-	log.Println("Сервер запущен за ", time.Since(start))
-	err := http.ListenAndServe(SetIP()+":5051", handler)
+	log.Println("Сервер запущен за", time.Since(start))
+	Ip = SetIP() + ":5051"
+
+	err := os.Setenv("IP", Ip)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	err = http.ListenAndServe(Ip, handler)
 	if err != nil {
 		log.Fatal("ListenAndServe error: ", err)
 	}
