@@ -11,7 +11,11 @@ export async function loadBooking() {
         if (!response.ok) {
             throw new Error("Ошибка при загрузке броней");
         }
-        let bookings = await response.json();
+        const text = await response.text();
+        let bookings = [];
+        if (text) {
+            bookings = JSON.parse(text);
+        }
 
         if (bookings.length === 0) {
             bookingContainer.innerHTML = "<p>Активные брони отсутствуют.</p>";
