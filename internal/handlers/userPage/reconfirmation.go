@@ -19,19 +19,25 @@ func Reconfirmation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username := r.URL.Query().Get("username")
+	username, _, _, response := services.CheckAuthCookie(r)
+	if !response.Success {
+		response = services.Response{Success: false, Message: "Пользователь не авторизован"}
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
 
 	var user models.User
 
 	if err := database.DB.Where("login = ?", username).First(&user).Error; err != nil {
-		response := services.Response{Success: false, Message: "Пользователь не найден"}
+		response = services.Response{Success: false, Message: "Пользователь не найден"}
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	if time.Since(user.LastSent) < 1*time.Hour {
-		response := services.Response{
+		response = services.Response{
 			Success: false,
 			Message: "Получить новую ссылку для подтверждения можно через час после получения последнего письма"}
 		w.WriteHeader(http.StatusForbidden)
@@ -41,7 +47,7 @@ func Reconfirmation(w http.ResponseWriter, r *http.Request) {
 
 	token, err := services.SendConfirmation(user.Email)
 	if err != nil {
-		response := services.Response{Success: false, Message: err.Error()}
+		response = services.Response{Success: false, Message: err.Error()}
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(response)
 		return
@@ -51,13 +57,13 @@ func Reconfirmation(w http.ResponseWriter, r *http.Request) {
 		ConfirmationToken: token,
 		LastSent:          time.Now(),
 	}).Error; err != nil {
-		response := services.Response{Success: false, Message: "Ошибка подтверждения"}
+		response = services.Response{Success: false, Message: "Ошибка подтверждения"}
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
-	response := services.Response{Success: true, Message: "Отправили письмо для подтверждения"}
+	response = services.Response{Success: true, Message: "Отправили письмо для подтверждения"}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }

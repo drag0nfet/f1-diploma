@@ -23,6 +23,17 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, _, rights, response := services.CheckAuthCookie(r)
+	if !response.Success {
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	if rights%2147483648 != 1 && rights%2 != 1 {
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Недостаточно прав"})
+		return
+	}
+
 	vars := mux.Vars(r)
 	messageIdStr, ok := vars["messageId"]
 	if !ok {

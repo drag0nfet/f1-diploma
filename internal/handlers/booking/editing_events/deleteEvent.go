@@ -20,6 +20,17 @@ func DeleteEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, _, rights, response := services.CheckAuthCookie(r)
+	if !response.Success {
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	if rights&2147483648 != 1 && rights&16 != 1 {
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Недостаточно прав"})
+		return
+	}
+
 	eventIDParam := r.URL.Query().Get("event_id")
 	if eventIDParam == "" {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Не указан event_id"})
