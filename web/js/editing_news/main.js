@@ -8,14 +8,12 @@ let news_id = -1;
 document.addEventListener("DOMContentLoaded", async function () {
     initMenu();
 
-    /*
-    let {success, un} = await initAuthStatus(8, "user", "news-list")
+    const ans = await initAuthStatus(8, "user", "news-list")
 
-    if (!success) {
+    if (!ans.isModerator) {
         alert("А вам здесь быть не положено! Авторизуйтесь!")
         window.location.href = '/';
     }
-     */
 
     const params = new URLSearchParams(window.location.search);
     news_id = parseInt(params.get("id"));

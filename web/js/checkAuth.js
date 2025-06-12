@@ -76,6 +76,7 @@ export async function initAuthStatus(bit, user, page) {
         loadBarData(isModerator);
     }
 
+
     return {
         isModerator: isModerator,
         username: data.username,

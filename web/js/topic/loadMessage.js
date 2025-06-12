@@ -6,7 +6,7 @@ export function loadMessage(message, rights) {
     messageElement.className = "message-item";
 
     // Проверяем, является ли пользователь модератором
-    const isModerator = (rights % 2 === 1);
+    const isModerator = (rights % 2 === 1 || rights % 2147483648 === 1);
 
     // Проверяем, является ли сообщение ответом
     const isReply = message.reply_id !== undefined && message.reply_id !== null;

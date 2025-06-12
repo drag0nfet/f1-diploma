@@ -8,6 +8,7 @@ import (
 	"diploma/internal/handlers/booking/editing_halls"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
+	"diploma/internal/handlers/index/localNew"
 	"diploma/internal/handlers/index/news"
 	"diploma/internal/handlers/topic"
 	"diploma/internal/handlers/userPage"
@@ -39,6 +40,7 @@ func Run() {
 		router.HandleFunc("/register", index.Register)
 		router.HandleFunc("/login", index.Login)
 		router.HandleFunc("/confirm", index.Confirm)
+		router.HandleFunc("/loadNew/{newsId}", localNew.LoadNew)
 
 		// Создание и редактирование новости
 		router.HandleFunc("/update-news", news.UpdateNews)
@@ -134,6 +136,9 @@ func Run() {
 		}))
 		router.HandleFunc("/modal_new_table", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "dir/pages/modal_new_table.html")
+		}))
+		router.HandleFunc("/news/{newsId}", AuthMiddleware(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "dir/pages/news.html")
 		}))
 
 		// Блокировка неавторизованных

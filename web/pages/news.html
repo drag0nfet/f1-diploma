@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новость</title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/newsPage.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="notifications" id="notifications"></div>
+    <header class="header" id="header">Новость</header>
+
+    <aside class="left-sidebar" id="left-sidebar">
+        <a href="/" class="sidebar-link" data-code="home">Главная</a>
+        <a href="/forum" class="sidebar-link" data-code="forum">Форум</a>
+        <a href="/bar" class="sidebar-link" data-code="bar">Бар</a>
+        <a href="/booking" class="sidebar-link" data-code="booking">Бронь столиков</a>
+    </aside>
+
+    <main class="main">
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <article class="news-article">
+            <img class="news-image" src="" alt="Изображение новости">
+            <h1 class="news-title"></h1>
+            <p class="news-description"></p>
+            <div class="news-content"></div>
+            <time class="news-date"></time>
+        </article>
+    </main>
+</div>
+<div class="overlay" id="overlay"></div>
+<script type="module" src="../js/index/localNews/main.js"></script>
+</body>
+</html>

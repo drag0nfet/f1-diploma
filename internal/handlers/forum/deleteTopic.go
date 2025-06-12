@@ -28,7 +28,7 @@ func DeleteTopic(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if rights%2 != 1 {
+	if rights%2147483648 != 1 && rights%2 != 1 {
 		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Недостаточно прав"})
 		return
 	}

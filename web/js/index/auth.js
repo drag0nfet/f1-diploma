@@ -85,12 +85,16 @@ export function initAuth() {
                     return data;
                 });
             })
-            .then(data => {
+            .then(async data => {
                 if (data.success) {
                     // Обновляем статус после логина
                     checkAuthStatus();
-                    let {isModerator1, _} = initAuthStatus(8, "guest", "index");
-                    isModerator = isModerator1
+                    let ans = await initAuthStatus(8, "guest", "index")
+
+                    if (ans.isModerator) {
+                        await loadNews("ACTIVE", 1, 10, isModerator)
+                        await initEdit()
+                    }
                 } else {
                     showNotification(
                         "error",
@@ -98,17 +102,12 @@ export function initAuth() {
                     )
 
                 }
-            }).then(er => {
-                console.log(isModerator)
-            loadNews("ACTIVE", 1, 10, isModerator)
-        }).then(er => {
-            initEdit()
-        })
+            })
             .catch(error => {
                 console.error("Login error:", error);
                 showNotification(
                     "error",
-                    `Ошибка при авторизации: ${error}`
+                    error
                 )
 
             });

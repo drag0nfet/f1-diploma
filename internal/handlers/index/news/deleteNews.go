@@ -23,6 +23,20 @@ func DeleteNews(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, _, userRights, response := services.CheckAuthCookie(r)
+	if !response.Success {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	isModerator := userRights%16 >= 8 || userRights/2147483648 == 1
+	if !isModerator {
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(services.Response{Success: false, Message: "Доступ запрещён"})
+		return
+	}
+
 	vars := mux.Vars(r)
 	newsIdStr, ok := vars["news_id"]
 	if !ok {

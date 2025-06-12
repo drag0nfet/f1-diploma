@@ -4,11 +4,13 @@ import { initRegister } from "./register.js";
 import {initAuthStatus} from "../checkAuth.js";
 import {loadNews} from "../news-list/loadNews.js";
 import {initEdit} from "../news-list/initEdit";
+import {initOpen} from "./initOpen";
 
 document.addEventListener("DOMContentLoaded", async function () {
     initMenu();
     initAuth();
     initRegister();
+    initOpen()
 
     // Модератор новостей - 3 бит = 8, есть гест-режим
     let {isModerator, un} = await initAuthStatus(8, "user", "index");

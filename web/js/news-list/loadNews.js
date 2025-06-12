@@ -30,7 +30,7 @@ export function loadNews(status, page, limit, isModerator) {
                         : '';
 
                     newsElement.innerHTML = `
-                        <div class="news-content">
+                        <div class="news-content" data-news-id="${news.news_id}">
                             ${news.image ? `<img src="data:image/jpeg;base64,${news.image}" alt="${news.title}" class="news-image">` : '<div class="news-no-image">Нет изображения</div>'}
                             <div class="news-info">
                                 <h3 class="news-title">${news.title}</h3>
