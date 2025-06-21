@@ -1,4 +1,4 @@
-package localNew
+package index
 
 import (
 	"diploma/internal/database"

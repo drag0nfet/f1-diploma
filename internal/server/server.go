@@ -8,7 +8,6 @@ import (
 	"diploma/internal/handlers/booking/editing_halls"
 	"diploma/internal/handlers/forum"
 	"diploma/internal/handlers/index"
-	"diploma/internal/handlers/index/localNew"
 	"diploma/internal/handlers/index/news"
 	"diploma/internal/handlers/topic"
 	"diploma/internal/handlers/userPage"
@@ -33,14 +32,13 @@ func Run() {
 	// API маршруты
 	{
 		// Общие маршруты
-		router.HandleFunc("/delete-message/{messageId}", handlers.DeleteMessage)
 		router.HandleFunc("/check-auth", handlers.CheckAuth)
 
 		// Страница домашняя
 		router.HandleFunc("/register", index.Register)
 		router.HandleFunc("/login", index.Login)
 		router.HandleFunc("/confirm", index.Confirm)
-		router.HandleFunc("/loadNew/{newsId}", localNew.LoadNew)
+		router.HandleFunc("/loadNew/{newsId}", index.LoadNew)
 
 		// Создание и редактирование новости
 		router.HandleFunc("/update-news", news.UpdateNews)
@@ -71,6 +69,7 @@ func Run() {
 		router.HandleFunc("/get-messages/{topicId}", topic.GetMessages)
 		router.HandleFunc("/send-message", topic.SendMessage)
 		router.HandleFunc("/block-user/{messageId}", topic.BlockUser)
+		router.HandleFunc("/delete-message/{messageId}", topic.DeleteMessage)
 
 		// Страница бара
 		router.HandleFunc("/get-dishes", bar.GetDishes)

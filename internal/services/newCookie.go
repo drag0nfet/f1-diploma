@@ -18,7 +18,7 @@ func NewCookie(w http.ResponseWriter, username string, rights, userId int) http.
 		"username": username,
 		"user_id":  userId,
 		"rights":   rights,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"exp":      time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
 	key := os.Getenv("TOKEN_KEY")
@@ -36,7 +36,7 @@ func NewCookie(w http.ResponseWriter, username string, rights, userId int) http.
 		Name:     "auth",
 		Value:    tokenString,
 		Path:     "/",
-		MaxAge:   86400,
+		MaxAge:   86400 * 7,
 		HttpOnly: true,
 		Secure:   false,
 		SameSite: http.SameSiteStrictMode,
